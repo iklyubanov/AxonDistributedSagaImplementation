@@ -20,7 +20,8 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
         http://java.sun.com/xml/ns/persistence/persistence_3_0.xsd"
              version="2.0">
-    <persistence-unit name="axon" transaction-type="RESOURCE_LOCAL"><!--TODO may be change transaction-type to JTA -->
+    <!--TODO transaction-type may be changed to JTA, if used ApplicationServer. For Tomcat RESOURCE_LOCAL is normal -->
+    <persistence-unit name="axon" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <!--TODO need to create dataSource-->
         <!--<jta-data-source>java:/DefaultDS</jta-data-source>-->
