@@ -1,5 +1,7 @@
 package ru.iklyubanov.diploma.saga.jpa;
 
+import ru.iklyubanov.diploma.saga.jpa.util.ParentEntity;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -8,19 +10,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "currency")
-public class Currency implements java.io.Serializable {
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * The unique ID.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
-
-    @Basic
-    private String identifier;
+public class Currency extends ParentEntity {
 
     /**
      * The currency's 3 letter
@@ -38,22 +28,6 @@ public class Currency implements java.io.Serializable {
      */
     @Column(name = "conversion_factor", nullable = false)
     private BigDecimal conversionFactor;
-
-    /**
-     * The unique ID.
-     * @return the id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * The unique ID.
-     * @param id the id to set
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     /**
      * The currency's 3 letter
@@ -109,13 +83,6 @@ public class Currency implements java.io.Serializable {
             return false;
         }
         Currency that = (Currency) obj;
-        return this.id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 73 * hash + (this.id != null ? this.id.hashCode() : 0);
-        return hash;
+        return this.getId().equals(that.getId());
     }
 }

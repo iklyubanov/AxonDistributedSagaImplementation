@@ -1,5 +1,7 @@
 package ru.iklyubanov.diploma.saga.jpa;
 
+import ru.iklyubanov.diploma.saga.jpa.util.ParentEntity;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -9,16 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="USERS")
-public class User implements java.io.Serializable {
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @Basic
-    @Column(length = 36)
-    private String identifier;
+public class User extends ParentEntity {
 
     @NotNull
     @Column(name = "f_name")
@@ -46,22 +39,6 @@ public class User implements java.io.Serializable {
 
     @Column(name = "bill_adr")
     private String billingAddress;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -117,5 +94,13 @@ public class User implements java.io.Serializable {
 
     public void setBillingAddress(String billingAddress) {
         this.billingAddress = billingAddress;
+    }
+
+    public List<BankCard> getBankCards() {
+        return bankCards;
+    }
+
+    public void setBankCards(List<BankCard> bankCards) {
+        this.bankCards = bankCards;
     }
 }

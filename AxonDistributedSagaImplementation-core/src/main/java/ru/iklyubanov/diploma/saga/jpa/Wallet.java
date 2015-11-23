@@ -1,23 +1,14 @@
 package ru.iklyubanov.diploma.saga.jpa;
 
+import ru.iklyubanov.diploma.saga.jpa.util.MonetaryValue;
+import ru.iklyubanov.diploma.saga.jpa.util.ParentEntity;
+
 import javax.persistence.*;
 
 /**
  * Created by kliubanov on 23.11.2015.
  */
-public class Wallet implements java.io.Serializable {
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * The unique ID.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
-
-    @Basic
-    private String identifier;
+public class Wallet extends ParentEntity {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="CURRENCY_ID")
@@ -28,14 +19,6 @@ public class Wallet implements java.io.Serializable {
 
     @OneToOne(fetch=FetchType.LAZY, mappedBy="wallet")
     private BankCard bankCard;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Currency getCurrency() {
         return currency;

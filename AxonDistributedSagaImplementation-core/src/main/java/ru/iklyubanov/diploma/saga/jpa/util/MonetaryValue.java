@@ -1,4 +1,4 @@
-package ru.iklyubanov.diploma.saga.jpa;
+package ru.iklyubanov.diploma.saga.jpa.util;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
