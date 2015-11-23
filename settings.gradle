@@ -1,2 +1,6 @@
 rootProject.name = 'AxonDistributedSagaImplementation'
 
+include 'AxonDistributedSagaImplementation-core'
+
+include 'AxonDistributedSagaImplementation-core'
+

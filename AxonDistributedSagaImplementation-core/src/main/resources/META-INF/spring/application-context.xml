@@ -16,4 +16,7 @@
 
        <axon:command-bus id="commandBus" transaction-manager="transactionManager"/>
        <axon:event-bus id="eventBus"/>
+
+       <!--<bean id="contactNameRepository" class="org.axonframework.sample.app.command.JpaContactNameRepository"/>-->
+
 </beans>
