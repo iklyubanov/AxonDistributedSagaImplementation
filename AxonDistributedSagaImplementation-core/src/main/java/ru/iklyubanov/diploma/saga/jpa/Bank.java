@@ -63,6 +63,13 @@ public class Bank extends ParentEntity {
     @OneToMany(mappedBy="bank")
     private List<BankCard> bankCards;
 
+    @ManyToMany
+    @JoinTable(
+            name="BANK_PAY_SYS_TYPES",
+            joinColumns={@JoinColumn(name="BANK_ID", referencedColumnName="ID")},
+            inverseJoinColumns={@JoinColumn(name="PAY_SYS_TYPE_ID", referencedColumnName="ID")})
+    private List<PaymentSystemType> paymentSystemTypes;
+
     public String getBik() {
         return bik;
     }
@@ -165,5 +172,13 @@ public class Bank extends ParentEntity {
 
     public void setBankCards(List<BankCard> bankCards) {
         this.bankCards = bankCards;
+    }
+
+    public List<PaymentSystemType> getPaymentSystemTypes() {
+        return paymentSystemTypes;
+    }
+
+    public void setPaymentSystemTypes(List<PaymentSystemType> paymentSystemTypes) {
+        this.paymentSystemTypes = paymentSystemTypes;
     }
 }

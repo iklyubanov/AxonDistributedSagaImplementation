@@ -10,8 +10,11 @@ import java.util.List;
  * Created by kliubanov on 23.11.2015.
  */
 @Entity
-@Table(name="USERS")
-public class User extends ParentEntity {
+@Inheritance
+@DiscriminatorColumn(name="USER_TYPE")
+@DiscriminatorValue("INDIVIDUAL")
+@Table(name="CLIENTS")
+public class Client extends ParentEntity {
 
     @NotNull
     @Column(name = "f_name")

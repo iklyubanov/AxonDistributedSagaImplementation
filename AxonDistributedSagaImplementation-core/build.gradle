@@ -1,7 +1,7 @@
 buildscript {
   repositories {
     maven { url "http://repo.spring.io/libs-snapshot" }
-    mavenLocal()
+    mavenCentral()
   }
   dependencies {
     classpath('org.springframework.boot:spring-boot-gradle-plugin:1.3.0.RELEASE')
@@ -12,10 +12,10 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'spring-boot'
+apply plugin: 'idea'
 
 compileJava {
   sourceCompatibility = 1.8
-
   targetCompatibility = 1.8
 }
 
@@ -37,6 +37,7 @@ ext {
 
 repositories {
     mavenCentral()
+    maven { url "https://repository.jboss.org/nexus/content/repositories/releases" }
 }
 
 dependencies {
@@ -45,6 +46,7 @@ dependencies {
   compile("org.postgresql:postgresql:${postgresVersion}")
   compile("org.apache.derby:derby:$derbyVersion")
   compile('com.zaxxer:HikariCP:2.4.2')
+  compile 'org.springframework.data:spring-data-jpa:1.9.1.RELEASE'
 
   compile("org.springframework:spring-context:${springVersion}")
   compile("org.springframework.amqp:spring-rabbit:${springAmqpVersion}")

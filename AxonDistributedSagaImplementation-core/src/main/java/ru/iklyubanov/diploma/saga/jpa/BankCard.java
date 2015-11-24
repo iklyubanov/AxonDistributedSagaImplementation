@@ -26,7 +26,7 @@ public class BankCard extends ParentEntity {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="USER_ID")
-    private User user;
+    private Client client;
 
     /*@Column(precision=19, scale=2)
     private BigDecimal balance;*/
@@ -68,12 +68,12 @@ public class BankCard extends ParentEntity {
         this.bank = bank;
     }
 
-    public User getUser() {
-        return user;
+    public Client getClient() {
+        return client;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public Wallet getWallet() {
