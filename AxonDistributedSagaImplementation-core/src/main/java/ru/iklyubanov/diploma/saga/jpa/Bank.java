@@ -2,13 +2,15 @@ package ru.iklyubanov.diploma.saga.jpa;
 
 import ru.iklyubanov.diploma.saga.jpa.util.ParentEntity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by ivan on 11/24/2015.
  */
+@Entity
+@Table(name="BANKS")
 public class Bank extends ParentEntity {
 
     /*БИК*/
@@ -57,6 +59,9 @@ public class Bank extends ParentEntity {
     @NotNull
     @Column(name = "correspondent_account", length = 21)
     private String correspondentAccount;
+
+    @OneToMany(mappedBy="bank")
+    private List<BankCard> bankCards;
 
     public String getBik() {
         return bik;
@@ -152,5 +157,13 @@ public class Bank extends ParentEntity {
 
     public void setCorrespondentAccount(String correspondentAccount) {
         this.correspondentAccount = correspondentAccount;
+    }
+
+    public List<BankCard> getBankCards() {
+        return bankCards;
+    }
+
+    public void setBankCards(List<BankCard> bankCards) {
+        this.bankCards = bankCards;
     }
 }

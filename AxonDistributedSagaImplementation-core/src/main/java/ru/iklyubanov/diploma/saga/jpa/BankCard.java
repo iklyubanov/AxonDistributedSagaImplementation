@@ -20,7 +20,6 @@ public class BankCard extends ParentEntity {
     @Enumerated(EnumType.STRING)
     private CardType cardType;
 
-    //TODO bank ManyToOne
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="BANK_ID")
     private Bank bank;

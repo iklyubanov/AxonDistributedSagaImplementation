@@ -8,6 +8,8 @@ import javax.persistence.*;
 /**
  * Created by kliubanov on 23.11.2015.
  */
+@Entity
+@Table(name="WALLETS")
 public class Wallet extends ParentEntity {
 
     @ManyToOne(fetch=FetchType.LAZY)
