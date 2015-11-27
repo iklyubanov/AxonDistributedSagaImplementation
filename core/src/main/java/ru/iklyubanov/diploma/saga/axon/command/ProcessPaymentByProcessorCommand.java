@@ -20,6 +20,7 @@ public class ProcessPaymentByProcessorCommand {
     @TargetAggregateIdentifier
     private final String processorId;
     private final String paymentId;
+    //todo change to real transaction details
     private final String transactionDetails;
 
     public ProcessPaymentByProcessorCommand(String processorId, String paymentId, String transactionDetails) {
