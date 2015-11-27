@@ -17,6 +17,19 @@
        <axon:command-bus id="commandBus" transaction-manager="transactionManager"/>
        <axon:event-bus id="eventBus"/>
 
+    <axon:event-sourcing-repository id="paymentRepository"
+                                    aggregate-type="ru.iklyubanov.diploma.saga.axon.PaymentAggregate"/>
+
+    <axon:aggregate-command-handler id="paymentAggregateHandler"
+                                    aggregate-type="ru.iklyubanov.diploma.saga.axon.PaymentAggregate"
+                                    repository="paymentRepository" command-bus="commandBus"/>
+
+    <axon:filesystem-event-store id="eventStore" base-dir="events"/>
+
+    <bean class="org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean">
+        <property name="commandBus" ref="commandBus"/>
+    </bean>
+
        <!--<bean id="contactNameRepository" class="org.axonframework.sample.app.command.JpaContactNameRepository"/>-->
 
 </beans>

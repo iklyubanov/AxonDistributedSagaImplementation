@@ -18,7 +18,7 @@ public class PaymentProcessor extends ParentEntity {
     @Basic
     private String name;
 
-    @OneToMany(mappedBy="bank")
+    @OneToMany(mappedBy="paymentProcessor")
     private List<Payment> payments;
 
     //TODO may be add loading parameter

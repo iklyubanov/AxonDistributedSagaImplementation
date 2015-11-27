@@ -24,7 +24,7 @@ public class Client extends ParentEntity {
     @Column(name = "l_name")
     private String lastName;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="client")
     private List<BankCard> bankCards;
 
     @Column(name = "phone_num", length = 15)

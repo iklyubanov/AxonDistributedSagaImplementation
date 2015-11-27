@@ -3,7 +3,6 @@ package ru.iklyubanov.diploma.saga.jpa;
 import javax.persistence.Basic;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -11,7 +10,6 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @DiscriminatorValue("LEGAL")//юр. лицо
-@Table(name="MERCHANTS")
 public class Merchant extends Client {
 
     @NotNull

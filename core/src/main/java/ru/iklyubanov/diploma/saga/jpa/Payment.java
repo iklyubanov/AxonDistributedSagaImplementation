@@ -23,7 +23,7 @@ public class Payment extends ParentEntity {
     private BankCard bankCard;
 
     @ManyToOne(fetch= FetchType.EAGER)
-    @JoinColumn(name="USER_ID")
+    @JoinColumn(name="CLIENT_ID")
     private Client client;
 
     @NotNull

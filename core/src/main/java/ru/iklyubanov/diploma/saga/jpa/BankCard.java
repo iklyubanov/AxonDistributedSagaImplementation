@@ -25,7 +25,7 @@ public class BankCard extends ParentEntity {
     private Bank bank;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="USER_ID")
+    @JoinColumn(name="CLIENT_ID")
     private Client client;
 
     /*@Column(precision=19, scale=2)

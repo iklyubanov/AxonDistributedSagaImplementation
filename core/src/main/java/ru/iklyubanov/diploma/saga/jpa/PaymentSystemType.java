@@ -2,7 +2,11 @@ package ru.iklyubanov.diploma.saga.jpa;
 
 import ru.iklyubanov.diploma.saga.jpa.util.ParentEntity;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import java.util.List;
 
 /**
  * Created by ivan on 11/23/2015.
@@ -14,8 +18,8 @@ public class PaymentSystemType extends ParentEntity {
     @Basic
     private String type;
 
-    @ManyToMany(mappedBy="projects")
-    private Bank bank;
+    @ManyToMany(mappedBy="paymentSystemTypes")
+    private List<Bank> banks;
 
     public String getType() {
         return type;
@@ -25,11 +29,11 @@ public class PaymentSystemType extends ParentEntity {
         this.type = type;
     }
 
-    public Bank getBank() {
-        return bank;
+    public List<Bank> getBanks() {
+        return banks;
     }
 
-    public void setBank(Bank bank) {
-        this.bank = bank;
+    public void setBanks(List<Bank> banks) {
+        this.banks = banks;
     }
 }
