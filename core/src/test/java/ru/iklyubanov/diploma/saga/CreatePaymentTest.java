@@ -22,6 +22,6 @@ public class CreatePaymentTest {
     @Test
     public void testCreatePaymentAggregate() throws Exception {
         fixture.given().when(new CreatePaymentCommand("123", "1", "777", PaymentType.CONSUMER_PAYMENT))
-                .expectEvents(new CreatePaymentEvent("123", "1", "777", PaymentType.CONSUMER_PAYMENT));
+                .expectEvents(new CreatePaymentEvent("123", "1", "777", PaymentType.CONSUMER_PAYMENT, 2));
     }
 }

@@ -13,12 +13,14 @@ public class CreatePaymentEvent {
     private final String cliendId;
     private final String bankCardId;
     private final PaymentType paymentType;
+    private final int timeout;
 
-    public CreatePaymentEvent(String paymentId, String cliendId, String bankCardId, PaymentType paymentType) {
+    public CreatePaymentEvent(String paymentId, String cliendId, String bankCardId, PaymentType paymentType, int timeout) {
         this.paymentId = paymentId;
         this.cliendId = cliendId;
         this.bankCardId = bankCardId;
         this.paymentType = paymentType;
+        this.timeout = timeout;
     }
 
     public String getPaymentId() {
@@ -35,5 +37,9 @@ public class CreatePaymentEvent {
 
     public PaymentType getPaymentType() {
         return paymentType;
+    }
+
+    public int getTimeout() {
+        return timeout;
     }
 }
