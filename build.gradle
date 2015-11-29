@@ -77,6 +77,8 @@ project(':core') {
     derbyVersion = '10.12.1.1'
   }
 
+  apply plugin: 'war'
+
   dependencies {
     compile("org.postgresql:postgresql:${postgresVersion}")
     compile("org.apache.derby:derby:$derbyVersion")
@@ -86,12 +88,28 @@ project(':core') {
     compile('javax.el:javax.el-api:3.0.0')
 
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
-    //compile("org.springframework:spring-expression:$springVersion")
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile('org.axonframework:axon-test:2.4.3')
 
     compile("org.axonframework:axon-core:${axonVersion}")
     compile("org.axonframework:axon-amqp:${axonVersion}")
+  }
+}
+
+project(':web-ui') {
+
+  dependencies {
+    compile('javax.el:javax.el-api:3.0.0')
+    //web framefork  that applies the Gang of Four decorator pattern to allow a clean separation of content from presentation
+    compile('opensymphony:sitemesh:2.4.2')
+    compile("javax.servlet:javax.servlet-api:3.1.0")
+    compile("javax.servlet:jstl:1.2")
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-security")
   }
 }
 

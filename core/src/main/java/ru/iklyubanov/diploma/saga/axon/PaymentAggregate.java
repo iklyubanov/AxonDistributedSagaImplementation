@@ -21,7 +21,7 @@ public class PaymentAggregate extends AbstractAnnotatedAggregateRoot {
     @CommandHandler
     public PaymentAggregate(CreatePaymentCommand command) {
         apply(new CreatePaymentEvent(command.getPaymentId(), command.getCliendId(),
-                command.getBankCardId(), command.getPaymentType()));
+                command.getBankCardId(), command.getPaymentType(), 2));
     }
 
     @EventHandler
