@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ru.iklyubanov.diploma.saga.jpa.repositories.UserQueryRepository;
 
 /**
- * @author Jettro Coenradie
+ * Все url с префиксом /user будут направляться в этот контроллер
  */
 @Controller
 @RequestMapping("/user")

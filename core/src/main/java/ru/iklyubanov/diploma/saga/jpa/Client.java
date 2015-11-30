@@ -106,4 +106,9 @@ public class Client extends ParentEntity {
     public void setBankCards(List<BankCard> bankCards) {
         this.bankCards = bankCards;
     }
+
+    @Transient
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

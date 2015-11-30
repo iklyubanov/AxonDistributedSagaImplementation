@@ -123,4 +123,11 @@ public class BankCard extends ParentEntity {
     public void setCcvCode(String ccvCode) {
         this.ccvCode = ccvCode;
     }
+
+    public String getHidenCode() {
+        if(code == null) {
+            return "";
+        }
+        return "*" + code.substring(code.length() - 3);
+    }
 }

@@ -15,7 +15,7 @@ import java.sql.Date;
 @Table(name = "PAYMENTS")
 public class Payment extends ParentEntity {
 
-    @Column(name = "DATE")
+    @Column(name = "REG_DATE")
     private java.sql.Date date;
 
     @ManyToOne(fetch= FetchType.LAZY)

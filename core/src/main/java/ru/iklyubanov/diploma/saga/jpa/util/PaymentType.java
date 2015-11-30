@@ -4,13 +4,24 @@ package ru.iklyubanov.diploma.saga.jpa.util;
  * Created by kliubanov on 24.11.2015.
  */
 public enum PaymentType {
-    CONSUMER_CREDIT,
-    CREDIT,
-    CAR_CREDIT,
-    MORTAGE_PAYMENT,
-    CONSUMER_PAYMENT,
-    BILL_PAYMENT,
-    MONEY_TRANSFER,
-    INVESTMENT,
-    CHARITY
+    CONSUMER_CREDIT("Потребительский кредит"),
+    CREDIT("Кредит"),
+    CAR_CREDIT("Автокредит"),
+    MORTAGE_PAYMENT("Ипотека"),
+    CONSUMER_PAYMENT("Потребительский платеж"),
+    BILL_PAYMENT("Оплата счетов"),
+    MONEY_TRANSFER("Денежный перевод"),
+    INVESTMENT("Инвестирование"),
+    CHARITY("Благотворительность");
+
+    private final String type;
+
+    PaymentType(String value) {
+        this.type = value;
+    }
+
+    @Override
+    public String toString() {
+        return type;
+    }
 }

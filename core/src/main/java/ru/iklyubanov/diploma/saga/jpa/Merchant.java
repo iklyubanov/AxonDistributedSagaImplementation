@@ -3,6 +3,7 @@ package ru.iklyubanov.diploma.saga.jpa;
 import javax.persistence.Basic;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -24,6 +25,8 @@ public class Merchant extends Client {
     @Basic
     private String area;
 
+    @Transient
+    @Override
     public String getFullName() {
         return fullName;
     }

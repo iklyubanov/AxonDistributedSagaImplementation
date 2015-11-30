@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
@@ -37,6 +38,10 @@
               <property name="maximumPoolSize" value="15"/>
               <!--<property name="minPoolSize" value="5"/>-->
        </bean>
-
+    <!--earlier org.axonframework.samples.trader.query.*.repositories-->
+    <!--указываем дерикторию где будут хрониться репозитории-->
+    <jpa:repositories base-package="ru.iklyubanov.diploma.saga.jpa.repositories"
+            entity-manager-factory-ref="entityManagerFactory"
+            transaction-manager-ref="transactionManager"/>
 
 </beans>

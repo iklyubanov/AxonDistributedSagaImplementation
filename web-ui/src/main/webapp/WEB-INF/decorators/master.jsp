@@ -41,12 +41,14 @@
         <div class="container">
             <a class="brand" href="${ctx}/">Axon Trader</a>
             <ul class="nav">
-                <li><a href="${ctx}/">Home</a></li>
-                <li><a href="${ctx}/dashboard">Dashboard</a></li>
+                <li><a href="${ctx}/">Главная</a></li>
+                <li><a href="${ctx}/payment">Платежи</a></li>
+                <%--<li><a href="${ctx}/dashboard">Dashboard</a></li>
                 <li><a href="${ctx}/company">Companies</a></li>
                 <li><a href="${ctx}/data/collections">Data</a></li>
-                <li><a href="${ctx}/admin/portfolio">Portfolio</a></li>
+                <li><a href="${ctx}/admin/portfolio">Portfolio</a></li>--%>
             </ul>
+            <%--TODO fix security!--%>
             <sec:authorize access="isAuthenticated()">
                 <p class="pull-right credentials">
                     <sec:authentication property="principal.fullName"/>
@@ -83,7 +85,7 @@
     </div>
 
     <footer>
-        <p>&copy; Gridshore 2011</p>
+        <p>&copy; Ivan Klyubanov 2016</p>
     </footer>
 
 </div>
