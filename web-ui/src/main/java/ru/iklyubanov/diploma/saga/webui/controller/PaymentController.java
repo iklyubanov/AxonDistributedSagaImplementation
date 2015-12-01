@@ -9,10 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.iklyubanov.diploma.saga.spring.Payment;
 import ru.iklyubanov.diploma.saga.spring.service.PaymentService;
+import ru.iklyubanov.diploma.saga.spring.webentity.PaymentInfo;
 import ru.iklyubanov.diploma.saga.webui.util.Message;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 /**
@@ -47,13 +50,14 @@ public class PaymentController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String prepareNewPayment(Model model) {
         logger.info("Подготавливаем новый платеж");
-        Payment payment = new Payment();
+        PaymentInfo payment = new PaymentInfo();
         model.addAttribute("payment", payment);
         return "/new";
     }
 
     @RequestMapping(value = "/new", params = "form", method = RequestMethod.POST)
-    public String saveNewPayment(Payment payment, BindingResult bindingResult, Model model, Locale locale) {
+    public String saveNewPayment(Payment payment, BindingResult bindingResult, Model model,
+                                 HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Сохраняем платеж");
         if (bindingResult.hasErrors()) {
             model.addAttribute("message", new Message("error",
@@ -62,7 +66,14 @@ public class PaymentController {
             model.addAttribute("contact", payment);
             return "/new";
         }
-        return "/new";
+        model.asMap().clear();
+        //todo нужно разрулить мессаджи
+        redirectAttributes.addFlashAttribute("message",
+                new Message("success",
+                        messageSource.getMessage("contact_save_success",
+                                new Object [] {}, locale)));
+        paymentService.createNewPayment(payment);
+        return "redirect:/new";
     }
 
 }

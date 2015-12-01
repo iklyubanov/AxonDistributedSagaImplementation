@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iklyubanov.diploma.saga.spring.Payment;
 import ru.iklyubanov.diploma.saga.spring.repositories.PaymentRepository;
+import ru.iklyubanov.diploma.saga.spring.webentity.PaymentInfo;
 
 /**
  * Created by kliubanov on 01.12.2015.
@@ -32,7 +33,9 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Payment createNewPayment(Payment payment) {
+    public Payment createNewPayment(PaymentInfo paymentInfo) {
+        Payment payment = new Payment();
+        //todo здесь наверно нужно вызвать сагу и вы выполнять процесс создание в ней
         return paymentRepository.save(payment);
     }
 }

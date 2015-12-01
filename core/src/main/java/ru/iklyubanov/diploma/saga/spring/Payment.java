@@ -1,5 +1,6 @@
 package ru.iklyubanov.diploma.saga.spring;
 
+import ru.iklyubanov.diploma.saga.spring.util.MonetaryValue;
 import ru.iklyubanov.diploma.saga.spring.util.ParentEntity;
 import ru.iklyubanov.diploma.saga.spring.util.PaymentState;
 import ru.iklyubanov.diploma.saga.spring.util.PaymentType;
@@ -19,11 +20,11 @@ public class Payment extends ParentEntity {
     @Column(name = "REG_DATE")
     private java.sql.Date date;
 
-    @ManyToOne(fetch= FetchType.LAZY)
+    @ManyToOne(fetch= FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @JoinColumn(name="B_CARD_ID")
     private BankCard bankCard;
 
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch= FetchType.EAGER, cascade = {CascadeType.PERSIST})
     @JoinColumn(name="CLIENT_ID")
     private Client client;
 
@@ -37,15 +38,17 @@ public class Payment extends ParentEntity {
     @Enumerated(EnumType.STRING)
     private PaymentState paymentState;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @JoinColumn(name="PAY_PROC_ID")
     private PaymentProcessor paymentProcessor;
 
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST})
     @JoinColumn(name="MERCHANT_ID")
     private Merchant merchant;
 
-    private BigDecimal
+    /**К оплате*/
+    @Embedded
+    private MonetaryValue paymentAmount;
 
     @Basic
     private String info;
@@ -112,5 +115,13 @@ public class Payment extends ParentEntity {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public MonetaryValue getPaymentAmount() {
+        return paymentAmount;
+    }
+
+    public void setPaymentAmount(MonetaryValue paymentAmount) {
+        this.paymentAmount = paymentAmount;
     }
 }
