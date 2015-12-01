@@ -1,7 +1,7 @@
 package ru.iklyubanov.diploma.saga.axon.event;
 
 import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
-import ru.iklyubanov.diploma.saga.jpa.util.PaymentType;
+import ru.iklyubanov.diploma.saga.spring.util.PaymentType;
 
 /**
  * Created by kliubanov on 27.11.2015.

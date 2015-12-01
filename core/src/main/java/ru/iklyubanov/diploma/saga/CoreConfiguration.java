@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import ru.iklyubanov.diploma.saga.axon.command.CreatePaymentCommand;
-import ru.iklyubanov.diploma.saga.jpa.util.PaymentType;
+import ru.iklyubanov.diploma.saga.spring.util.PaymentType;
 
 import java.util.UUID;
 

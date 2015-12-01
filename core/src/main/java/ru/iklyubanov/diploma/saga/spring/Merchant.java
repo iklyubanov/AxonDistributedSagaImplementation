@@ -1,4 +1,4 @@
-package ru.iklyubanov.diploma.saga.jpa;
+package ru.iklyubanov.diploma.saga.spring;
 
 import javax.persistence.Basic;
 import javax.persistence.DiscriminatorValue;

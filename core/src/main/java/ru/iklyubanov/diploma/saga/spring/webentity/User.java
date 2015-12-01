@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ru.iklyubanov.diploma.saga.jpa.webentity;
+package ru.iklyubanov.diploma.saga.spring.webentity;
 
 import org.springframework.data.annotation.Id;
 

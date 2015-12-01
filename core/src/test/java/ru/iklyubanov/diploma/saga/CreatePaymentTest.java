@@ -6,7 +6,7 @@ import org.junit.Test;
 import ru.iklyubanov.diploma.saga.axon.PaymentAggregate;
 import ru.iklyubanov.diploma.saga.axon.command.CreatePaymentCommand;
 import ru.iklyubanov.diploma.saga.axon.event.CreatePaymentEvent;
-import ru.iklyubanov.diploma.saga.jpa.util.PaymentType;
+import ru.iklyubanov.diploma.saga.spring.util.PaymentType;
 
 /**
  * Created by kliubanov on 27.11.2015.

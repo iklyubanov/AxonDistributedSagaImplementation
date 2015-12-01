@@ -6,10 +6,14 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
 <div align="center">
-    <form:form action="new" method="post" commandName="paymentForm">
+    <form:form id="paymentForm" method="post" modelAttribute="payment"> <%--action="new"--%>
+        <%--todo CHECK--%>
+        <c:if test="${not empty message}">
+            <div id="message" class="${message.type}">${message.message}</div>
+         </c:if>
         <table border="0">
             <tr>
-                <td colspan="2" align="center"><h2>Spring MVC Form Demo - Registration</h2></td>
+                <td colspan="2" align="center"><h2>Форма регистрации платежа</h2></td>
             </tr>
             <tr>
                 <td>User Name:</td>
@@ -24,7 +28,7 @@
                 <td><form:input path="email" /></td>
             </tr>
             <tr>
-                <td>Birthday (mm/dd/yyyy):</td>
+                <td>Birthday (MM/YY):</td>
                 <td><form:input path="birthDate" /></td>
             </tr>
             <tr>
@@ -32,7 +36,8 @@
                 <td><form:select path="profession" items="${professionList}" /></td>
             </tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" value="Register" /></td>
+                <td colspan="1" align="center"><button type="reset">Отмена</button></td>
+                <td colspan="1" align="center"><button type="submit">Выполнить</button></td>
             </tr>
         </table>
     </form:form>

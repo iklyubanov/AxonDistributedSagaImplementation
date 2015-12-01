@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package ru.iklyubanov.diploma.saga.jpa.repositories;
-
-import org.springframework.data.repository.PagingAndSortingRepository;
-import ru.iklyubanov.diploma.saga.jpa.webentity.User;
+package ru.iklyubanov.diploma.saga.spring.webentity;
 
 /**
+ * Object used to obtain information about an available UserAccount
+ *
  * @author Jettro Coenradie
  */
-public interface UserQueryRepository extends PagingAndSortingRepository<User, String> {
+public interface UserAccount {
 
-    User findByUsername(String username);
+    String getUserId();
 
-    User findByIdentifier(String identifier);
+    String getUserName();
+
+    String getFullName();
 }

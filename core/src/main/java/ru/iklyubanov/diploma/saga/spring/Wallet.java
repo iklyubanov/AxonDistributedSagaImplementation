@@ -1,7 +1,7 @@
-package ru.iklyubanov.diploma.saga.jpa;
+package ru.iklyubanov.diploma.saga.spring;
 
-import ru.iklyubanov.diploma.saga.jpa.util.MonetaryValue;
-import ru.iklyubanov.diploma.saga.jpa.util.ParentEntity;
+import ru.iklyubanov.diploma.saga.spring.util.MonetaryValue;
+import ru.iklyubanov.diploma.saga.spring.util.ParentEntity;
 
 import javax.persistence.*;
 

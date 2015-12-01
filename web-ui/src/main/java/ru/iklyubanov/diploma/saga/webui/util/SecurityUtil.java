@@ -17,7 +17,7 @@
 package ru.iklyubanov.diploma.saga.webui.util;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-import ru.iklyubanov.diploma.saga.jpa.webentity.UserAccount;
+import ru.iklyubanov.diploma.saga.spring.webentity.UserAccount;
 
 /**
  * @author Jettro Coenradie

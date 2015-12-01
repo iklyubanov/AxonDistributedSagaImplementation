@@ -25,7 +25,7 @@
              http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--TODO fix it!!!!-->
-    <context:component-scan base-package="org.axonframework.samples.trader.webui.security"/>
+    <context:component-scan base-package="ru.iklyubanov.diploma.saga.webui.security"/>
 
     <http pattern="/js/**" security="none"/>
     <http pattern="/favicon.ico" security="none"/>

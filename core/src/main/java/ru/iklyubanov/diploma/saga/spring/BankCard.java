@@ -1,8 +1,8 @@
-package ru.iklyubanov.diploma.saga.jpa;
+package ru.iklyubanov.diploma.saga.spring;
 
-import ru.iklyubanov.diploma.saga.jpa.util.CardStatus;
-import ru.iklyubanov.diploma.saga.jpa.util.CardType;
-import ru.iklyubanov.diploma.saga.jpa.util.ParentEntity;
+import ru.iklyubanov.diploma.saga.spring.util.CardStatus;
+import ru.iklyubanov.diploma.saga.spring.util.CardType;
+import ru.iklyubanov.diploma.saga.spring.util.ParentEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -51,6 +51,9 @@ public class BankCard extends ParentEntity {
 
     @Column(name = "CCV_CODE", length = 3)
     private String ccvCode;
+
+    @Column(name = "ZIP", length = 10)
+    private String zipCode;
 
     public CardType getCardType() {
         return cardType;
@@ -129,5 +132,13 @@ public class BankCard extends ParentEntity {
             return "";
         }
         return "*" + code.substring(code.length() - 3);
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 }

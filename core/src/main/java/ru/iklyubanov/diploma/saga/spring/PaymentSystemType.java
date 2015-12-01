@@ -1,6 +1,6 @@
-package ru.iklyubanov.diploma.saga.jpa;
+package ru.iklyubanov.diploma.saga.spring;
 
-import ru.iklyubanov.diploma.saga.jpa.util.ParentEntity;
+import ru.iklyubanov.diploma.saga.spring.util.ParentEntity;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;

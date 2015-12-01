@@ -1,4 +1,4 @@
-package ru.iklyubanov.diploma.saga.jpa.util;
+package ru.iklyubanov.diploma.saga.spring.util;
 
 /**
  * Created by ivan on 11/23/2015.

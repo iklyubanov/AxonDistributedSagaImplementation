@@ -1,11 +1,12 @@
-package ru.iklyubanov.diploma.saga.jpa;
+package ru.iklyubanov.diploma.saga.spring;
 
-import ru.iklyubanov.diploma.saga.jpa.util.ParentEntity;
-import ru.iklyubanov.diploma.saga.jpa.util.PaymentState;
-import ru.iklyubanov.diploma.saga.jpa.util.PaymentType;
+import ru.iklyubanov.diploma.saga.spring.util.ParentEntity;
+import ru.iklyubanov.diploma.saga.spring.util.PaymentState;
+import ru.iklyubanov.diploma.saga.spring.util.PaymentType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
@@ -43,6 +44,8 @@ public class Payment extends ParentEntity {
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="MERCHANT_ID")
     private Merchant merchant;
+
+    private BigDecimal
 
     @Basic
     private String info;
