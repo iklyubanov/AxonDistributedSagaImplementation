@@ -7,9 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.iklyubanov.diploma.saga.axon.command.CreatePaymentCommand;
 import ru.iklyubanov.diploma.saga.spring.Payment;
 import ru.iklyubanov.diploma.saga.spring.service.PaymentService;
 import ru.iklyubanov.diploma.saga.spring.webentity.PaymentInfo;
@@ -21,6 +23,7 @@ import java.util.Locale;
 /**
  * Created by kliubanov on 30.11.2015.
  */
+//@RestController
 @Controller
 @RequestMapping("/payment")
 public class PaymentController {
@@ -50,20 +53,20 @@ public class PaymentController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String prepareNewPayment(Model model) {
         logger.info("Подготавливаем новый платеж");
-        PaymentInfo payment = new PaymentInfo();
-        model.addAttribute("payment", payment);
+        CreatePaymentCommand createPaymentCommand = new CreatePaymentCommand();
+        model.addAttribute("createPaymentCommand", createPaymentCommand);
         return "/new";
     }
 
     @RequestMapping(value = "/new", params = "form", method = RequestMethod.POST)
-    public String saveNewPayment(Payment payment, BindingResult bindingResult, Model model,
-                                 HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes, Locale locale) {
+    public String saveNewPayment(@RequestBody CreatePaymentCommand createPaymentCommand, BindingResult bindingResult, Model model,
+                                 RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Сохраняем платеж");
         if (bindingResult.hasErrors()) {
             model.addAttribute("message", new Message("error",
                     messageSource.getMessage("contact_save_fail",
                             new Object[]{}, locale)));
-            model.addAttribute("contact", payment);
+            model.addAttribute("createPaymentCommand", createPaymentCommand);
             return "/new";
         }
         model.asMap().clear();
@@ -72,7 +75,7 @@ public class PaymentController {
                 new Message("success",
                         messageSource.getMessage("contact_save_success",
                                 new Object [] {}, locale)));
-        paymentService.createNewPayment(payment);
+        paymentService.createNewPayment(createPaymentCommand);
         return "redirect:/new";
     }
 

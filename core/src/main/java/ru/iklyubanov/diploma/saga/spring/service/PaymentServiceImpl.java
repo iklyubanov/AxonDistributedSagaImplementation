@@ -1,11 +1,15 @@
 package ru.iklyubanov.diploma.saga.spring.service;
 
+import org.axonframework.commandhandling.CommandBus;
+import org.axonframework.commandhandling.GenericCommandMessage;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.iklyubanov.diploma.saga.axon.command.CreatePaymentCommand;
 import ru.iklyubanov.diploma.saga.spring.Payment;
 import ru.iklyubanov.diploma.saga.spring.repositories.PaymentRepository;
 import ru.iklyubanov.diploma.saga.spring.webentity.PaymentInfo;
@@ -19,6 +23,8 @@ import ru.iklyubanov.diploma.saga.spring.webentity.PaymentInfo;
 public class PaymentServiceImpl implements PaymentService {
 
     private PaymentRepository paymentRepository;
+    @Autowired
+    private CommandGateway commandGateway;
 
     @Autowired
     public PaymentServiceImpl(PaymentRepository paymentRepository) {
@@ -32,10 +38,11 @@ public class PaymentServiceImpl implements PaymentService {
         return lastPayments;
     }
 
-    @Override
-    public Payment createNewPayment(PaymentInfo paymentInfo) {
-        Payment payment = new Payment();
-        //todo здесь наверно нужно вызвать сагу и вы выполнять процесс создание в ней
-        return paymentRepository.save(payment);
+    @Override //todo нужно убрать возвращаемый тип или передавать сообщение получаемое из колбэка
+    public void createNewPayment(CreatePaymentCommand createPaymentCommand) {
+        //todo здесь наверно нужно вызвать сагу и выполнять процесс создание в ней
+        commandGateway.send(createPaymentCommand);
+        //commandGateway.send(new ModifyTaskTitleCommand(identifier, request.getTitle()));
+        //return paymentRepository.save(payment);
     }
 }

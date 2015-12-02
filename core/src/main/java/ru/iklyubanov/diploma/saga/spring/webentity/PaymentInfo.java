@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 /**
  * Created by kliubanov on 01.12.2015.
  */
+@Deprecated //todo нужно все перенести в command
 @Entity
 @Table(name = "PAYMENT_INFO")
 public class PaymentInfo extends ParentEntity{

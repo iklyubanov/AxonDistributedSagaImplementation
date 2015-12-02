@@ -18,8 +18,24 @@
 
         <bean class="ru.iklyubanov.diploma.saga.axon.event.PaymentEventHandler"/>
 
-       <axon:command-bus id="commandBus" transaction-manager="transactionManager"/>
-       <axon:event-bus id="eventBus"/>
+        <axon:command-bus id="commandBus" transaction-manager="transactionManager">
+            <axon:dispatchInterceptors>
+                <!--Interceptor that applies JSR303 bean validation on incoming commands. Интерсептор для проверки валидации-->
+                <bean class="org.axonframework.commandhandling.interceptors.BeanValidationInterceptor"/>
+            </axon:dispatchInterceptors>
+        </axon:command-bus>
+
+        <bean class="org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean">
+            <property name="commandBus" ref="commandBus"/>
+        </bean>
+
+    <!--todo нужно сделать как в example-axon-->
+       <axon:event-bus id="eventBus" />
+
+    <!--TODO Нам нужен axon-distributed-commandbus для того чтобы из саги запускать команды распределенные по разным jvm-->
+
+    <!--All event sourcing repositories need an Event Store.-->
+    <axon:jpa-event-store id="jpaEventStore"/>
 
     <axon:event-sourcing-repository id="paymentRepository"
                                     aggregate-type="ru.iklyubanov.diploma.saga.axon.PaymentAggregate"/>
@@ -28,12 +44,52 @@
                                     aggregate-type="ru.iklyubanov.diploma.saga.axon.PaymentAggregate"
                                     repository="paymentRepository" command-bus="commandBus"/>
 
-    <axon:filesystem-event-store id="eventStore" base-dir="events"/>
+    <axon:filesystem-event-store id="eventStore" base-dir="event"/>
+
+
 
     <bean class="org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean">
         <property name="commandBus" ref="commandBus"/>
     </bean>
 
+    <axon:jpa-event-store id="eventStore" data-source="dataSource"/>
+
+    <axon:jpa-saga-repository id="sagaRepository" resource-injector="resourceInjector"
+                              use-explicit-flush="true" saga-serializer="sagaSerializer">
+        <!--Spring users can use the <axon:cache-config> element to add caching behavior to a <axon:jpa-saga-repository> element.
+        It is configured with two cache references (which may refer to the same cache): one which stores the cached Saga instances,
+        and one that stores the associations.-->
+        <axon:cache-config saga-cache="sagaCacheRef" associations-cache="associationCacheRef"/>
+    </axon:jpa-saga-repository>
+
+    <!--TODO нужно выяснить нужен ли он нам?-->
+    <!--Implementation of the AggregateSnapshotter that eases the configuration when used within a Spring Application Context.
+    It will automatically detect a Transaction Manager and Aggregate Factories.
+    The only mandatory properties to set is AbstractSnapshotter.setEventStore(org.axonframework.eventstore.SnapshotEventStore).
+    In most cases, you should also provide an executor, as the default will execute snapshotter tasks in the calling thread.
+
+    Implementation of a snapshotter that uses the actual aggregate and its state to create a snapshot event.
+    The motivation is that an aggregate always contains all relevant state. Therefore, storing the aggregate itself
+    inside an event should capture all necessary information-->
+    <!--<bean id="snapshotter" class="org.axonframework.eventsourcing.SpringAggregateSnapshotter">
+        <property name="eventStore" ref="eventStore"/>
+        <property name="transactionManager" ref="transactionManager"/>
+        &lt;!&ndash;<property name="executor" ref="taskExecutor"/>&ndash;&gt;
+    </bean>
+    ======================================-->
+
+    <!--JPA implementation of the Saga Repository. It uses an EntityManager to persist the actual saga in a backing store.-->
+    <!--After each operations that modified the backing store, EntityManager.flush() is invoked to ensure the store
+    contains the last modifications. To override this behavior, see-->
+    <!--<bean id="sagaSqlSchema" class="org.axonframework.saga.repository.jpa.JpaSagaRepository">
+        <constructor-arg name="entityManagerProvider" value="org.axonframework.common.jpa.SimpleEntityManagerProvider"/>
+    </bean>
+
+    <bean id="simpleEntityManagerProvider" class="org.axonframework.common.jpa.SimpleEntityManagerProvider">
+        <constructor-arg name="entityManager" ref=""/>
+    </bean>-->
+
        <!--<bean id="contactNameRepository" class="org.axonframework.sample.app.command.JpaContactNameRepository"/>-->
+    <!--todo нужно выяснить нужен ли нам EhCache-->
 
 </beans>

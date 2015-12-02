@@ -6,7 +6,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
 <div align="center">
-    <form:form id="paymentForm" method="post" modelAttribute="payment"> <%--action="new"--%>
+    <form:form id="paymentForm" method="post" modelAttribute="createPaymentCommand"> <%--action="new"--%>
         <%--todo CHECK--%>
         <c:if test="${not empty message}">
             <div id="message" class="${message.type}">${message.message}</div>
