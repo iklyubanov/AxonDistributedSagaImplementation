@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.iklyubanov.diploma.saga.axon.command.CreatePaymentCommand;
+import ru.iklyubanov.diploma.saga.axon.util.TransactionId;
 import ru.iklyubanov.diploma.saga.spring.Payment;
 import ru.iklyubanov.diploma.saga.spring.service.PaymentService;
-import ru.iklyubanov.diploma.saga.spring.webentity.PaymentInfo;
 import ru.iklyubanov.diploma.saga.webui.util.Message;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 /**
@@ -75,6 +74,7 @@ public class PaymentController {
                 new Message("success",
                         messageSource.getMessage("contact_save_success",
                                 new Object [] {}, locale)));
+        createPaymentCommand.setTransactionId(new TransactionId());
         paymentService.createNewPayment(createPaymentCommand);
         return "redirect:/new";
     }

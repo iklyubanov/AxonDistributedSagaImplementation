@@ -1,6 +1,7 @@
 package ru.iklyubanov.diploma.saga.axon.command;
 
 import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
+import ru.iklyubanov.diploma.saga.axon.util.TransactionId;
 
 /**
  * Created by kliubanov on 27.11.2015.
@@ -9,18 +10,18 @@ public class CheckNewPaymentByBankCommand {
 
     @TargetAggregateIdentifier
     private final String bankCardId;
-    private final String paymentId;
+    private final TransactionId transactionId;
 
-    public CheckNewPaymentByBankCommand(String bankCardId, String paymentId) {
+    public CheckNewPaymentByBankCommand(String bankCardId, TransactionId transactionId) {
         this.bankCardId = bankCardId;
-        this.paymentId = paymentId;
+        this.transactionId = transactionId;
     }
 
     public String getBankCardId() {
         return bankCardId;
     }
 
-    public String getPaymentId() {
-        return paymentId;
+    public TransactionId getTransactionId() {
+        return transactionId;
     }
 }

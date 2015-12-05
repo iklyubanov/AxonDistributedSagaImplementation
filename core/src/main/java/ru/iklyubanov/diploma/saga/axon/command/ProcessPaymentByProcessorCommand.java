@@ -1,6 +1,7 @@
 package ru.iklyubanov.diploma.saga.axon.command;
 
 import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
+import ru.iklyubanov.diploma.saga.axon.util.TransactionId;
 
 /**
  * Step 2: YapStone to Payment Processor
@@ -19,13 +20,13 @@ public class ProcessPaymentByProcessorCommand {
 
     @TargetAggregateIdentifier
     private final String processorId;
-    private final String paymentId;
+    private final TransactionId transactionId;
     //todo change to real transaction details
     private final String transactionDetails;
 
-    public ProcessPaymentByProcessorCommand(String processorId, String paymentId, String transactionDetails) {
+    public ProcessPaymentByProcessorCommand(String processorId, TransactionId transactionId, String transactionDetails) {
         this.processorId = processorId;
-        this.paymentId = paymentId;
+        this.transactionId = transactionId;
         this.transactionDetails = transactionDetails;
     }
 
@@ -33,8 +34,8 @@ public class ProcessPaymentByProcessorCommand {
         return processorId;
     }
 
-    public String getPaymentId() {
-        return paymentId;
+    public TransactionId getTransactionId() {
+        return transactionId;
     }
 
     public String getTransactionDetails() {

@@ -2,6 +2,10 @@ package ru.iklyubanov.diploma.saga.axon.command
 
 import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier
 import ru.iklyubanov.diploma.saga.annotation.Command
+import ru.iklyubanov.diploma.saga.axon.util.TransactionId
+import ru.iklyubanov.diploma.saga.spring.util.CardType
+
+import javax.validation.constraints.NotNull
 
 /**
  * Created by kliubanov on 27.11.2015.
@@ -9,26 +13,58 @@ import ru.iklyubanov.diploma.saga.annotation.Command
 @Command
 public class CreatePaymentCommand {
 
+    @NotNull
     @TargetAggregateIdentifier
-    String paymentId
+    TransactionId transactionId;
     /**
-     * Тип карты
+     * Тип карты (PaymentSystemType)
      */
-    String cardType
+    @NotNull
+    String paymentSystemType
     /**
      * К оплате
      */
+    @NotNull
     BigDecimal amount
     /**
      * Валюта
      */
+    @NotNull
     String currencyType
+    /**Код карты*/
+    @NotNull
+    String code
     /**
      * Имя держателя карты
      */
+    @NotNull
     String firstName
     /**
      * Фамилия держателя карты
      */
+    @NotNull
     String lastName
+    /**Дата окончания срока действия карты*/
+    @NotNull
+    String expiredDate
+    /** Код безопасности (CVC2, CVV2, CID, CSC)*/
+    @NotNull
+    String ccvCode
+    /** Тип платежа*/
+    @NotNull
+    String paymentType
+    /** БИК банка получателя*/
+    @NotNull
+    String merchantBankBIK
+    /** Номер счета в банке-получателе
+     * для организации - десятизначный цифровой код
+     * для физического лица - двенадцатизначный цифровой код:*/
+    @NotNull
+    String merchantBankAccount
+    /** Получатель (не > 160 симв)*/
+    @NotNull
+    String merchant
+    /** ИНН (не > 160 симв)*/
+    @NotNull
+    String merchantINN
 }

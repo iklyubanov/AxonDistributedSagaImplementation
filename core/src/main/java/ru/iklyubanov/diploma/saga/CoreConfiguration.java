@@ -22,9 +22,10 @@ public class CoreConfiguration {
     public static void main(String[] args) {
         ApplicationContext applicationContext = SpringApplication.run(CoreConfiguration.class, args);
         CommandGateway commandGateway = applicationContext.getBean(CommandGateway.class);
-        final String paymentId = UUID.randomUUID().toString();
+        /*final String paymentId = UUID.randomUUID().toString();
         final String clientId = UUID.randomUUID().toString();
-        final String bankId = UUID.randomUUID().toString();
-        commandGateway.send(new CreatePaymentCommand(paymentId, clientId, bankId, PaymentType.CONSUMER_PAYMENT));
+        final String bankId = UUID.randomUUID().toString();*/
+
+        //commandGateway.send(new CreatePaymentCommand());
     }
 }

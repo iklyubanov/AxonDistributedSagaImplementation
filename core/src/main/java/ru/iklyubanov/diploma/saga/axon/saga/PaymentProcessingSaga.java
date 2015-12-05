@@ -33,23 +33,23 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     @Autowired
     private transient EventScheduler eventScheduler;
 
-    @StartSaga
+    @StartSaga/*доработать*/
     @SagaEventHandler(associationProperty = "paymentId")
     public void handle(CreatePaymentEvent event) {
-        logger.info("A new payment '{}' created.", event.getPaymentId());
+        logger.info("A new payment '{}' created.", event.getTransactionId());
         //TODO here we need to choose existing PaymentProcessor by card system type (may be inject by spring config)
         // ...getting processor.. Now it just emulate processor
         String procId = UUID.randomUUID().toString();
-        ProcessPaymentByProcessorCommand processorCommand = new ProcessPaymentByProcessorCommand(procId, event.getPaymentId(), null);//TODO set transaction details
+        ProcessPaymentByProcessorCommand processorCommand = new ProcessPaymentByProcessorCommand(procId, event.getTransactionId(), null);//TODO set transaction details
         commandGateway.send(processorCommand);
         //TODO может вынести остальные команды в отдельные event handler'ы ?
         //send to card-issuing bank
-        CheckNewPaymentByBankCommand checkByBankCommand = new CheckNewPaymentByBankCommand(event.getBankCardId(), event.getPaymentId());
+        CheckNewPaymentByBankCommand checkByBankCommand = new CheckNewPaymentByBankCommand(event.getCode(), event.getTransactionId());
         commandGateway.send(checkByBankCommand);
 
         //SendMoneyByCardNetworkCommand sendMoneyCommand = new SendMoneyByCardNetworkCommand();
 
-        PaymentExecutionExpiredEvent expiredEvent = new PaymentExecutionExpiredEvent(event.getPaymentId());
+        PaymentExecutionExpiredEvent expiredEvent = new PaymentExecutionExpiredEvent(event.getTransactionId());
         eventScheduler.schedule(Duration.standardMinutes(event.getTimeout()), expiredEvent);
     }
 

@@ -9,7 +9,7 @@ public class PaymentEventHandler {
 
     @EventHandler
     public void handle(CreatePaymentEvent event) {
-        System.out.println("We should do something with " + event.getPaymentId());
+        System.out.println("We should do something with " + event.getTransactionId());
     }
 
 }

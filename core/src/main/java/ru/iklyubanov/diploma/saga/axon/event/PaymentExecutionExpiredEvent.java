@@ -1,6 +1,7 @@
 package ru.iklyubanov.diploma.saga.axon.event;
 
 import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
+import ru.iklyubanov.diploma.saga.axon.util.TransactionId;
 
 /**
  * Created by kliubanov on 27.11.2015.
@@ -8,13 +9,13 @@ import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
 public class PaymentExecutionExpiredEvent {
 
     @TargetAggregateIdentifier
-    private final String paymentId;
+    private final TransactionId transactionId;
 
-    public PaymentExecutionExpiredEvent(String paymentId) {
-        this.paymentId = paymentId;
+    public PaymentExecutionExpiredEvent(TransactionId transactionId) {
+        this.transactionId = transactionId;
     }
 
-    public String getPaymentId() {
-        return paymentId;
+    public TransactionId getTransactionId() {
+        return transactionId;
     }
 }

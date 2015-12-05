@@ -14,14 +14,14 @@ public enum PaymentType {
     INVESTMENT("Инвестирование"),
     CHARITY("Благотворительность");
 
-    private final String type;
+    private final String value;
 
     PaymentType(String value) {
-        this.type = value;
+        this.value = value;
     }
 
     @Override
     public String toString() {
-        return type;
+        return value;
     }
 }
