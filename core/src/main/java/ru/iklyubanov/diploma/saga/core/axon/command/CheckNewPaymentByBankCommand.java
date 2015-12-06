@@ -12,6 +12,31 @@ public class CheckNewPaymentByBankCommand {
     private final String bankCardId;
     private final TransactionId transactionId;
 
+    /**
+     * Тип карты (PaymentSystemType)
+     */
+    private String paymentSystemType;
+    /**
+     * Код карты
+     */
+    private String code;
+    /**
+     * Имя держателя карты
+     */
+    private String firstName;
+    /**
+     * Фамилия держателя карты
+     */
+    private String lastName;
+    /**
+     * Дата окончания срока действия карты
+     */
+    private String expiredDate;
+    /**
+     * Код безопасности (CVC2, CVV2, CID, CSC)
+     */
+    private String ccvCode;
+
     public CheckNewPaymentByBankCommand(String bankCardId, TransactionId transactionId) {
         this.bankCardId = bankCardId;
         this.transactionId = transactionId;

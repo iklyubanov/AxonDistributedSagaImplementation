@@ -3,6 +3,8 @@ package ru.iklyubanov.diploma.saga.core.axon.command;
 import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
 import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId;
 
+import java.math.BigDecimal;
+
 /**
  * Step 2: YapStone to Payment Processor
 
@@ -18,27 +20,101 @@ import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId;
  */
 public class ProcessPaymentByProcessorCommand {
 
-    @TargetAggregateIdentifier
-    private final String processorId;
+    /*@TargetAggregateIdentifier TODO вроде как не нужен
+    private final String processorId;*/
     private final TransactionId transactionId;
-    //todo change to real transaction details
-    private final String transactionDetails;
 
-    public ProcessPaymentByProcessorCommand(String processorId, TransactionId transactionId, String transactionDetails) {
-        this.processorId = processorId;
+    /**
+     * К оплате
+     */
+    private BigDecimal amount;
+    /**
+     * Валюта
+     */
+    private String currencyType;
+
+    /**
+     * Тип платежа
+     */
+    private String paymentType;
+    /**
+     * БИК банка получателя
+     */
+    private String merchantBankBIK;
+    /**
+     * Номер счета в банке-получателе
+     */
+    private String merchantBankAccount;
+    /**
+     * Получатель (не > 160 симв)
+     */
+    private String merchant;
+    /**
+     * ИНН (не > 160 симв)
+     */
+    private String merchantINN;
+
+    public ProcessPaymentByProcessorCommand( TransactionId transactionId) {
         this.transactionId = transactionId;
-        this.transactionDetails = transactionDetails;
-    }
-
-    public String getProcessorId() {
-        return processorId;
     }
 
     public TransactionId getTransactionId() {
         return transactionId;
     }
 
-    public String getTransactionDetails() {
-        return transactionDetails;
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public String getMerchantBankBIK() {
+        return merchantBankBIK;
+    }
+
+    public void setMerchantBankBIK(String merchantBankBIK) {
+        this.merchantBankBIK = merchantBankBIK;
+    }
+
+    public String getMerchantBankAccount() {
+        return merchantBankAccount;
+    }
+
+    public void setMerchantBankAccount(String merchantBankAccount) {
+        this.merchantBankAccount = merchantBankAccount;
+    }
+
+    public String getMerchant() {
+        return merchant;
+    }
+
+    public void setMerchant(String merchant) {
+        this.merchant = merchant;
+    }
+
+    public String getMerchantINN() {
+        return merchantINN;
+    }
+
+    public void setMerchantINN(String merchantINN) {
+        this.merchantINN = merchantINN;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public String getCurrencyType() {
+        return currencyType;
+    }
+
+    public void setCurrencyType(String currencyType) {
+        this.currencyType = currencyType;
     }
 }

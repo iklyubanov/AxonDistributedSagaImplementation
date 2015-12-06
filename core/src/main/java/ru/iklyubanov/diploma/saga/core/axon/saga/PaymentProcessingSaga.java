@@ -38,20 +38,35 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     public void handle(CreatePaymentEvent event) {
         transactionId = event.getTransactionId();
         logger.info("A new payment '{}' created.", transactionId);
+
         //TODO here we need to choose existing PaymentProcessor by card system type (may be inject by spring config)
         // ...getting processor.. Now it just emulate processor
-        String procId = UUID.randomUUID().toString();
-        ProcessPaymentByProcessorCommand processorCommand = new ProcessPaymentByProcessorCommand(procId, event.getTransactionId(), null);//TODO set transaction details
+        ProcessPaymentByProcessorCommand processorCommand = createProcessPaymentByProcessorCommand(event);
         commandGateway.send(processorCommand);
-        //TODO может вынести остальные команды в отдельные event handler'ы ?
-        //send to card-issuing bank
-        CheckNewPaymentByBankCommand checkByBankCommand = new CheckNewPaymentByBankCommand(event.getCode(), event.getTransactionId());
-        commandGateway.send(checkByBankCommand);
 
         //SendMoneyByCardNetworkCommand sendMoneyCommand = new SendMoneyByCardNetworkCommand();
 
         PaymentExecutionExpiredEvent expiredEvent = new PaymentExecutionExpiredEvent(event.getTransactionId());
         eventScheduler.schedule(Duration.standardMinutes(event.getTimeout()), expiredEvent);
+    }
+
+    @SagaEventHandler(associationProperty = "transactionId")
+    public void handle(PaymentProcessEvent paymentProcessEvent) {
+        //send to card-issuing bank
+        CheckNewPaymentByBankCommand checkByBankCommand = new CheckNewPaymentByBankCommand(paymentProcessEvent.getCode(), paymentProcessEvent.getTransactionId());
+        commandGateway.send(checkByBankCommand);
+    }
+
+    private ProcessPaymentByProcessorCommand createProcessPaymentByProcessorCommand(CreatePaymentEvent event) {
+        ProcessPaymentByProcessorCommand processorCommand = new ProcessPaymentByProcessorCommand(event.getTransactionId());
+        processorCommand.setAmount(event.getAmount());
+        processorCommand.setCurrencyType(event.getCurrencyType());
+        processorCommand.setMerchant(event.getMerchant());
+        processorCommand.setMerchantBankAccount(event.getMerchantBankAccount());
+        processorCommand.setMerchantBankBIK(event.getMerchantBankBIK());
+        processorCommand.setMerchantINN(event.getMerchantINN());
+        processorCommand.setPaymentType(event.getPaymentType());
+        return processorCommand;
     }
 
     public TransactionId getTransactionId() {

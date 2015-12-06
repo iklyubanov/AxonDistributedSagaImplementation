@@ -8,6 +8,7 @@ import ru.iklyubanov.diploma.saga.core.spring.util.PaymentType;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.util.Calendar;
 
 /**
  * Created by kliubanov on 24.11.2015.
@@ -51,6 +52,13 @@ public class Payment extends ParentEntity {
 
     @Basic
     private String info;
+
+    @PrePersist
+    void preInsert() {
+        if (date == null) {
+            date = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+        }
+    }
 
     public Date getDate() {
         return date;
