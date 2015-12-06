@@ -7,9 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.iklyubanov.diploma.saga.axon.command.CreatePaymentCommand;
-import ru.iklyubanov.diploma.saga.spring.Payment;
-import ru.iklyubanov.diploma.saga.spring.repositories.PaymentRepository;
+import ru.iklyubanov.diploma.saga.gcore.axon.command.CreatePaymentCommand;
+import ru.iklyubanov.diploma.saga.core.spring.Payment;
+import ru.iklyubanov.diploma.saga.core.spring.repositories.PaymentRepository;
 
 /**
  * Created by kliubanov on 01.12.2015.

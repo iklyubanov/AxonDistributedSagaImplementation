@@ -16,7 +16,7 @@
 
         <context:component-scan base-package="ru.iklyubanov.diploma.saga" />
 
-        <bean class="ru.iklyubanov.diploma.saga.axon.event.PaymentEventHandler"/>
+        <bean class="ru.iklyubanov.diploma.saga.core.axon.event.PaymentEventHandler"/>
 
         <axon:command-bus id="commandBus" transaction-manager="transactionManager">
             <axon:dispatchInterceptors>
@@ -38,10 +38,10 @@
     <axon:jpa-event-store id="jpaEventStore"/>
 
     <axon:event-sourcing-repository id="paymentRepository"
-                                    aggregate-type="ru.iklyubanov.diploma.saga.axon.PaymentAggregate"/>
+                                    aggregate-type="ru.iklyubanov.diploma.saga.core.axon.PaymentAggregate"/>
 
     <axon:aggregate-command-handler id="paymentAggregateHandler"
-                                    aggregate-type="ru.iklyubanov.diploma.saga.axon.PaymentAggregate"
+                                    aggregate-type="ru.iklyubanov.diploma.saga.core.axon.PaymentAggregate"
                                     repository="paymentRepository" command-bus="commandBus"/>
 
     <axon:filesystem-event-store id="eventStore" base-dir="event"/>

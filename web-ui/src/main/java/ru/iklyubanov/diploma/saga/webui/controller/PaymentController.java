@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.iklyubanov.diploma.saga.axon.command.CreatePaymentCommand;
-import ru.iklyubanov.diploma.saga.axon.util.TransactionId;
-import ru.iklyubanov.diploma.saga.spring.Payment;
+import ru.iklyubanov.diploma.saga.gcore.axon.command.CreatePaymentCommand;
+import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId;
+import ru.iklyubanov.diploma.saga.core.spring.Payment;
 import ru.iklyubanov.diploma.saga.main.service.PaymentService;
 import ru.iklyubanov.diploma.saga.webui.util.Message;
 

@@ -22,7 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.iklyubanov.diploma.saga.spring.repositories.UserQueryRepository;
+import ru.iklyubanov.diploma.saga.core.spring.repositories.UserQueryRepository;
 
 /**
  * Все url с префиксом /user будут направляться в этот контроллер

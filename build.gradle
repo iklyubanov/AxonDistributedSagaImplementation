@@ -64,9 +64,6 @@ configure(allprojects) { project ->
     //compile('org.springframework.boot:spring-boot-starter-web')*/
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
-    /*todo все это должен включать spring-boot-starter-test
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile 'org.mockito:mockito-all:1.10.19'*/
   }
 }
 
@@ -97,6 +94,19 @@ project(':core') {
     compile("org.axonframework:axon-core:${axonVersion}")
     /*compile("org.axonframework:axon-amqp:${axonVersion}")*/
   }
+
+  task testJar(type: Jar, dependsOn: testClasses) {
+    baseName = "test-${project.archivesBaseName}"
+    from sourceSets.test.output
+  }
+
+  configurations {
+    tests
+  }
+
+  artifacts {
+    tests testJar
+  }
 }
 
 project(':main-server') {
@@ -121,12 +131,23 @@ project(':main-server') {
 
     compile('javax.el:javax.el-api:3.0.0')
 
+    compile("org.axonframework:axon-core:${axonVersion}")
+    compile("org.axonframework:axon-amqp:${axonVersion}")
+
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile('org.axonframework:axon-test:2.4.3')
+    //testCompile project(':core')
+    //testCompile project(path: ':core', configuration: 'tests')
+    testCompile project(':core').sourceSets.test.output
+  }
 
-    compile("org.axonframework:axon-core:${axonVersion}")
-    compile("org.axonframework:axon-amqp:${axonVersion}")
+  /*configurations.compile.each {
+    println "compile: $it"
+  }*/
+
+  configurations.testCompile.each {
+    println "testCompile: $it"
   }
 }
 

@@ -26,8 +26,8 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath:spring/security-context.xml<!--,
-            classpath:spring/application-context.xml-->
+            classpath:spring/security-context.xml,
+            classpath:META-INF/spring/main-application-context.xml
         </param-value>
     </context-param>
 
@@ -110,8 +110,7 @@
     средствам JPA, как ленивая выборка-->
     <filter>
         <filter-name>SpringOpenEntityManagerinViewFilter</filter-name>
-        <filter-class>org.springframework.orm.jpa.support.
-            OpenEntityManagerinViewFilter</filter-class>
+        <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerinViewFilter</filter-class>
     </filter>
 
     <!--маппинги для фильтров-->
