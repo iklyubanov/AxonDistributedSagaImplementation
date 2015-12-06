@@ -24,7 +24,7 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     private static final long serialVersionUID = 5948996680443725871L;
     private static final Logger logger = LoggerFactory.getLogger(PaymentProcessingSaga.class);
 
-    private TransactionId transactionIdentifier;
+    private TransactionId transactionId;
 
     @Autowired
     private transient CommandGateway commandGateway;
@@ -34,9 +34,10 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     private transient EventScheduler eventScheduler;
 
     @StartSaga/*доработать*/
-    @SagaEventHandler(associationProperty = "paymentId")
+    @SagaEventHandler(associationProperty = "transactionId")
     public void handle(CreatePaymentEvent event) {
-        logger.info("A new payment '{}' created.", event.getTransactionId());
+        transactionId = event.getTransactionId();
+        logger.info("A new payment '{}' created.", transactionId);
         //TODO here we need to choose existing PaymentProcessor by card system type (may be inject by spring config)
         // ...getting processor.. Now it just emulate processor
         String procId = UUID.randomUUID().toString();
@@ -53,11 +54,11 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
         eventScheduler.schedule(Duration.standardMinutes(event.getTimeout()), expiredEvent);
     }
 
-    public TransactionId getTransactionIdentifier() {
-        return transactionIdentifier;
+    public TransactionId getTransactionId() {
+        return transactionId;
     }
 
-    public void setTransactionIdentifier(TransactionId transactionIdentifier) {
-        this.transactionIdentifier = transactionIdentifier;
+    public void setTransactionId(TransactionId transactionId) {
+        this.transactionId = transactionId;
     }
 }

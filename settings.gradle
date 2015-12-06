@@ -2,4 +2,6 @@ rootProject.name = 'AxonDistributedSagaImplementation'
 
 include 'core'
 include 'web-ui'
+include 'remote-systems'
+include 'main-server'
 

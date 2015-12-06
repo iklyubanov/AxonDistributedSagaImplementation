@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.iklyubanov.diploma.saga.axon.command.CreatePaymentCommand;
 import ru.iklyubanov.diploma.saga.axon.util.TransactionId;
 import ru.iklyubanov.diploma.saga.spring.Payment;
-import ru.iklyubanov.diploma.saga.spring.service.PaymentService;
+import ru.iklyubanov.diploma.saga.main.service.PaymentService;
 import ru.iklyubanov.diploma.saga.webui.util.Message;
 
 import java.util.Locale;
