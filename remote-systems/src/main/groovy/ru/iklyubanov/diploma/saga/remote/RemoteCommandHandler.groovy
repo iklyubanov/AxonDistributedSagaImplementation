@@ -34,7 +34,7 @@ class RemoteCommandHandler {
         def json = JsonOutput.toJson(processPaymentByProcessorCommand)
         Payment payment = paymentProcessorService.createNewPayment(json)
         freeProcessor.payments << payment
-        freeProcessor.currentTransactionsCount++ //todo check
+        ++freeProcessor.currentTransactionsCount //todo check
         paymentProcessorService.save(freeProcessor)
     }
 

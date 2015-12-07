@@ -18,6 +18,13 @@ import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId;
 import java.util.UUID;
 
 /**
+ * Сначала проверяем счет клиента в банке клиента.
+ * Если все ок, проверяем счет получателя в банке получателя.
+ * Если все ок, передаем процессору средства для платежа.
+ * Процессор иницализирует перевод средств от клиента к получателю.
+ * Асинхронно происходит списывание со счета клиента в банке клиента и зачисление средств на счет получателя
+ * с помощью запущенной системы платежей.
+ * Если там и там успешно списалось  - уведомляем клиента.
  * Created by kliubanov on 27.11.2015.
  */
 public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
@@ -25,6 +32,9 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     private static final Logger logger = LoggerFactory.getLogger(PaymentProcessingSaga.class);
 
     private TransactionId transactionId;
+    private boolean isProcessorValidated = false;
+    private boolean isIssuingBankChecked = false;
+    private boolean isMerchantBankChecked = false;
 
     @Autowired
     private transient CommandGateway commandGateway;
@@ -39,8 +49,7 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
         transactionId = event.getTransactionId();
         logger.info("A new payment '{}' created.", transactionId);
 
-        //TODO here we need to choose existing PaymentProcessor by card system type (may be inject by spring config)
-        // ...getting processor.. Now it just emulate processor
+        // ...getting processor..
         ProcessPaymentByProcessorCommand processorCommand = createProcessPaymentByProcessorCommand(event);
         commandGateway.send(processorCommand);
 

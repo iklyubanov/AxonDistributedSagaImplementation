@@ -18,7 +18,8 @@ public class PaymentProcessor extends ParentEntity {
     @Basic
     private String name;
 
-    @OneToMany(mappedBy = "paymentProcessor")
+    @OneToMany(mappedBy = "paymentProcessor",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Payment> payments;
 
     @Basic
@@ -29,11 +30,14 @@ public class PaymentProcessor extends ParentEntity {
     @Column(name = "CUR_TRANSACT_COUNT")
     private int currentTransactionsCount = 0;
 
-    @PrePersist
-    void preInsert() {
+    public PaymentProcessor() {
         if (payments == null) {
             payments = new ArrayList<Payment>();
         }
+    }
+
+    @PrePersist
+    void preInsert() {
         if (maxTransactionsCount == 0) {
             //set default value
             maxTransactionsCount = 100;
