@@ -53,8 +53,13 @@ public class Payment extends ParentEntity {
     @Basic
     private String info;
 
+    @Column("CLIENT_BANK_BIK")
+    private String issuingBankBIK;
+    @Column("CLIENT_CARD_CODE")
+    private String bankCardCode;
+
     @PrePersist
-    void preInsert() {
+    public void preInsert() {
         if (date == null) {
             date = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
         }
@@ -130,5 +135,21 @@ public class Payment extends ParentEntity {
 
     public void setPaymentAmount(MonetaryValue paymentAmount) {
         this.paymentAmount = paymentAmount;
+    }
+
+    public String getIssuingBankBIK() {
+        return issuingBankBIK;
+    }
+
+    public void setIssuingBankBIK(String issuingBankBIK) {
+        this.issuingBankBIK = issuingBankBIK;
+    }
+
+    public String getBankCardCode() {
+        return bankCardCode;
+    }
+
+    public void setBankCardCode(String bankCardCode) {
+        this.bankCardCode = bankCardCode;
     }
 }

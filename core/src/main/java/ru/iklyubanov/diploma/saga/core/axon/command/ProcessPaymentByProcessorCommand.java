@@ -1,8 +1,8 @@
 package ru.iklyubanov.diploma.saga.core.axon.command;
 
 import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
-import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
@@ -20,9 +20,8 @@ import java.math.BigDecimal;
  */
 public class ProcessPaymentByProcessorCommand {
 
-    /*@TargetAggregateIdentifier TODO вроде как не нужен
-    private final String processorId;*/
-    private final TransactionId transactionId;
+    @TargetAggregateIdentifier
+    private final String transactionId;
 
     /**
      * К оплате
@@ -37,6 +36,13 @@ public class ProcessPaymentByProcessorCommand {
      * Тип платежа
      */
     private String paymentType;
+
+    /**
+     * Код карты
+     */
+    @NotNull
+    private String code;
+
     /**
      * БИК банка получателя
      */
@@ -54,11 +60,11 @@ public class ProcessPaymentByProcessorCommand {
      */
     private String merchantINN;
 
-    public ProcessPaymentByProcessorCommand( TransactionId transactionId) {
+    public ProcessPaymentByProcessorCommand(String transactionId) {
         this.transactionId = transactionId;
     }
 
-    public TransactionId getTransactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
@@ -116,5 +122,13 @@ public class ProcessPaymentByProcessorCommand {
 
     public void setCurrencyType(String currencyType) {
         this.currencyType = currencyType;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

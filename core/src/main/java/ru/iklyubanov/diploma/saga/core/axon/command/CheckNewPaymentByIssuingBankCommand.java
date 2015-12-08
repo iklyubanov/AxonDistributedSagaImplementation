@@ -6,7 +6,7 @@ import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId;
 /**
  * Created by kliubanov on 27.11.2015.
  */
-public class CheckNewPaymentByBankCommand {
+public class CheckNewPaymentByIssuingBankCommand {
 
     @TargetAggregateIdentifier
     private final String bankCardId;
@@ -37,7 +37,7 @@ public class CheckNewPaymentByBankCommand {
      */
     private String ccvCode;
 
-    public CheckNewPaymentByBankCommand(String bankCardId, TransactionId transactionId) {
+    public CheckNewPaymentByIssuingBankCommand(String bankCardId, TransactionId transactionId) {
         this.bankCardId = bankCardId;
         this.transactionId = transactionId;
     }
@@ -48,5 +48,53 @@ public class CheckNewPaymentByBankCommand {
 
     public TransactionId getTransactionId() {
         return transactionId;
+    }
+
+    public String getPaymentSystemType() {
+        return paymentSystemType;
+    }
+
+    public void setPaymentSystemType(String paymentSystemType) {
+        this.paymentSystemType = paymentSystemType;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(String expiredDate) {
+        this.expiredDate = expiredDate;
+    }
+
+    public String getCcvCode() {
+        return ccvCode;
+    }
+
+    public void setCcvCode(String ccvCode) {
+        this.ccvCode = ccvCode;
     }
 }

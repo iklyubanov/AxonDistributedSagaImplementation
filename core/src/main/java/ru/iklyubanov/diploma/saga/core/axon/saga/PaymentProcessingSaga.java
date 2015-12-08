@@ -9,13 +9,13 @@ import org.joda.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.iklyubanov.diploma.saga.core.axon.command.CheckNewPaymentByBankCommand;
+import ru.iklyubanov.diploma.saga.core.axon.command.CheckMerchantAccountCommand;
+import ru.iklyubanov.diploma.saga.core.axon.command.CheckNewPaymentByIssuingBankCommand;
 import ru.iklyubanov.diploma.saga.core.axon.command.ProcessPaymentByProcessorCommand;
-import ru.iklyubanov.diploma.saga.gcore.axon.event.CreatePaymentEvent;
 import ru.iklyubanov.diploma.saga.core.axon.event.PaymentExecutionExpiredEvent;
 import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId;
-
-import java.util.UUID;
+import ru.iklyubanov.diploma.saga.gcore.axon.event.BikAreFoundedEvent;
+import ru.iklyubanov.diploma.saga.gcore.axon.event.CreatePaymentEvent;
 
 /**
  * Сначала проверяем счет клиента в банке клиента.
@@ -25,6 +25,8 @@ import java.util.UUID;
  * Асинхронно происходит списывание со счета клиента в банке клиента и зачисление средств на счет получателя
  * с помощью запущенной системы платежей.
  * Если там и там успешно списалось  - уведомляем клиента.
+ *
+ * TODO may be migrate to mongo?
  * Created by kliubanov on 27.11.2015.
  */
 public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
@@ -32,9 +34,9 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     private static final Logger logger = LoggerFactory.getLogger(PaymentProcessingSaga.class);
 
     private TransactionId transactionId;
-    private boolean isProcessorValidated = false;
     private boolean isIssuingBankChecked = false;
     private boolean isMerchantBankChecked = false;
+    private boolean isMoneyTransfered = false;
 
     @Autowired
     private transient CommandGateway commandGateway;
@@ -53,21 +55,31 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
         ProcessPaymentByProcessorCommand processorCommand = createProcessPaymentByProcessorCommand(event);
         commandGateway.send(processorCommand);
 
+        // send the commands
+        CheckMerchantAccountCommand checkMerchantAccountCommand = createCheckMerchantAccountCommand(event);
+        //send to merchant bank
+        commandGateway.send(checkMerchantAccountCommand);
+
         //SendMoneyByCardNetworkCommand sendMoneyCommand = new SendMoneyByCardNetworkCommand();
 
         PaymentExecutionExpiredEvent expiredEvent = new PaymentExecutionExpiredEvent(event.getTransactionId());
         eventScheduler.schedule(Duration.standardMinutes(event.getTimeout()), expiredEvent);
     }
 
-    @SagaEventHandler(associationProperty = "transactionId")
-    public void handle(PaymentProcessEvent paymentProcessEvent) {
+    @SagaEventHandler(associationProperty = "transactionId")//TODO check that it is a transactionId, make test
+    public void handle(BikAreFoundedEvent bikAreFoundedEvent) {
+        // send the commands
+        //создадим TargetAggregateIdentifier таким образом
+        String issuingBankAggregateId =  bikAreFoundedEvent.getIssuingBankBIK();
+        associateWith("bankCardId", issuingBankAggregateId);
         //send to card-issuing bank
-        CheckNewPaymentByBankCommand checkByBankCommand = new CheckNewPaymentByBankCommand(paymentProcessEvent.getCode(), paymentProcessEvent.getTransactionId());
+        CheckNewPaymentByIssuingBankCommand checkByBankCommand = new CheckNewPaymentByIssuingBankCommand(issuingBankAggregateId, transactionId);
         commandGateway.send(checkByBankCommand);
     }
 
     private ProcessPaymentByProcessorCommand createProcessPaymentByProcessorCommand(CreatePaymentEvent event) {
-        ProcessPaymentByProcessorCommand processorCommand = new ProcessPaymentByProcessorCommand(event.getTransactionId());
+        ProcessPaymentByProcessorCommand processorCommand = new ProcessPaymentByProcessorCommand(event.getTransactionId().toString());
+        associateWith("transactionId", event.getTransactionId().toString());
         processorCommand.setAmount(event.getAmount());
         processorCommand.setCurrencyType(event.getCurrencyType());
         processorCommand.setMerchant(event.getMerchant());
@@ -76,6 +88,17 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
         processorCommand.setMerchantINN(event.getMerchantINN());
         processorCommand.setPaymentType(event.getPaymentType());
         return processorCommand;
+    }
+
+    private CheckMerchantAccountCommand createCheckMerchantAccountCommand(CreatePaymentEvent event) {
+        String merchantBankAggregateId = event.getMerchantBankBIK();
+        // associate the Saga with these values, before sending the commands
+        associateWith("merchantBankId", merchantBankAggregateId);
+        CheckMerchantAccountCommand checkMerchantAccountCommand = new CheckMerchantAccountCommand(merchantBankAggregateId, event.getTransactionId());
+        checkMerchantAccountCommand.setMerchant(event.getMerchant());
+        checkMerchantAccountCommand.setMerchantBankAccount(event.getMerchantBankAccount());
+        checkMerchantAccountCommand.setMerchantINN(event.getMerchantINN());
+        return checkMerchantAccountCommand;
     }
 
     public TransactionId getTransactionId() {

@@ -49,7 +49,7 @@ If payment is denied, YapStone’s payment gateway notifies the site or app and 
 did not authorize the transaction, the process comes to a halt.*/
 
     @CommandHandler
-    public void handle(CheckNewPaymentByBankCommand command) {
+    public void handle(CheckNewPaymentByIssuingBankCommand command) {
         //todo command.getProcessorId() get processor from repository
         //todo check recvisite
     }

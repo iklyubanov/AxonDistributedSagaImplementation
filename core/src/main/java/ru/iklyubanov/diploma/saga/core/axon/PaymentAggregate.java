@@ -54,7 +54,7 @@ public class PaymentAggregate extends AbstractAnnotatedAggregateRoot {
      */
     private String paymentType;
     /**
-     * БИК банка получателя
+     * БИК банка получателя (Банковский идентификационный код)
      */
     private String merchantBankBIK;
     /**
