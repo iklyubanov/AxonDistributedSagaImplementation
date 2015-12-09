@@ -92,6 +92,9 @@ project(':core') {
     testCompile('org.axonframework:axon-test:2.4.3')
 
     compile("org.axonframework:axon-core:${axonVersion}")
+    //либы для использования распределенных команд axon-distributed-commandbus
+    compile("org.axonframework:axon-distributed-commandbus:${axonVersion}")
+    compile('org.jgroups:jgroups:3.6.6.Final')
     /*compile("org.axonframework:axon-amqp:${axonVersion}")*/
   }
 
@@ -136,10 +139,10 @@ project(':main-server') {
 
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     testCompile("org.springframework.boot:spring-boot-starter-test")
-    testCompile('org.axonframework:axon-test:2.4.3')
+    testCompile("org.axonframework:axon-test:${axonVersion}")
     //testCompile project(':core')
     //testCompile project(path: ':core', configuration: 'tests')
-    testCompile project(':core').sourceSets.test.output
+    //testCompile project(':core').sourceSets.test.output //тесты в отдельных модулях не пашут
   }
 
   /*configurations.compile.each {
@@ -175,9 +178,10 @@ project(':remote-systems') {
 
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     testCompile("org.springframework.boot:spring-boot-starter-test")
-    testCompile('org.axonframework:axon-test:2.4.3')
+    testCompile("org.axonframework:axon-test:${axonVersion}")
 
     compile("org.axonframework:axon-core:${axonVersion}")
+    compile("org.axonframework:axon-distributed-commandbus:${axonVersion}")
     compile("org.axonframework:axon-amqp:${axonVersion}")
   }
 }

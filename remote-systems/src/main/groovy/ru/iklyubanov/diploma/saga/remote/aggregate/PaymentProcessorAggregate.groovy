@@ -12,9 +12,9 @@ class PaymentProcessorAggregate extends AbstractAnnotatedAggregateRoot {
   private static final long serialVersionUID = 1298083385130634015L;
 
   @AggregateIdentifier
-  private String transactId;
+  private String transactId
 
-  private Payment payment;
+  private Payment payment
 
   PaymentProcessorAggregate(String transactId, Payment payment) {
     this.transactId = transactId

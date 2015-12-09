@@ -16,6 +16,8 @@ import java.math.BigDecimal;
  Payment details are validated by the payment processor by sending them through the credit or debit card networks
  (Visa, MasterCard, American Express, Discover), which forward them to the card-issuing bank to be authorized.
 
+ Этой комадной следует передавать информацию о плательщике
+
  * Created by kliubanov on 27.11.2015.
  */
 public class ProcessPaymentByProcessorCommand {
@@ -44,21 +46,17 @@ public class ProcessPaymentByProcessorCommand {
     private String code;
 
     /**
-     * БИК банка получателя
+     * Имя держателя карты
      */
-    private String merchantBankBIK;
+    private String firstName;
     /**
-     * Номер счета в банке-получателе
+     * Фамилия держателя карты
      */
-    private String merchantBankAccount;
-    /**
-     * Получатель (не > 160 симв)
-     */
-    private String merchant;
-    /**
-     * ИНН (не > 160 симв)
-     */
-    private String merchantINN;
+    private String lastName;
+    /**Дата окончания срока действия карты*/
+    private String expiredDate;
+    /** Код безопасности (CVC2, CVV2, CID, CSC)*/
+    private String ccvCode;
 
     public ProcessPaymentByProcessorCommand(String transactionId) {
         this.transactionId = transactionId;
@@ -74,38 +72,6 @@ public class ProcessPaymentByProcessorCommand {
 
     public void setPaymentType(String paymentType) {
         this.paymentType = paymentType;
-    }
-
-    public String getMerchantBankBIK() {
-        return merchantBankBIK;
-    }
-
-    public void setMerchantBankBIK(String merchantBankBIK) {
-        this.merchantBankBIK = merchantBankBIK;
-    }
-
-    public String getMerchantBankAccount() {
-        return merchantBankAccount;
-    }
-
-    public void setMerchantBankAccount(String merchantBankAccount) {
-        this.merchantBankAccount = merchantBankAccount;
-    }
-
-    public String getMerchant() {
-        return merchant;
-    }
-
-    public void setMerchant(String merchant) {
-        this.merchant = merchant;
-    }
-
-    public String getMerchantINN() {
-        return merchantINN;
-    }
-
-    public void setMerchantINN(String merchantINN) {
-        this.merchantINN = merchantINN;
     }
 
     public BigDecimal getAmount() {
@@ -130,5 +96,37 @@ public class ProcessPaymentByProcessorCommand {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(String expiredDate) {
+        this.expiredDate = expiredDate;
+    }
+
+    public String getCcvCode() {
+        return ccvCode;
+    }
+
+    public void setCcvCode(String ccvCode) {
+        this.ccvCode = ccvCode;
     }
 }

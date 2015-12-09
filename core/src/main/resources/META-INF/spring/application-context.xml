@@ -18,12 +18,33 @@
 
         <bean class="ru.iklyubanov.diploma.saga.core.axon.event.PaymentEventHandler"/>
 
-        <axon:command-bus id="commandBus" transaction-manager="transactionManager">
+    <!-- Load system properties for the loadFactor -->
+    <context:property-placeholder/>
+
+    <!-- Setup the distributed command bus using the Special JGroupsConnector factory bean -->
+    <bean id="commandBus" class="org.axonframework.commandhandling.distributed.DistributedCommandBus">
+        <constructor-arg ref="jGroupsConnector"/>
+    </bean>
+
+    <!-- Setup the factory bean for the JGroupsConnector -->
+    <bean id="jGroupsConnector"
+          class="org.axonframework.commandhandling.distributed.jgroups.JGroupsConnectorFactoryBean">
+        <property name="configuration" value="tcp_gossip.xml"/>
+        <property name="clusterName" value="myCluster"/>
+        <property name="loadFactor" value="${loadFactor}"/>
+    </bean>
+
+    <!-- Serializer used by the jgroups connector -->
+    <bean class="org.axonframework.serializer.xml.XStreamSerializer"/>
+
+    <!--TODO we should use distributed Command Bus-->
+    <!--TODO Соединение с удаленным модулем должна быть через DistributedCommandBus -->
+        <!--<axon:command-bus id="commandBus" transaction-manager="transactionManager">
             <axon:dispatchInterceptors>
-                <!--Interceptor that applies JSR303 bean validation on incoming commands. Интерсептор для проверки валидации-->
+                &lt;!&ndash;Interceptor that applies JSR303 bean validation on incoming commands. Интерсептор для проверки валидации&ndash;&gt;
                 <bean class="org.axonframework.commandhandling.interceptors.BeanValidationInterceptor"/>
             </axon:dispatchInterceptors>
-        </axon:command-bus>
+        </axon:command-bus>-->
 
         <bean class="org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean">
             <property name="commandBus" ref="commandBus"/>

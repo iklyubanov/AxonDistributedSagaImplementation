@@ -45,17 +45,19 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     @Autowired
     private transient EventScheduler eventScheduler;
 
-    @StartSaga/*доработать*/
+
+    /*TODO Нужно как то в саге хранить информацию о платеже*/
+    @StartSaga
     @SagaEventHandler(associationProperty = "transactionId")
     public void handle(CreatePaymentEvent event) {
         transactionId = event.getTransactionId();
         logger.info("A new payment '{}' created.", transactionId);
 
+        // send the commands
         // ...getting processor..
         ProcessPaymentByProcessorCommand processorCommand = createProcessPaymentByProcessorCommand(event);
         commandGateway.send(processorCommand);
 
-        // send the commands
         CheckMerchantAccountCommand checkMerchantAccountCommand = createCheckMerchantAccountCommand(event);
         //send to merchant bank
         commandGateway.send(checkMerchantAccountCommand);
@@ -82,11 +84,12 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
         associateWith("transactionId", event.getTransactionId().toString());
         processorCommand.setAmount(event.getAmount());
         processorCommand.setCurrencyType(event.getCurrencyType());
-        processorCommand.setMerchant(event.getMerchant());
-        processorCommand.setMerchantBankAccount(event.getMerchantBankAccount());
-        processorCommand.setMerchantBankBIK(event.getMerchantBankBIK());
-        processorCommand.setMerchantINN(event.getMerchantINN());
         processorCommand.setPaymentType(event.getPaymentType());
+        processorCommand.setCode(event.getCode());
+        processorCommand.setFirstName(event.getFirstName());
+        processorCommand.setLastName(event.getLastName());
+        processorCommand.setCcvCode(event.getCcvCode());
+        processorCommand.setExpiredDate(event.getExpiredDate());
         return processorCommand;
     }
 
