@@ -4,10 +4,14 @@ import org.axonframework.eventhandling.annotation.EventHandler
 import org.axonframework.repository.Repository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import ru.iklyubanov.diploma.saga.core.spring.Bank
+import ru.iklyubanov.diploma.saga.core.spring.BankCard
+import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckNewPaymentByIssuingBankEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.ProcessPaymentEvent
 import ru.iklyubanov.diploma.saga.core.spring.Payment
 import ru.iklyubanov.diploma.saga.core.spring.PaymentProcessor
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentProcessorAggregate
+import ru.iklyubanov.diploma.saga.remote.service.IssuingBankService
 import ru.iklyubanov.diploma.saga.remote.service.PaymentProcessorService
 /**Step 2: YapStone to Payment Processor
 
@@ -26,6 +30,8 @@ class RemoteEventHandler {
     @Autowired
     PaymentProcessorService paymentProcessorService
     @Autowired
+    IssuingBankService issuingBankService
+    @Autowired
     Repository<PaymentProcessorAggregate> repository
 
     @EventHandler
@@ -42,7 +48,25 @@ class RemoteEventHandler {
         paymentProcessorService.save(freeProcessor)
         PaymentProcessorAggregate paymentProcessorAggregate = repository.load(event.transactionId)
         paymentProcessorAggregate.saveBik(payment.issuingBankBIK)
-
     }
+
+    /** Здесь обрабатываем запрос клиента на перевод средств банком эмитентом*/
+    @EventHandler
+    public void handle(CheckNewPaymentByIssuingBankEvent event) {
+        def transactId = event.transactionId
+        PaymentProcessorAggregate paymentProcessorAggregate = repository.load(transactId)
+        //todo check client, account, card and current amount
+        try {
+            Bank bank = issuingBankService.findBank(event.getIssuingBankBIK())
+            BankCard card = issuingBankService.checkBankCard(bank, event.code, event.firstName, event.lastName,
+                event.amount, event.currencyType, event.expiredDate, event.ccvCode)
+            if(card) {
+                paymentProcessorAggregate.succeedIssuingBankValidation(transactId, bank.id, card.id)
+            }
+        } catch (NullPointerException e) {
+            paymentProcessorAggregate.failedIssuingBankValidation(transactId, e.getMessage())
+        }
+    }
+
 
 }

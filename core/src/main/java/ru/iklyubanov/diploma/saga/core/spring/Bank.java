@@ -15,7 +15,7 @@ public class Bank extends ParentEntity {
 
     /*БИК*/
     @NotNull
-    @Basic
+    @Column(unique = true)//bik should be unique
     private String bik;
 
     @NotNull

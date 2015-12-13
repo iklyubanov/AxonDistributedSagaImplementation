@@ -40,9 +40,9 @@ public class BankCard extends ParentEntity {
     private CardStatus cardStatus;
 
     @Column(name = "EXP_DATE")
-    private java.sql.Date expiredDate;
+    private String expiredDate;
 
-    @Column(length = 36)
+    @Column(length = 36, unique = true)
     private String code;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -95,11 +95,11 @@ public class BankCard extends ParentEntity {
         this.cardStatus = cardStatus;
     }
 
-    public Date getExpiredDate() {
+    public String getExpiredDate() {
         return expiredDate;
     }
 
-    public void setExpiredDate(Date expiredDate) {
+    public void setExpiredDate(String expiredDate) {
         this.expiredDate = expiredDate;
     }
 

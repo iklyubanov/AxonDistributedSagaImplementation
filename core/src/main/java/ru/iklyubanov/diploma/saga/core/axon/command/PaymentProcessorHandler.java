@@ -26,6 +26,8 @@ public class PaymentProcessorHandler {
 
     @CommandHandler
     public void handle(CheckNewPaymentByIssuingBankCommand command) {
+        PaymentProcessorAggregate processorAggregate = repository.load(command.getTransactionId().toString());
+        processorAggregate.checkNewPaymentByIssuingBank();
 
     }
 

@@ -17,7 +17,7 @@ import ru.iklyubanov.diploma.saga.gcore.axon.event.PaymentExecutionExpiredEvent;
 import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId;
 import ru.iklyubanov.diploma.saga.gcore.axon.event.CreatePaymentEvent;
 
-/**
+/**TODO МОЖЕТ ПЕРЕТАЩИТЬ САГУ в MAIN SERVER
  * Сначала проверяем счет клиента в банке клиента.
  * Если все ок, проверяем счет получателя в банке получателя.
  * Если все ок, передаем процессору средства для платежа.
@@ -26,7 +26,6 @@ import ru.iklyubanov.diploma.saga.gcore.axon.event.CreatePaymentEvent;
  * с помощью запущенной системы платежей.
  * Если там и там успешно списалось  - уведомляем клиента.
  *
- * TODO may be migrate to mongo?
  * Created by kliubanov on 27.11.2015.
  */
 public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
@@ -68,6 +67,7 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
         eventScheduler.schedule(Duration.standardMinutes(event.getTimeout()), expiredEvent);
     }
 
+    /** Получили бик клиента-отправителя, отправляем в банк клиента запрос на проверку*/
     @SagaEventHandler(associationProperty = "transactionId")//TODO check that it is a transactionId, make test
     public void handle(BankBikFoundedEvent bikFoundedEvent) {
         // send the commands

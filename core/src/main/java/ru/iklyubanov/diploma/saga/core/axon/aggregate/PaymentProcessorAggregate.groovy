@@ -4,6 +4,9 @@ import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot
 import org.axonframework.eventsourcing.annotation.AggregateIdentifier
 import ru.iklyubanov.diploma.saga.gcore.axon.command.ProcessPaymentByProcessorCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.event.BankBikFoundedEvent
+import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckNewPaymentByIssuingBankEvent
+import ru.iklyubanov.diploma.saga.gcore.axon.event.IssuingBankValidationFailedEvent
+import ru.iklyubanov.diploma.saga.gcore.axon.event.IssuingBankValidationSucceedEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.ProcessPaymentEvent
 
 /**
@@ -65,5 +68,23 @@ class PaymentProcessorAggregate extends AbstractAnnotatedAggregateRoot {
   void saveBik(def bik) {
     issuingBankBIK = bik
     apply(new BankBikFoundedEvent(transactionId: transactId, issuingBankBIK: issuingBankBIK))
+  }
+
+  void checkNewPaymentByIssuingBank() {
+    def payCheckEvent = new CheckNewPaymentByIssuingBankEvent(
+            amount: amount, ccvCode: ccvCode,
+            code: code, currencyType: currencyType,
+            expiredDate: expiredDate, firstName: firstName,
+            issuingBankBIK: issuingBankBIK, lastName: lastName,
+            transactionId: transactId)
+    apply(payCheckEvent)
+  }
+
+  void failedIssuingBankValidation(String transactionId, String reason) {
+    apply(new IssuingBankValidationFailedEvent(transactionId, reason))
+  }
+
+  void succeedIssuingBankValidation(String transactionId, Long bankId, Long bankCardId) {
+    apply(new IssuingBankValidationSucceedEvent(transactionId: transactionId, bankId: bankId, bankCardId: bankCardId))
   }
 }
