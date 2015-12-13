@@ -1,6 +1,7 @@
 package ru.iklyubanov.diploma.saga.core.axon.saga;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.domain.IdentifierFactory;
 import org.axonframework.eventhandling.scheduling.EventScheduler;
 import org.axonframework.saga.annotation.AbstractAnnotatedSaga;
 import org.axonframework.saga.annotation.SagaEventHandler;
@@ -12,10 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.iklyubanov.diploma.saga.gcore.axon.command.CheckMerchantAccountCommand;
 import ru.iklyubanov.diploma.saga.gcore.axon.command.CheckNewPaymentByIssuingBankCommand;
 import ru.iklyubanov.diploma.saga.gcore.axon.command.ProcessPaymentByProcessorCommand;
-import ru.iklyubanov.diploma.saga.gcore.axon.event.BankBikFoundedEvent;
-import ru.iklyubanov.diploma.saga.gcore.axon.event.PaymentExecutionExpiredEvent;
+import ru.iklyubanov.diploma.saga.gcore.axon.command.SendMoneyByCardNetworkCommand;
+import ru.iklyubanov.diploma.saga.gcore.axon.event.*;
 import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId;
-import ru.iklyubanov.diploma.saga.gcore.axon.event.CreatePaymentEvent;
 
 /**TODO МОЖЕТ ПЕРЕТАЩИТЬ САГУ в MAIN SERVER
  * Сначала проверяем счет клиента в банке клиента.
@@ -36,6 +36,9 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     private boolean isIssuingBankChecked = false;
     private boolean isMerchantBankChecked = false;
     private boolean isMoneyTransfered = false;
+    private Long issuingBankId;
+    private Long clientCardId;
+    private String paymentId;
 
     @Autowired
     private transient CommandGateway commandGateway;
@@ -72,11 +75,36 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     public void handle(BankBikFoundedEvent bikFoundedEvent) {
         // send the commands
         //создадим TargetAggregateIdentifier таким образом
+        //todo нужно ли это?
         String issuingBankAggregateId =  bikFoundedEvent.getIssuingBankBIK();
         associateWith("bankCardId", issuingBankAggregateId);
         //send to card-issuing bank
         CheckNewPaymentByIssuingBankCommand checkByBankCommand = new CheckNewPaymentByIssuingBankCommand(issuingBankAggregateId, transactionId);
         commandGateway.send(checkByBankCommand);
+    }
+
+    /** Платеж был отклонен банком клиента*/
+    @SagaEventHandler(associationProperty = "transactionId")
+    public void handle(IssuingBankValidationFailedEvent event) {
+        logger.error("Платеж был отклонен банком клиента по причине: " + event.getReason());
+        end();
+    }
+
+    /** Платеж был одобрен банком клиента*/
+    @SagaEventHandler(associationProperty = "transactionId")
+    public void handle(IssuingBankValidationSucceedEvent event) {
+        logger.info("Платеж был одобрен банком клиента");
+        isIssuingBankChecked = true;
+        issuingBankId = event.getBankId();
+        clientCardId = event.getBankCardId();
+        if(isMerchantBankChecked) {
+            //todo start money recieving
+            paymentId = IdentifierFactory.getInstance().generateIdentifier();
+            SendMoneyByCardNetworkCommand command = new SendMoneyByCardNetworkCommand(paymentId);
+            associateWith("paymentId", paymentId);
+            commandGateway.send(command);
+            //todo обрабатывать евент нужно в новой удаленной саге
+        }
     }
 
     private ProcessPaymentByProcessorCommand createProcessPaymentByProcessorCommand(CreatePaymentEvent event) {
@@ -94,6 +122,7 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     }
 
     private CheckMerchantAccountCommand createCheckMerchantAccountCommand(CreatePaymentEvent event) {
+        //todo возможно не самый подходящий id агрегата
         String merchantBankAggregateId = event.getMerchantBankBIK();
         // associate the Saga with these values, before sending the commands
         associateWith("merchantBankId", merchantBankAggregateId);

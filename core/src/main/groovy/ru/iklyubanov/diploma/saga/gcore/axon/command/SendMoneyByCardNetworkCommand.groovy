@@ -10,11 +10,11 @@ import ru.iklyubanov.diploma.saga.gcore.annotation.Command
 public class SendMoneyByCardNetworkCommand {
 
     @TargetAggregateIdentifier
-    private final String cardNetworkId
-    private final String paymentId
+    final String paymentId
+    Long issuingBankId
+    Long clientCardId
 
-    public SendMoneyByCardNetworkCommand(String cardNetworkId, String paymentId) {
-        this.cardNetworkId = cardNetworkId
+    public SendMoneyByCardNetworkCommand(String paymentId) {
         this.paymentId = paymentId
     }
 }
