@@ -3,7 +3,7 @@ package ru.iklyubanov.diploma.saga.core.axon.command;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
 import org.springframework.stereotype.Component;
-import ru.iklyubanov.diploma.saga.core.axon.PaymentAggregate;
+import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentAggregate;
 import ru.iklyubanov.diploma.saga.gcore.axon.command.CreatePaymentCommand;
 
 /**

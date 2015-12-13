@@ -3,7 +3,7 @@ package ru.iklyubanov.diploma.saga.main.service;
 import org.axonframework.test.Fixtures;
 import org.junit.Before;
 import org.junit.Test;
-import ru.iklyubanov.diploma.saga.core.axon.PaymentAggregate;
+import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentAggregate;
 import ru.iklyubanov.diploma.saga.gcore.axon.command.CreatePaymentCommand;
 import ru.iklyubanov.diploma.saga.core.axon.command.PaymentCommandHandler;
 import ru.iklyubanov.diploma.saga.gcore.axon.event.CreatePaymentEvent;

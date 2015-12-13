@@ -14,7 +14,7 @@ public class CreatePaymentCommand {
 
     @NotNull
     @TargetAggregateIdentifier
-    TransactionId transactionId;
+    TransactionId transactionId
     /**
      * Тип карты (PaymentSystemType)
      */

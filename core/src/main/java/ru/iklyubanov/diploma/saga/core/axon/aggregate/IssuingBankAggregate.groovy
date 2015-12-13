@@ -1,4 +1,4 @@
-package ru.iklyubanov.diploma.saga.remote.aggregate
+package ru.iklyubanov.diploma.saga.core.axon.aggregate
 
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot
 import org.axonframework.eventsourcing.annotation.AggregateIdentifier

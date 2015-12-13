@@ -93,8 +93,8 @@ project(':core') {
 
     compile("org.axonframework:axon-core:${axonVersion}")
     //либы для использования распределенных команд axon-distributed-commandbus
-    compile("org.axonframework:axon-distributed-commandbus:${axonVersion}")
-    compile('org.jgroups:jgroups:3.6.6.Final')
+    //TODO (deprecaed for us) compile("org.axonframework:axon-distributed-commandbus:${axonVersion}")
+    //compile('org.jgroups:jgroups:3.6.6.Final')
     /*compile("org.axonframework:axon-amqp:${axonVersion}")*/
   }
 
@@ -181,7 +181,7 @@ project(':remote-systems') {
     testCompile("org.axonframework:axon-test:${axonVersion}")
 
     compile("org.axonframework:axon-core:${axonVersion}")
-    compile("org.axonframework:axon-distributed-commandbus:${axonVersion}")
+    //TODO (deprecaed for us) compile("org.axonframework:axon-distributed-commandbus:${axonVersion}")
     compile("org.axonframework:axon-amqp:${axonVersion}")
   }
 }

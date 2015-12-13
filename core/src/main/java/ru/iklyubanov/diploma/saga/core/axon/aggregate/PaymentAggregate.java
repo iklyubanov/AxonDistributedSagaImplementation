@@ -1,4 +1,4 @@
-package ru.iklyubanov.diploma.saga.core.axon;
+package ru.iklyubanov.diploma.saga.core.axon.aggregate;
 
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;

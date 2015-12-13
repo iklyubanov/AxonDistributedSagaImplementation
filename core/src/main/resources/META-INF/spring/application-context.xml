@@ -3,8 +3,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:axon="http://www.axonframework.org/schema/core"
+       xmlns:axon-amqp="http://www.axonframework.org/schema/amqp"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
        xsi:schemaLocation="http://www.axonframework.org/schema/core http://www.axonframework.org/schema/axon-core.xsd
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.axonframework.org/schema/amqp http://www.axonframework.org/schema/axon-amqp.xsd
+       http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
        <context:annotation-config/>
@@ -16,29 +20,38 @@
 
         <context:component-scan base-package="ru.iklyubanov.diploma.saga" />
 
-        <bean class="ru.iklyubanov.diploma.saga.core.axon.event.PaymentEventHandler"/>
+        <!--<bean class="ru.iklyubanov.diploma.saga.core.axon.event.PaymentEventHandler"/>-->
 
     <!-- Load system properties for the loadFactor -->
     <context:property-placeholder/>
 
-    <!-- Setup the distributed command bus using the Special JGroupsConnector factory bean -->
-    <bean id="commandBus" class="org.axonframework.commandhandling.distributed.DistributedCommandBus">
-        <constructor-arg ref="jGroupsConnector"/>
-    </bean>
+    <!--=============COMMAND SETTINGS============================-->
 
-    <!-- Setup the factory bean for the JGroupsConnector -->
-    <bean id="jGroupsConnector"
+    <!-- Setup the distributed command bus using the Special JGroupsConnector factory bean -->
+    <!--<bean id="commandBus" class="org.axonframework.commandhandling.distributed.DistributedCommandBus">
+        <constructor-arg ref="jGroupsConnector"/>
+    </bean>-->
+    <axon:command-bus id="commandBus">
+        <!--<axon:handlerInterceptors> TODO позже можно сделать перехватчик комманд для логгирования
+            <ref bean="auditingInterceptor"/>
+        </axon:handlerInterceptors>-->
+    </axon:command-bus>
+
+    <!--TODO (deprecaed for us) Setup the factory bean for the JGroupsConnector -->
+    <!--<bean id="jGroupsConnector"
           class="org.axonframework.commandhandling.distributed.jgroups.JGroupsConnectorFactoryBean">
         <property name="configuration" value="tcp_gossip.xml"/>
         <property name="clusterName" value="myCluster"/>
         <property name="loadFactor" value="${loadFactor}"/>
+    </bean>-->
+
+    <bean class="org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean">
+        <property name="commandBus" ref="commandBus"/>
     </bean>
 
-    <!-- Serializer used by the jgroups connector -->
-    <bean class="org.axonframework.serializer.xml.XStreamSerializer"/>
-
-    <!--TODO we should use distributed Command Bus-->
-    <!--TODO Соединение с удаленным модулем должна быть через DistributedCommandBus -->
+    <!--TODO (deprecaed for us) we should use distributed Command Bus -->
+    <!--TODO (deprecaed for us) Соединение с удаленным модулем должна быть через DistributedCommandBus -->
+    <!--TODO (deprecaed for us) Нам нужен axon-distributed-commandbus для того чтобы из саги запускать команды распределенные по разным jvm-->
         <!--<axon:command-bus id="commandBus" transaction-manager="transactionManager">
             <axon:dispatchInterceptors>
                 &lt;!&ndash;Interceptor that applies JSR303 bean validation on incoming commands. Интерсептор для проверки валидации&ndash;&gt;
@@ -46,32 +59,54 @@
             </axon:dispatchInterceptors>
         </axon:command-bus>-->
 
-        <bean class="org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean">
-            <property name="commandBus" ref="commandBus"/>
-        </bean>
+    <!--=================Rabbit AMQP settings=================TODO может вынести в main server config?!-->
+    <rabbit:connection-factory
+            host="${application.configuration.rabbit.host}"
+            port="${application.configuration.rabbit.port}"
+            username="${application.configuration.rabbit.username}"
+            password="${application.configuration.rabbit.password}"/>
 
-    <!--todo нужно сделать как в example-axon-->
-       <axon:event-bus id="eventBus" />
+    <rabbit:queue
+            name="${application.configuration.rabbit.queueName}"
+            durable="false"
+            auto-delete="false"/>
 
-    <!--TODO Нам нужен axon-distributed-commandbus для того чтобы из саги запускать команды распределенные по разным jvm-->
+    <rabbit:fanout-exchange
+            name="${application.configuration.rabbit.exchangeName}">
+        <rabbit:bindings>
+            <rabbit:binding queue="${application.configuration.rabbit.queueName}"/>
+        </rabbit:bindings>
+    </rabbit:fanout-exchange>
+
+    <bean class="org.axonframework.serializer.xml.XStreamSerializer"/>
+
+    <!--TODO Лучше использовать ClusteringEventsBus для распределенности-->
+    <axon-amqp:terminal id="terminal" exchange-name="${application.configuration.rabbit.exchangeName}">
+        <axon-amqp:default-configuration/>
+    </axon-amqp:terminal>
+    <!--=============CLUSTER SETTINGS============================-->
+    <axon:cluster id="cluster" default="true">
+        <axon:meta-data>
+            <entry key="AMQP.Config">
+                <axon-amqp:configuration queue-name="${application.configuration.rabbit.queueName}"
+                        transaction-size="100"/>
+            </entry>
+        </axon:meta-data>
+    </axon:cluster>
+
+    <!--=============EVENT SETTINGS============================-->
+    <axon:event-bus id="eventBus" terminal="terminal"/>
+
 
     <!--All event sourcing repositories need an Event Store.-->
     <axon:jpa-event-store id="jpaEventStore"/>
 
     <axon:event-sourcing-repository id="paymentRepository"
-                                    aggregate-type="ru.iklyubanov.diploma.saga.core.axon.PaymentAggregate"/>
+                                    aggregate-type="ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentAggregate"/>
 
     <axon:aggregate-command-handler id="paymentAggregateHandler"
-                                    aggregate-type="ru.iklyubanov.diploma.saga.core.axon.PaymentAggregate"
+                                    aggregate-type="ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentAggregate"
                                     repository="paymentRepository" command-bus="commandBus"/>
-
-    <axon:filesystem-event-store id="eventStore" base-dir="event"/>
-
-
-
-    <bean class="org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean">
-        <property name="commandBus" ref="commandBus"/>
-    </bean>
 
     <axon:jpa-event-store id="eventStore" data-source="dataSource"/>
 
@@ -83,20 +118,6 @@
         <axon:cache-config saga-cache="sagaCacheRef" associations-cache="associationCacheRef"/>
     </axon:jpa-saga-repository>
 
-    <!--TODO нужно выяснить нужен ли он нам?-->
-    <!--Implementation of the AggregateSnapshotter that eases the configuration when used within a Spring Application Context.
-    It will automatically detect a Transaction Manager and Aggregate Factories.
-    The only mandatory properties to set is AbstractSnapshotter.setEventStore(org.axonframework.eventstore.SnapshotEventStore).
-    In most cases, you should also provide an executor, as the default will execute snapshotter tasks in the calling thread.
-
-    Implementation of a snapshotter that uses the actual aggregate and its state to create a snapshot event.
-    The motivation is that an aggregate always contains all relevant state. Therefore, storing the aggregate itself
-    inside an event should capture all necessary information-->
-    <!--<bean id="snapshotter" class="org.axonframework.eventsourcing.SpringAggregateSnapshotter">
-        <property name="eventStore" ref="eventStore"/>
-        <property name="transactionManager" ref="transactionManager"/>
-        &lt;!&ndash;<property name="executor" ref="taskExecutor"/>&ndash;&gt;
-    </bean>
     ======================================-->
 
     <!--JPA implementation of the Saga Repository. It uses an EntityManager to persist the actual saga in a backing store.-->
@@ -111,6 +132,5 @@
     </bean>-->
 
        <!--<bean id="contactNameRepository" class="org.axonframework.sample.app.command.JpaContactNameRepository"/>-->
-    <!--todo нужно выяснить нужен ли нам EhCache-->
 
 </beans>

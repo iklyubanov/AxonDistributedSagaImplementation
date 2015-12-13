@@ -9,12 +9,12 @@ import org.joda.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.iklyubanov.diploma.saga.core.axon.command.CheckMerchantAccountCommand;
-import ru.iklyubanov.diploma.saga.core.axon.command.CheckNewPaymentByIssuingBankCommand;
-import ru.iklyubanov.diploma.saga.core.axon.command.ProcessPaymentByProcessorCommand;
-import ru.iklyubanov.diploma.saga.core.axon.event.PaymentExecutionExpiredEvent;
+import ru.iklyubanov.diploma.saga.gcore.axon.command.CheckMerchantAccountCommand;
+import ru.iklyubanov.diploma.saga.gcore.axon.command.CheckNewPaymentByIssuingBankCommand;
+import ru.iklyubanov.diploma.saga.gcore.axon.command.ProcessPaymentByProcessorCommand;
+import ru.iklyubanov.diploma.saga.gcore.axon.event.BankBikFoundedEvent;
+import ru.iklyubanov.diploma.saga.gcore.axon.event.PaymentExecutionExpiredEvent;
 import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId;
-import ru.iklyubanov.diploma.saga.gcore.axon.event.BikAreFoundedEvent;
 import ru.iklyubanov.diploma.saga.gcore.axon.event.CreatePaymentEvent;
 
 /**
@@ -69,10 +69,10 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     }
 
     @SagaEventHandler(associationProperty = "transactionId")//TODO check that it is a transactionId, make test
-    public void handle(BikAreFoundedEvent bikAreFoundedEvent) {
+    public void handle(BankBikFoundedEvent bikFoundedEvent) {
         // send the commands
         //создадим TargetAggregateIdentifier таким образом
-        String issuingBankAggregateId =  bikAreFoundedEvent.getIssuingBankBIK();
+        String issuingBankAggregateId =  bikFoundedEvent.getIssuingBankBIK();
         associateWith("bankCardId", issuingBankAggregateId);
         //send to card-issuing bank
         CheckNewPaymentByIssuingBankCommand checkByBankCommand = new CheckNewPaymentByIssuingBankCommand(issuingBankAggregateId, transactionId);

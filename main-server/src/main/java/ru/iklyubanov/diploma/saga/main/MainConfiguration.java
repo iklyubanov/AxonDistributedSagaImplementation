@@ -15,7 +15,7 @@ import java.util.Scanner;
  * Created by kliubanov on 23.11.2015.
  */
 @SpringBootApplication
-@PropertySource("classpath:configuration.properties")
+@PropertySource("classpath:META-INF/spring/configuration.properties")
 @ImportResource("classpath:META-INF/spring/main-application-context.xml")
 public class MainConfiguration {
 

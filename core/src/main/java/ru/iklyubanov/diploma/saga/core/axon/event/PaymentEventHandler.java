@@ -6,6 +6,7 @@ import ru.iklyubanov.diploma.saga.gcore.axon.event.CreatePaymentEvent;
 /**
  * Created by kliubanov on 27.11.2015.
  */
+@Deprecated
 public class PaymentEventHandler {
 
     @EventHandler
