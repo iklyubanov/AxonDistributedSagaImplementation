@@ -45,6 +45,10 @@ public class BankCard extends ParentEntity {
     @Column(length = 36, unique = true)
     private String code;
 
+    /**номер банковского счета*/
+    @Column(length = 36, unique = true)
+    private String account;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SYS_TYPE_ID")
     private PaymentSystemType paymentSystemType;
@@ -54,6 +58,17 @@ public class BankCard extends ParentEntity {
 
     @Column(name = "ZIP", length = 10)
     private String zipCode;
+
+    @PrePersist
+    public void preInsert() {
+        //если не задан код но задан номер банковского счета, то заполняем его кодом
+        if (code == null && account != null) {
+            code = account;
+        //и наоборот
+        } else if(code != null && account == null) {
+            account = code;
+        }
+    }
 
     public CardType getCardType() {
         return cardType;

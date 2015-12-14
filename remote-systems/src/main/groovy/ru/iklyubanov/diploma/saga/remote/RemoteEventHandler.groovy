@@ -66,7 +66,7 @@ class RemoteEventHandler {
             if(card) {
                 paymentProcessorAggregate.succeedIssuingBankValidation(transactId, bank.id, card.id)
             }
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             paymentProcessorAggregate.failedIssuingBankValidation(transactId, e.getMessage())
         }
     }
@@ -74,6 +74,18 @@ class RemoteEventHandler {
   /** Здесь обрабатываем запрос клиента на перевод средств банком получателя*/
   @EventHandler
   public void handle(CheckMerchantBankRequisitesEvent event) {
-    //todo add logic
+    //проверяем реквизиты
+      def transactId = event.transactionId
+      PaymentProcessorAggregate paymentProcessorAggregate = repository.load(transactId)
+      try {
+          Bank bank = issuingBankService.findBank(event.getMerchantBankBIK())
+          BankCard card = issuingBankService.checkMerchantBankCard(bank, event.merchantBankAccount, event.merchant,
+                  event.merchantINN)
+          if(card) {
+              paymentProcessorAggregate.succeedMerchantBankValidation(transactId, bank.id, card.id)
+          }
+      } catch (Exception e) {
+          paymentProcessorAggregate.failedMerchantBankValidation(transactId, e.getMessage())
+      }
   }
 }

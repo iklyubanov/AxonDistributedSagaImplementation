@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional
 import ru.iklyubanov.diploma.saga.core.spring.Bank
 import ru.iklyubanov.diploma.saga.core.spring.BankCard
 import ru.iklyubanov.diploma.saga.core.spring.Currency
+import ru.iklyubanov.diploma.saga.core.spring.Merchant
 import ru.iklyubanov.diploma.saga.core.spring.util.CardStatus
 import ru.iklyubanov.diploma.saga.core.spring.util.WrongEntityStateException
 import ru.iklyubanov.diploma.saga.remote.repository.BankCardRepository
@@ -39,7 +40,7 @@ class IssuingBankService {
     BankCard checkBankCard(Bank bank, String code, String firstName, String lastName, BigDecimal amount,
             String currencyType, String expiredDate, String ccvCode) throws NullPointerException,
             WrongEntityStateException, IllegalArgumentException{
-        BankCard card = cardRepository.findBankCard(bank, code)
+        BankCard card = cardRepository.findBankCardByAccount(bank, code)
         if(!card) {
             throw new NullPointerException("Карта с кодом $code не найдена.")
         }
@@ -79,6 +80,38 @@ class IssuingBankService {
                 throw new WrongEntityStateException("На карте $code не достаточно средств.")
             }
         }
+        card
+    }
+
+    @Transactional(readOnly = true)
+    BankCard checkMerchantBankCard(Bank bank, String account, String merchantName, String inn) throws NullPointerException,
+            WrongEntityStateException, IllegalArgumentException{
+        if(inn && !inn.equalsIgnoreCase(bank.inn)) {
+            throw new IllegalArgumentException("Указаны не верные инн банка получателя!")
+        }
+        BankCard card = cardRepository.findBankCardByAccount(bank, account)
+        if(!card) {
+            throw new NullPointerException("Карта с номером счета $account не найдена.")
+        }
+        if(card.cardStatus != CardStatus.ACTIVE) {
+            throw new WrongEntityStateException("Карта с номером счета $account не активна.")
+        }
+        def client = card.client
+        if(!client) {
+            throw new NullPointerException("К карте с номером счета $account не привязан клиент $firstName $lastName.")
+        }
+        if(!client instanceof Merchant) {
+            throw new WrongEntityStateException("Привязанный к счету клиент не является юр. лицом.")
+        }
+        Merchant merchant = (Merchant) client
+        if(!merchantName.equalsIgnoreCase(merchant.fullName)) {
+            throw new IllegalArgumentException("Указаны не верные инициалы юридического лица!")
+        }
+        def wallet = card.wallet
+        if(!wallet) {
+            throw new NullPointerException("К карте с кодом $code не привязан кошилек.")
+        }
+
         card
     }
 

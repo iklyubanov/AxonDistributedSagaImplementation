@@ -13,6 +13,8 @@ public class SendMoneyByCardNetworkCommand {
     final String paymentId
     Long issuingBankId
     Long clientCardId
+    Long merchantBankId
+    Long merchantCardId
 
     public SendMoneyByCardNetworkCommand(String paymentId) {
         this.paymentId = paymentId

@@ -38,6 +38,8 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     private boolean isMoneyTransfered = false;
     private Long issuingBankId;
     private Long clientCardId;
+    private Long merchantBankId;
+    private Long merchantCardId;
     private String paymentId;
 
     @Autowired
@@ -99,12 +101,38 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
         clientCardId = event.getBankCardId();
         if(isMerchantBankChecked) {
             //todo start money recieving
-            paymentId = IdentifierFactory.getInstance().generateIdentifier();
-            SendMoneyByCardNetworkCommand command = new SendMoneyByCardNetworkCommand(paymentId);
-            associateWith("paymentId", paymentId);
-            commandGateway.send(command);
-            //todo обрабатывать евент нужно в новой удаленной саге
+            sendMoneyByCardNetwork();
         }
+    }
+
+    @SagaEventHandler(associationProperty = "transactionId")
+    public void handle(MerchantBankValidationFailedEvent event) {
+        logger.error("Платеж был отклонен банком получателя по причине: " + event.getReason());
+        end();
+    }
+
+    @SagaEventHandler(associationProperty = "transactionId")
+    public void handle(MerchantBankValidationSucceedEvent event) {
+        logger.info("Платеж был одобрен банком получателя");
+        isMerchantBankChecked = true;
+        merchantBankId = event.getBankId();
+        merchantCardId = event.getBankCardId();
+        if(isIssuingBankChecked) {
+            //todo start money recieving
+            sendMoneyByCardNetwork();
+        }
+    }
+
+    private void sendMoneyByCardNetwork() {
+        paymentId = IdentifierFactory.getInstance().generateIdentifier();
+        SendMoneyByCardNetworkCommand command = new SendMoneyByCardNetworkCommand(paymentId);
+        command.setClientCardId(clientCardId);
+        command.setIssuingBankId(issuingBankId);
+        command.setMerchantBankId(merchantBankId);
+        command.setMerchantCardId(merchantCardId);
+        associateWith("paymentId", paymentId);
+        commandGateway.send(command);
+        //todo обрабатывать евент нужно в новой удаленной саге
     }
 
     private ProcessPaymentByProcessorCommand createProcessPaymentByProcessorCommand(CreatePaymentEvent event) {

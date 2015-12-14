@@ -8,6 +8,8 @@ import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckMerchantBankRequisitesEv
 import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckNewPaymentByIssuingBankEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.IssuingBankValidationFailedEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.IssuingBankValidationSucceedEvent
+import ru.iklyubanov.diploma.saga.gcore.axon.event.MerchantBankValidationFailedEvent
+import ru.iklyubanov.diploma.saga.gcore.axon.event.MerchantBankValidationSucceedEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.ProcessPaymentEvent
 
 /**
@@ -95,5 +97,13 @@ class PaymentProcessorAggregate extends AbstractAnnotatedAggregateRoot {
             bankAccount: bankAccount, merchantName: merchantName,
             inn: inn)
     apply(payCheckEvent)
+  }
+
+  void failedMerchantBankValidation(String transactionId, String reason) {
+    apply(new MerchantBankValidationFailedEvent(transactionId, reason))
+  }
+
+  void succeedMerchantBankValidation(String transactionId, Long bankId, Long bankCardId) {
+    apply(new MerchantBankValidationSucceedEvent(transactionId: transactionId, bankId: bankId, bankCardId: bankCardId))
   }
 }
