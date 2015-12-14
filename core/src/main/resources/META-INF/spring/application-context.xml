@@ -95,7 +95,7 @@
     </axon:cluster>
 
     <!--=============EVENT SETTINGS============================-->
-    <axon:event-bus id="eventBus" terminal="terminal"/>
+    <axon:event-bus id="eventBus" terminal="terminal" />
 
 
     <!--All event sourcing repositories need an Event Store.-->

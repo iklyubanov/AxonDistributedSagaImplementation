@@ -71,7 +71,7 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     }
 
     /** Получили бик клиента-отправителя, отправляем в банк клиента запрос на проверку*/
-    @SagaEventHandler(associationProperty = "transactionId")//TODO check that it is a transactionId, make test
+    @SagaEventHandler(associationProperty = "transactionId")//check that it is a transactionId, make test
     public void handle(BankBikFoundedEvent bikFoundedEvent) {
         // send the commands
         //создадим TargetAggregateIdentifier таким образом
@@ -122,11 +122,9 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     }
 
     private CheckMerchantAccountCommand createCheckMerchantAccountCommand(CreatePaymentEvent event) {
-        //todo возможно не самый подходящий id агрегата
-        String merchantBankAggregateId = event.getMerchantBankBIK();
         // associate the Saga with these values, before sending the commands
-        associateWith("merchantBankId", merchantBankAggregateId);
-        CheckMerchantAccountCommand checkMerchantAccountCommand = new CheckMerchantAccountCommand(merchantBankAggregateId, event.getTransactionId());
+        CheckMerchantAccountCommand checkMerchantAccountCommand = new CheckMerchantAccountCommand(event.getTransactionId());
+        checkMerchantAccountCommand.setMerchantBankBIK(event.getMerchantBankBIK());
         checkMerchantAccountCommand.setMerchant(event.getMerchant());
         checkMerchantAccountCommand.setMerchantBankAccount(event.getMerchantBankAccount());
         checkMerchantAccountCommand.setMerchantINN(event.getMerchantINN());

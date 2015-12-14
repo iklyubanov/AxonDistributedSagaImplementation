@@ -4,6 +4,7 @@ import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot
 import org.axonframework.eventsourcing.annotation.AggregateIdentifier
 import ru.iklyubanov.diploma.saga.gcore.axon.command.ProcessPaymentByProcessorCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.event.BankBikFoundedEvent
+import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckMerchantBankRequisitesEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckNewPaymentByIssuingBankEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.IssuingBankValidationFailedEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.IssuingBankValidationSucceedEvent
@@ -86,5 +87,13 @@ class PaymentProcessorAggregate extends AbstractAnnotatedAggregateRoot {
 
   void succeedIssuingBankValidation(String transactionId, Long bankId, Long bankCardId) {
     apply(new IssuingBankValidationSucceedEvent(transactionId: transactionId, bankId: bankId, bankCardId: bankCardId))
+  }
+
+  void checkMerchantBankRequisites(transactId, bik, bankAccount, merchantName, inn) {//CheckMerchantAccountCommand
+    def payCheckEvent = new CheckMerchantBankRequisitesEvent(
+            transactId: transactId, bik: bik,
+            bankAccount: bankAccount, merchantName: merchantName,
+            inn: inn)
+    apply(payCheckEvent)
   }
 }

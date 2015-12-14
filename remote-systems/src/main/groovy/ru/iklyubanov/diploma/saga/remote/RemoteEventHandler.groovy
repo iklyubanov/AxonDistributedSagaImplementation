@@ -1,18 +1,21 @@
 package ru.iklyubanov.diploma.saga.remote
+
 import groovy.json.JsonOutput
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.axonframework.repository.Repository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentProcessorAggregate
 import ru.iklyubanov.diploma.saga.core.spring.Bank
 import ru.iklyubanov.diploma.saga.core.spring.BankCard
-import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckNewPaymentByIssuingBankEvent
-import ru.iklyubanov.diploma.saga.gcore.axon.event.ProcessPaymentEvent
 import ru.iklyubanov.diploma.saga.core.spring.Payment
 import ru.iklyubanov.diploma.saga.core.spring.PaymentProcessor
-import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentProcessorAggregate
+import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckMerchantBankRequisitesEvent
+import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckNewPaymentByIssuingBankEvent
+import ru.iklyubanov.diploma.saga.gcore.axon.event.ProcessPaymentEvent
 import ru.iklyubanov.diploma.saga.remote.service.IssuingBankService
 import ru.iklyubanov.diploma.saga.remote.service.PaymentProcessorService
+
 /**Step 2: YapStone to Payment Processor
 
  YapStone sends the transaction details to our payment processor.
@@ -68,5 +71,9 @@ class RemoteEventHandler {
         }
     }
 
-
+  /** Здесь обрабатываем запрос клиента на перевод средств банком получателя*/
+  @EventHandler
+  public void handle(CheckMerchantBankRequisitesEvent event) {
+    //todo add logic
+  }
 }

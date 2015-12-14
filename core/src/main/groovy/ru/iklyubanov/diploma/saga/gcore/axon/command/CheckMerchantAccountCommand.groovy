@@ -11,8 +11,9 @@ import ru.iklyubanov.diploma.saga.gcore.annotation.Command
 public class CheckMerchantAccountCommand {
 
     @TargetAggregateIdentifier
-    final String merchantBankId
     final TransactionId transactionId
+    //final String merchantBankId
+
     /**
      * БИК банка получателя
      */
@@ -30,8 +31,7 @@ public class CheckMerchantAccountCommand {
      */
     String merchantINN
 
-    public CheckMerchantAccountCommand(String merchantBankId, TransactionId transactionId) {
-        this.merchantBankId = merchantBankId
+    public CheckMerchantAccountCommand( TransactionId transactionId) {
         this.transactionId = transactionId
     }
 }

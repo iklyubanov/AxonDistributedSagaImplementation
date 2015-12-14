@@ -5,6 +5,7 @@ import org.axonframework.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentProcessorAggregate;
+import ru.iklyubanov.diploma.saga.gcore.axon.command.CheckMerchantAccountCommand;
 import ru.iklyubanov.diploma.saga.gcore.axon.command.CheckNewPaymentByIssuingBankCommand;
 import ru.iklyubanov.diploma.saga.gcore.axon.command.ProcessPaymentByProcessorCommand;
 import ru.iklyubanov.diploma.saga.gcore.axon.command.SendMoneyByCardNetworkCommand;
@@ -28,11 +29,17 @@ public class PaymentProcessorHandler {
     public void handle(CheckNewPaymentByIssuingBankCommand command) {
         PaymentProcessorAggregate processorAggregate = repository.load(command.getTransactionId().toString());
         processorAggregate.checkNewPaymentByIssuingBank();
+    }
 
+    @CommandHandler
+    public void handle(CheckMerchantAccountCommand command) {
+        PaymentProcessorAggregate processorAggregate = repository.load(command.getTransactionId().toString());
+        processorAggregate.checkMerchantBankRequisites(command.getTransactionId().toString(), command.getMerchantBankBIK(),
+                command.getMerchantBankAccount(), command.getMerchant(), command.getMerchantINN());
     }
 
     @CommandHandler
     public void handle(SendMoneyByCardNetworkCommand command) {
-
+        //todo использовать другой агрегат!
     }
 }
