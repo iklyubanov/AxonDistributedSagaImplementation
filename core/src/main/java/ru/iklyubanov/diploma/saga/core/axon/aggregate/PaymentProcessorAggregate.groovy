@@ -10,6 +10,7 @@ import ru.iklyubanov.diploma.saga.gcore.axon.event.IssuingBankValidationFailedEv
 import ru.iklyubanov.diploma.saga.gcore.axon.event.IssuingBankValidationSucceedEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.MerchantBankValidationFailedEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.MerchantBankValidationSucceedEvent
+import ru.iklyubanov.diploma.saga.gcore.axon.event.PaymentNotFoundEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.ProcessPaymentEvent
 
 /**
@@ -105,5 +106,9 @@ class PaymentProcessorAggregate extends AbstractAnnotatedAggregateRoot {
 
   void succeedMerchantBankValidation(String transactionId, Long bankId, Long bankCardId) {
     apply(new MerchantBankValidationSucceedEvent(transactionId: transactionId, bankId: bankId, bankCardId: bankCardId))
+  }
+
+  void paymentNotFound(String transactionId, String paymentId) {
+    apply(new PaymentNotFoundEvent(transactionId, paymentId))
   }
 }

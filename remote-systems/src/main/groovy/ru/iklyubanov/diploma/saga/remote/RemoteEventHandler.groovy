@@ -59,7 +59,7 @@ class RemoteEventHandler {
     public void handle(CheckNewPaymentByIssuingBankEvent event) {
         def transactId = event.transactionId
         PaymentProcessorAggregate paymentProcessorAggregate = repository.load(transactId)
-        //todo check client, account, card and current amount
+        //check client, account, card and current amount
         try {
             Bank bank = issuingBankService.findBank(event.getIssuingBankBIK())
             BankCard card = issuingBankService.checkBankCard(bank, event.code, event.firstName, event.lastName,

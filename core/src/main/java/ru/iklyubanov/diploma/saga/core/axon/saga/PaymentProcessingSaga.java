@@ -118,9 +118,15 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
         merchantBankId = event.getBankId();
         merchantCardId = event.getBankCardId();
         if(isIssuingBankChecked) {
-            //todo start money recieving
+            //start money recieving
             sendMoneyByCardNetwork();
         }
+    }
+
+    @SagaEventHandler(associationProperty = "transactionId")
+    public void handle(PaymentNotFoundEvent event) {
+        logger.error("Платеж " + event.getPaymentId() + " не был найден сетью банковских карт.");
+        end();
     }
 
     private void sendMoneyByCardNetwork() {
@@ -132,7 +138,6 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
         command.setMerchantCardId(merchantCardId);
         associateWith("paymentId", paymentId);
         commandGateway.send(command);
-        //todo обрабатывать евент нужно в новой удаленной саге
     }
 
     private ProcessPaymentByProcessorCommand createProcessPaymentByProcessorCommand(CreatePaymentEvent event) {
