@@ -41,6 +41,7 @@ class RemoteEventHandler {
     public void handle(ProcessPaymentEvent event) {
         //выделяем свободный процессор
         PaymentProcessor freeProcessor = paymentProcessorService.getFreeProcessor()
+        freeProcessor.identifier = event.transactionId
         def json = JsonOutput.toJson(event)
         //создаем новый платежна стороне процессора
         Payment payment = paymentProcessorService.createNewPayment(json)

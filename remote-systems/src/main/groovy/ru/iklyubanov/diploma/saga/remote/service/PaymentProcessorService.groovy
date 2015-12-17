@@ -32,6 +32,11 @@ class PaymentProcessorService {
         freeProcessor
     }
 
+    @Transactional(readOnly = true)
+    PaymentProcessor findProcessor(String transactionId) {
+        repository.findProcessor(transactionId)
+    }
+
     PaymentProcessor save(PaymentProcessor paymentProcessor) {
         repository.save(paymentProcessor)
     }

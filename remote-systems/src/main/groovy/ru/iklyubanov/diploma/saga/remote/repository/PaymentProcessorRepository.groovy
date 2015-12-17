@@ -2,6 +2,7 @@ package ru.iklyubanov.diploma.saga.remote.repository
 
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.query.Param
 import ru.iklyubanov.diploma.saga.core.spring.PaymentProcessor
 
 
@@ -14,4 +15,7 @@ interface PaymentProcessorRepository extends CrudRepository<PaymentProcessor, Lo
 
     @Query("select distinct pp from PaymentProcessor pp where pp.maxTransactionsCount > pp.currentTransactionsCount")
     PaymentProcessor findFreeProcessor();
+
+    @Query("select distinct pp from PaymentProcessor pp where pp.identifier = :transactionId")
+    PaymentProcessor findProcessor(@Param("transactionId") String transactionId);
 }

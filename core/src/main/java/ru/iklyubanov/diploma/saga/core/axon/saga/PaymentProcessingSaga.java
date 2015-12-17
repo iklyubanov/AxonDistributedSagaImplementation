@@ -125,7 +125,7 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
 
     private void sendMoneyByCardNetwork() {
         paymentId = IdentifierFactory.getInstance().generateIdentifier();
-        SendMoneyByCardNetworkCommand command = new SendMoneyByCardNetworkCommand(paymentId);
+        SendMoneyByCardNetworkCommand command = new SendMoneyByCardNetworkCommand(paymentId, transactionId.toString());
         command.setClientCardId(clientCardId);
         command.setIssuingBankId(issuingBankId);
         command.setMerchantBankId(merchantBankId);
