@@ -2,6 +2,7 @@ package ru.iklyubanov.diploma.saga.core.axon.aggregate
 
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot
 import org.axonframework.eventsourcing.annotation.AggregateIdentifier
+import ru.iklyubanov.diploma.saga.gcore.axon.command.PaymentRejectedCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.command.SendMoneyByCardNetworkCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.event.*
 
@@ -32,12 +33,12 @@ class MoneySendingCardNetworkAggregate extends AbstractAnnotatedAggregateRoot {
             clientCardId: clientCardId, merchantBankId: merchantBankId, merchantCardId: merchantCardId))
   }
 
-  void saveBik(def bik) {
-    issuingBankBIK = bik
-    apply(new BankBikFoundedEvent(transactionId: paymentId, issuingBankBIK: issuingBankBIK))
+  void withdrawClientMoney() {
+    apply(new WithdrawClientMoneyEvent(paymentId: paymentId, transactionId: transactionId, issuingBankId: issuingBankId,
+            clientCardId: clientCardId))
   }
 
-  void failedIssuingBankValidation(String transactionId, String reason) {
-    apply(new IssuingBankValidationFailedEvent(transactionId, reason))
+  void paymentRejected(String reason) {
+    apply(new PaymentRejectedEvent(paymentId, transactionId, reason))
   }
 }

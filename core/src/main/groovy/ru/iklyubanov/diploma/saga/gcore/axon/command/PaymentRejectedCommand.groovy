@@ -3,7 +3,7 @@ package ru.iklyubanov.diploma.saga.gcore.axon.command
 import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier
 import ru.iklyubanov.diploma.saga.gcore.annotation.Command
 
-/**
+/**todo is it usefull
  * Created by ivan on 12/17/2015.
  */
 @Command

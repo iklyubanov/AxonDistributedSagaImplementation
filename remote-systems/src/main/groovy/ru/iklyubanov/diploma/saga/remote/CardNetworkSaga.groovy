@@ -12,7 +12,10 @@ import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId
 import ru.iklyubanov.diploma.saga.core.spring.Payment
 import ru.iklyubanov.diploma.saga.core.spring.PaymentProcessor
 import ru.iklyubanov.diploma.saga.gcore.axon.command.PaymentNotFoundCommand
+import ru.iklyubanov.diploma.saga.gcore.axon.command.PaymentRejectedCommand
+import ru.iklyubanov.diploma.saga.gcore.axon.event.PaymentRejectedEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.SafePayEvent
+import ru.iklyubanov.diploma.saga.remote.command.WithdrawClientMoneyCommand
 import ru.iklyubanov.diploma.saga.remote.service.PaymentProcessorService
 /**
  * Created by ivan on 12/17/2015.
@@ -23,6 +26,8 @@ class CardNetworkSaga extends AbstractAnnotatedSaga {
 
     private TransactionId transactionId
     private String paymentId
+    private boolean successful
+    private boolean failed
 
     @Autowired
     private transient CommandGateway commandGateway
@@ -30,23 +35,18 @@ class CardNetworkSaga extends AbstractAnnotatedSaga {
     @Autowired
     PaymentProcessorService paymentProcessorService
 
-    @Autowired
-    Repository<MoneySendingCardNetworkAggregate> repository
-
     @StartSaga
     @SagaEventHandler(associationProperty = "paymentId")
     public void handle(SafePayEvent event) {
         transactionId = new TransactionId(event.transactionId)
-        PaymentProcessor processor = paymentProcessorService.findProcessor(transactionId.toString())
-        Payment payment
-        for (Payment pay : processor.payments) {
-            if (pay.identifier.equals(transactionId)) {
-                payment = pay
-            }
-        }
-        if (!payment) {
-            logger.error("Платеж не найден.")
-            commandGateway.send(new PaymentNotFoundCommand(transactionId, event.paymentId))
-        }
+        //снять деньги с карты плательщика
+        commandGateway.send(new WithdrawClientMoneyCommand(paymentId: paymentId, transactionId: transactionId.toString()))
+    }
+
+    @SagaEventHandler(associationProperty = "paymentId")
+    public void handle(PaymentRejectedEvent event) {
+        logger.error("Платеж " + event.getPaymentId() + " отклонен с ошибкой: " + event.getReason());
+        failed = true
+        end()
     }
 }

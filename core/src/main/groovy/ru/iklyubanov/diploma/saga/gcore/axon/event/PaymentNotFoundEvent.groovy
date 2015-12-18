@@ -4,6 +4,7 @@ import ru.iklyubanov.diploma.saga.gcore.annotation.Event
 /**
  * Created by kliubanov on 17.12.2015.
  */
+@Deprecated
 @Event
 class PaymentNotFoundEvent {
   final String transactionId

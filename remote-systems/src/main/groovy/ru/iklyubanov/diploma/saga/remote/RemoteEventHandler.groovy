@@ -5,14 +5,19 @@ import org.axonframework.eventhandling.annotation.EventHandler
 import org.axonframework.repository.Repository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import ru.iklyubanov.diploma.saga.core.axon.aggregate.MoneySendingCardNetworkAggregate
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentProcessorAggregate
+import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId
 import ru.iklyubanov.diploma.saga.core.spring.Bank
 import ru.iklyubanov.diploma.saga.core.spring.BankCard
 import ru.iklyubanov.diploma.saga.core.spring.Payment
 import ru.iklyubanov.diploma.saga.core.spring.PaymentProcessor
+import ru.iklyubanov.diploma.saga.gcore.axon.command.PaymentNotFoundCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckMerchantBankRequisitesEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckNewPaymentByIssuingBankEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.ProcessPaymentEvent
+import ru.iklyubanov.diploma.saga.gcore.axon.event.WithdrawClientMoneyEvent
+import ru.iklyubanov.diploma.saga.remote.service.CardNetworkService
 import ru.iklyubanov.diploma.saga.remote.service.IssuingBankService
 import ru.iklyubanov.diploma.saga.remote.service.PaymentProcessorService
 
@@ -35,7 +40,11 @@ class RemoteEventHandler {
     @Autowired
     IssuingBankService issuingBankService
     @Autowired
+    CardNetworkService cardNetworkService
+    @Autowired
     Repository<PaymentProcessorAggregate> repository
+    @Autowired
+    Repository<MoneySendingCardNetworkAggregate> cardNetworkRepository
 
     @EventHandler
     public void handle(ProcessPaymentEvent event) {
@@ -89,4 +98,17 @@ class RemoteEventHandler {
           paymentProcessorAggregate.failedMerchantBankValidation(transactId, e.getMessage())
       }
   }
+
+    /**Снимаем деньги с клиента*/
+    @EventHandler
+    public void handle(WithdrawClientMoneyEvent event) {
+        def transactionId = event.transactionId
+        MoneySendingCardNetworkAggregate cardNetworkAggregate = cardNetworkRepository.load(command.paymentId)
+        try {
+            PaymentProcessor processor = paymentProcessorService.findProcessor(transactionId)
+            Payment payment = paymentProcessorService.findPayment(processor)
+        } catch (Exception e) {
+            cardNetworkAggregate.paymentRejected(e.getMessage())
+        }
+    }
 }

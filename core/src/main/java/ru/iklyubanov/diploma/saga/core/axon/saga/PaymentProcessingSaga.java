@@ -123,9 +123,9 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
         }
     }
 
-    @SagaEventHandler(associationProperty = "transactionId")
-    public void handle(PaymentNotFoundEvent event) {
-        logger.error("Платеж " + event.getPaymentId() + " не был найден сетью банковских карт.");
+    @SagaEventHandler(associationProperty = "paymentId")//todo check
+    public void handle(PaymentRejectedEvent event) {
+        logger.error("Платеж " + event.getPaymentId() + " отклонен с ошибкой: " + event.getReason());
         end();
     }
 

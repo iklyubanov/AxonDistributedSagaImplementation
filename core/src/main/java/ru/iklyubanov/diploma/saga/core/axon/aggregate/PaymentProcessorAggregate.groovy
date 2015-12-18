@@ -107,8 +107,4 @@ class PaymentProcessorAggregate extends AbstractAnnotatedAggregateRoot {
   void succeedMerchantBankValidation(String transactionId, Long bankId, Long bankCardId) {
     apply(new MerchantBankValidationSucceedEvent(transactionId: transactionId, bankId: bankId, bankCardId: bankCardId))
   }
-
-  void paymentNotFound(String transactionId, String paymentId) {
-    apply(new PaymentNotFoundEvent(transactionId, paymentId))
-  }
 }

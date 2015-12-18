@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional
 import ru.iklyubanov.diploma.saga.core.spring.Payment
 import ru.iklyubanov.diploma.saga.core.spring.PaymentProcessor
 import ru.iklyubanov.diploma.saga.core.spring.util.MonetaryValue
+import ru.iklyubanov.diploma.saga.core.spring.util.PaymentRejectionException
 import ru.iklyubanov.diploma.saga.core.spring.util.PaymentState
 import ru.iklyubanov.diploma.saga.core.spring.util.PaymentType
 import ru.iklyubanov.diploma.saga.remote.repository.PaymentProcessorRepository
@@ -63,5 +64,17 @@ class PaymentProcessorService {
         3 — American Express*/
       def rand = new Random()
       bin + StringUtils.leftPad('' + rand.nextInt(999999), 6, "0")
+    }
+
+    Payment findPayment(PaymentProcessor processor) {
+        Payment payment
+        for (Payment pay : processor.payments) {
+            if (pay.identifier.equals(transactionId)) {
+                payment = pay
+            }
+        }
+        if (!payment) {
+            throw new PaymentRejectionException("Платеж не найден.")
+        }
     }
 }
