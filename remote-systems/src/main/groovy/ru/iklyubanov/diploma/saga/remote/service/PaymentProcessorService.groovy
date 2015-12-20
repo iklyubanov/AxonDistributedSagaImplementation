@@ -76,5 +76,6 @@ class PaymentProcessorService {
         if (!payment) {
             throw new PaymentRejectionException("Платеж не найден.")
         }
+        payment
     }
 }

@@ -5,17 +5,15 @@ import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId
 import ru.iklyubanov.diploma.saga.gcore.annotation.Command
 
 /**
- * Created by ivan on 12/17/2015.
+ * Created by ivan on 12/20/2015.
  */
-@Deprecated
 @Command
-class PaymentNotFoundCommand {
+class MerchantAddFoundsCommand {
     @TargetAggregateIdentifier
     final String paymentId
     final TransactionId transactionId
 
-
-  PaymentNotFoundCommand(TransactionId transactionId, String paymentId) {
+    MerchantAddFoundsCommand(String paymentId, TransactionId transactionId) {
         this.paymentId = paymentId
         this.transactionId = transactionId
     }

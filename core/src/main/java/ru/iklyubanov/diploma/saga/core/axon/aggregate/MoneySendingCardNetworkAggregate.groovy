@@ -41,4 +41,8 @@ class MoneySendingCardNetworkAggregate extends AbstractAnnotatedAggregateRoot {
   void paymentRejected(String reason) {
     apply(new PaymentRejectedEvent(paymentId, transactionId, reason))
   }
+
+  void successfulWithdrawal() {
+    apply(new SuccessfulWithdrawalEvent(paymentId, transactionId, merchantBankId, merchantCardId))
+  }
 }

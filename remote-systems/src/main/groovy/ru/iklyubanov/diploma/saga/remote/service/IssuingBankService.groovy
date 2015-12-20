@@ -7,7 +7,10 @@ import ru.iklyubanov.diploma.saga.core.spring.Bank
 import ru.iklyubanov.diploma.saga.core.spring.BankCard
 import ru.iklyubanov.diploma.saga.core.spring.Currency
 import ru.iklyubanov.diploma.saga.core.spring.Merchant
+import ru.iklyubanov.diploma.saga.core.spring.Payment
 import ru.iklyubanov.diploma.saga.core.spring.util.CardStatus
+import ru.iklyubanov.diploma.saga.core.spring.util.MonetaryValue
+import ru.iklyubanov.diploma.saga.core.spring.util.PaymentState
 import ru.iklyubanov.diploma.saga.core.spring.util.WrongEntityStateException
 import ru.iklyubanov.diploma.saga.remote.repository.BankCardRepository
 import ru.iklyubanov.diploma.saga.remote.repository.CurrencyRepository
@@ -34,6 +37,32 @@ class IssuingBankService {
             throw new NullPointerException("Банк с БИКом $bik не найден.")
         }
         bank
+    }
+
+    @Transactional(readOnly = true)
+    BankCard findBankCard(Long id) {
+        BankCard card = cardRepository.findOne(id)
+        if(!card) {
+            throw new NullPointerException("Карта с кодом $code не найдена.")
+        }
+        card
+    }
+
+    /**метод снятия средств с клиента*/
+    def withdrawMoneyFromCard(BankCard card, Payment payment) {
+        payment.paymentState = PaymentState.PROCESSED
+        MonetaryValue payAmount = payment.paymentAmount
+        MonetaryValue cardAmount = card.wallet.monetaryValue
+        //если платеж в той же валюте - просто снимаем с карты средства
+        if(cardAmount.currencyType.equals(payAmount.currencyType)) {
+            cardAmount.amount -= payAmount.amount
+        } else {//если нет то сначала конвертируем в валюту карты
+            def payCurrency = findCurrency(payAmount.currencyType)
+            def convertedAmount = payCurrency.conversionFactor * payAmount.amount / card.wallet.currency.conversionFactor
+            cardAmount.amount -= convertedAmount
+        }
+        payment.paymentState = PaymentState.WITHDRAW
+        payment
     }
 
     @Transactional(readOnly = true)

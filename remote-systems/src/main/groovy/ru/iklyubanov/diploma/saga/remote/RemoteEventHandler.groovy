@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.MoneySendingCardNetworkAggregate
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentProcessorAggregate
-import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId
 import ru.iklyubanov.diploma.saga.core.spring.Bank
 import ru.iklyubanov.diploma.saga.core.spring.BankCard
 import ru.iklyubanov.diploma.saga.core.spring.Payment
 import ru.iklyubanov.diploma.saga.core.spring.PaymentProcessor
-import ru.iklyubanov.diploma.saga.gcore.axon.command.PaymentNotFoundCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckMerchantBankRequisitesEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckNewPaymentByIssuingBankEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.ProcessPaymentEvent
@@ -107,6 +105,12 @@ class RemoteEventHandler {
         try {
             PaymentProcessor processor = paymentProcessorService.findProcessor(transactionId)
             Payment payment = paymentProcessorService.findPayment(processor)
+            //находим карту клиента и снимаем с нее средства
+            def card = issuingBankService.findBankCard(event.clientCardId)
+            issuingBankService.withdrawMoneyFromCard(card, payment)
+            //с процессором сохраняется и платеж
+            paymentProcessorService.save(processor)
+            cardNetworkAggregate.successfulWithdrawal()
         } catch (Exception e) {
             cardNetworkAggregate.paymentRejected(e.getMessage())
         }

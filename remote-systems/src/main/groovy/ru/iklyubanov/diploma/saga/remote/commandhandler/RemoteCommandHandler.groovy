@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.MoneySendingCardNetworkAggregate
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentProcessorAggregate
-import ru.iklyubanov.diploma.saga.gcore.axon.command.PaymentNotFoundCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.command.PaymentRejectedCommand
 import ru.iklyubanov.diploma.saga.remote.command.WithdrawClientMoneyCommand
 

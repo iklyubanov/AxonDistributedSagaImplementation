@@ -63,6 +63,8 @@ public class Currency extends ParentEntity {
 
     /**
      * Exchange rate in relation to the US dollar.
+     * If less when dollar then < 1, (руб=1/68=0,014, например, 100 руб * 0,014 = 1,4 USD)
+     * If more when dollar then > 1
      * @return the conversionFactor
      */
     public BigDecimal getConversionFactor() {

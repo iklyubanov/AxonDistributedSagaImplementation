@@ -8,6 +8,7 @@ public enum PaymentState {
     REJECTED("откланен"),
     PROCESSED("в обработке"),
     NEW("новый"),
+    WITHDRAW("с клиента сняты деньги"),
     ERROR("ошибка");
 
     private final String type;
