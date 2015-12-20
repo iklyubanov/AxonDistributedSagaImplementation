@@ -20,13 +20,13 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <display-name>Axon framework Trader sample</display-name>
+    <display-name>Эмулятор системы платежей</display-name>
 
     <!--подцепляет конфиги-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath:spring/security-context.xml,
+            <!--classpath:spring/security-context.xml,-->
             classpath:META-INF/spring/main-application-context.xml
         </param-value>
     </context-param>
@@ -67,10 +67,10 @@
     <!--                             Filters                                    -->
     <!-- ====================================================================== -->
     <!--фильтр для spring Security-->
-    <filter>
+    <!--<filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>
+    </filter>-->
 
     <!-- filter for applying Decorators to entire Pages -->
     <filter>
@@ -80,7 +80,7 @@
 
     <!-- CharacterEncodingFilter фильтр для указания кодировки символов в запросе -->
     <filter>
-        <filter-name>CharacterEncodingFilter<</filter-name>
+        <filter-name>CharacterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
         <init-param>
             <param-name>encoding</param-name>
@@ -110,7 +110,7 @@
     средствам JPA, как ленивая выборка-->
     <filter>
         <filter-name>SpringOpenEntityManagerinViewFilter</filter-name>
-        <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerinViewFilter</filter-class>
+        <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class><!--OpenEntityManagerinViewFilter-->
     </filter>
 
     <!--маппинги для фильтров-->
@@ -127,15 +127,15 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <filter-mapping>
+    <!--<filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>*</url-pattern>
-        <!--<url-pattern>/company/*</url-pattern>-->
-        <!--<url-pattern>/orderbook/*</url-pattern>-->
-        <!--<url-pattern>/spring_security_login</url-pattern>-->
-        <!--<url-pattern>/j_spring_security_check</url-pattern>-->
-        <!--<url-pattern>/j_spring_security_logout</url-pattern>-->
-    </filter-mapping>
+        &lt;!&ndash;<url-pattern>/company/*</url-pattern>&ndash;&gt;
+        &lt;!&ndash;<url-pattern>/orderbook/*</url-pattern>&ndash;&gt;
+        &lt;!&ndash;<url-pattern>/spring_security_login</url-pattern>&ndash;&gt;
+        &lt;!&ndash;<url-pattern>/j_spring_security_check</url-pattern>&ndash;&gt;
+        &lt;!&ndash;<url-pattern>/j_spring_security_logout</url-pattern>&ndash;&gt;
+    </filter-mapping>-->
 
     <filter-mapping>
         <filter-name>sitemesh</filter-name>
