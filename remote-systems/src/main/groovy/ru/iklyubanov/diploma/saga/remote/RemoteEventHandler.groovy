@@ -11,6 +11,7 @@ import ru.iklyubanov.diploma.saga.core.spring.Bank
 import ru.iklyubanov.diploma.saga.core.spring.BankCard
 import ru.iklyubanov.diploma.saga.core.spring.Payment
 import ru.iklyubanov.diploma.saga.core.spring.PaymentProcessor
+import ru.iklyubanov.diploma.saga.gcore.axon.event.AddFoundsToMerchantEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckMerchantBankRequisitesEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckNewPaymentByIssuingBankEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.ProcessPaymentEvent
@@ -33,12 +34,11 @@ import ru.iklyubanov.diploma.saga.remote.service.PaymentProcessorService
 @Component
 class RemoteEventHandler {
 
+    //TODO АГРЕГАТЫ в EVENT HANDLERах НЕ ИСПОЛЬЗУЮТСЯ!!!!!
     @Autowired
     PaymentProcessorService paymentProcessorService
     @Autowired
     IssuingBankService issuingBankService
-    @Autowired
-    CardNetworkService cardNetworkService
     @Autowired
     Repository<PaymentProcessorAggregate> repository
     @Autowired
@@ -101,7 +101,7 @@ class RemoteEventHandler {
     @EventHandler
     public void handle(WithdrawClientMoneyEvent event) {
         def transactionId = event.transactionId
-        MoneySendingCardNetworkAggregate cardNetworkAggregate = cardNetworkRepository.load(command.paymentId)
+        MoneySendingCardNetworkAggregate cardNetworkAggregate = cardNetworkRepository.load(event.paymentId)
         try {
             PaymentProcessor processor = paymentProcessorService.findProcessor(transactionId)
             Payment payment = paymentProcessorService.findPayment(processor)
@@ -111,6 +111,24 @@ class RemoteEventHandler {
             //с процессором сохраняется и платеж
             paymentProcessorService.save(processor)
             cardNetworkAggregate.successfulWithdrawal()
+        } catch (Exception e) {
+            cardNetworkAggregate.paymentRejected(e.getMessage())
+        }
+    }
+
+    @EventHandler
+    public void handle(AddFoundsToMerchantEvent event) {
+        def transactionId = event.transactionId
+        MoneySendingCardNetworkAggregate cardNetworkAggregate = cardNetworkRepository.load(event.paymentId)
+        try {
+            PaymentProcessor processor = paymentProcessorService.findProcessor(transactionId)
+            Payment payment = paymentProcessorService.findPayment(processor)
+            //находим карту клиента и снимаем с нее средства
+            def card = issuingBankService.findBankCard(event.merchantCardId)
+            issuingBankService.addFoundsToCard(card, payment)
+            //с процессором сохраняется и платеж
+            paymentProcessorService.save(processor)
+            cardNetworkAggregate.paymentSuccessful()
         } catch (Exception e) {
             cardNetworkAggregate.paymentRejected(e.getMessage())
         }

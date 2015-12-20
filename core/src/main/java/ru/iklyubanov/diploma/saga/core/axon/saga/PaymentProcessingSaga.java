@@ -129,6 +129,12 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
         end();
     }
 
+    @SagaEventHandler(associationProperty = "paymentId")
+    public void handle(SuccessfulPaymentEvent event) {
+        logger.info("Платеж " + event.getPaymentId() + " успешно завершен.");
+        end();
+    }
+
     private void sendMoneyByCardNetwork() {
         paymentId = IdentifierFactory.getInstance().generateIdentifier();
         SendMoneyByCardNetworkCommand command = new SendMoneyByCardNetworkCommand(paymentId, transactionId.toString());

@@ -38,11 +38,20 @@ class MoneySendingCardNetworkAggregate extends AbstractAnnotatedAggregateRoot {
             clientCardId: clientCardId))
   }
 
+  void addFoundsToMerchant() {
+    apply(new AddFoundsToMerchantEvent(paymentId: paymentId, transactionId: transactionId, merchantBankId: merchantBankId,
+            merchantCardId: merchantCardId))
+  }
+
   void paymentRejected(String reason) {
     apply(new PaymentRejectedEvent(paymentId, transactionId, reason))
   }
 
   void successfulWithdrawal() {
-    apply(new SuccessfulWithdrawalEvent(paymentId, transactionId, merchantBankId, merchantCardId))
+    apply(new SuccessfulWithdrawalEvent(paymentId, transactionId))
+  }
+
+  void paymentSuccessful() {
+    apply(new SuccessfulPaymentEvent(paymentId, transactionId))
   }
 }

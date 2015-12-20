@@ -10,6 +10,7 @@ import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId
 import ru.iklyubanov.diploma.saga.gcore.axon.command.MerchantAddFoundsCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.event.PaymentRejectedEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.SafePayEvent
+import ru.iklyubanov.diploma.saga.gcore.axon.event.SuccessfulPaymentEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.SuccessfulWithdrawalEvent
 import ru.iklyubanov.diploma.saga.remote.command.WithdrawClientMoneyCommand
 import ru.iklyubanov.diploma.saga.remote.service.PaymentProcessorService
@@ -50,5 +51,12 @@ class CardNetworkSaga extends AbstractAnnotatedSaga {
     public void handle(SuccessfulWithdrawalEvent event) {
         logger.info("Деньги успешно сняты с клиента. Запускаем передачу средств получателю.")
         commandGateway.send(new MerchantAddFoundsCommand(paymentId: paymentId, transactionId: transactionId.toString()))
+    }
+
+    @SagaEventHandler(associationProperty = "paymentId")
+    public void handle(SuccessfulPaymentEvent event) {
+        logger.info("Платеж $event.paymentId успешно завершен.")
+        successful = true
+        end()
     }
 }

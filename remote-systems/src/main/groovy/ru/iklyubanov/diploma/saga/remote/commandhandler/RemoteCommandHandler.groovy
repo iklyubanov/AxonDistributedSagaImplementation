@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.MoneySendingCardNetworkAggregate
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentProcessorAggregate
+import ru.iklyubanov.diploma.saga.gcore.axon.command.MerchantAddFoundsCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.command.PaymentRejectedCommand
 import ru.iklyubanov.diploma.saga.remote.command.WithdrawClientMoneyCommand
 
@@ -31,6 +32,12 @@ class RemoteCommandHandler {
   void handle(WithdrawClientMoneyCommand command) {
     MoneySendingCardNetworkAggregate cardNetworkAggregate = cardNetworkRepository.load(command.paymentId)
     cardNetworkAggregate.withdrawClientMoney()
+  }
+
+  @CommandHandler
+  void handle(MerchantAddFoundsCommand command) {
+    MoneySendingCardNetworkAggregate cardNetworkAggregate = cardNetworkRepository.load(command.paymentId)
+    cardNetworkAggregate.addFoundsToMerchant()
   }
 
 }

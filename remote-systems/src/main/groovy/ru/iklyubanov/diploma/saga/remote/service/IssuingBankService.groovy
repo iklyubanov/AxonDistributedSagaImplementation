@@ -65,6 +65,21 @@ class IssuingBankService {
         payment
     }
 
+    def addFoundsToCard(BankCard card, Payment payment) {
+        MonetaryValue payAmount = payment.paymentAmount
+        MonetaryValue cardAmount = card.wallet.monetaryValue
+        //если платеж в той же валюте - просто снимаем с карты средства
+        if(cardAmount.currencyType.equals(payAmount.currencyType)) {
+            cardAmount.amount += payAmount.amount
+        } else {//если нет то сначала конвертируем в валюту карты
+            def payCurrency = findCurrency(payAmount.currencyType)
+            def convertedAmount = payCurrency.conversionFactor * payAmount.amount / card.wallet.currency.conversionFactor
+            cardAmount.amount += convertedAmount
+        }
+        payment.paymentState = PaymentState.COMPLETED
+        payment
+    }
+
     @Transactional(readOnly = true)
     BankCard checkBankCard(Bank bank, String code, String firstName, String lastName, BigDecimal amount,
             String currencyType, String expiredDate, String ccvCode) throws NullPointerException,
