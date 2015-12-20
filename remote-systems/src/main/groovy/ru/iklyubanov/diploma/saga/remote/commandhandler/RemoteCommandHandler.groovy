@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.MoneySendingCardNetworkAggregate
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentProcessorAggregate
+import ru.iklyubanov.diploma.saga.gcore.axon.command.BankBikFoundedCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.command.MerchantAddFoundsCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.command.PaymentRejectedCommand
 import ru.iklyubanov.diploma.saga.remote.command.WithdrawClientMoneyCommand
@@ -23,13 +24,20 @@ class RemoteCommandHandler {
   Repository<MoneySendingCardNetworkAggregate> cardNetworkRepository
 
   @CommandHandler
+  void handle(BankBikFoundedCommand command) {
+    PaymentProcessorAggregate paymentProcessorAggregate = processorRepository.load(command.transactionId.toString())
+    paymentProcessorAggregate.saveBik(command.issuingBankBIK)
+  }
+
+  @CommandHandler
   void handle(PaymentRejectedCommand command) {
-    PaymentProcessorAggregate processorAggregate = processorRepository.load(command.transactionId.toString())
-    processorAggregate.paymentNotFound(command.transactionId.toString(), command.paymentId)
+    MoneySendingCardNetworkAggregate cardNetworkAggregate = cardNetworkRepository.load(command.paymentId)
+    cardNetworkAggregate.paymentRejected(command.reason)
   }
 
   @CommandHandler
   void handle(WithdrawClientMoneyCommand command) {
+    //todo возможно лучше вынести paymentId в отдельный класс как transactionId
     MoneySendingCardNetworkAggregate cardNetworkAggregate = cardNetworkRepository.load(command.paymentId)
     cardNetworkAggregate.withdrawClientMoney()
   }

@@ -53,9 +53,9 @@ public class Payment extends ParentEntity {
     @Basic
     private String info;
 
-    @Column("CLIENT_BANK_BIK")
+    @Column(name = "CLIENT_BANK_BIK")
     private String issuingBankBIK;
-    @Column("CLIENT_CARD_CODE")
+    @Column(name = "CLIENT_CARD_CODE")
     private String bankCardCode;
 
     @PrePersist

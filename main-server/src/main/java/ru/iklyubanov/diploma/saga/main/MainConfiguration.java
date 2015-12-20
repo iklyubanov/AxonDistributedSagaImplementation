@@ -1,7 +1,6 @@
 package ru.iklyubanov.diploma.saga.main;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.jgroups.stack.GossipRouter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -24,33 +23,6 @@ public class MainConfiguration {
         CommandGateway commandGateway = applicationContext.getBean(CommandGateway.class);
 
 
-        //TODO Запуск Distributed CommandBus With Spring
-        //==============================================
-        // Load the Load factor from the command line or use default 100
-        Integer loadFactor = determineLoadFactor();
-
-        System.setProperty("loadFactor", loadFactor.toString());
-
-        // Start the GossipRouter if it is not already running
-        GossipRouter gossipRouter = new GossipRouter("127.0.0.1", 7800);//it should be in config tcp_gossip
-        try {
-            gossipRouter.start();
-        } catch (BindException e) {
-            System.out.println("Gossip router is already started in another JVM instance.");
-        }
-
-        // Load the spring beans from the xml configuration file.
-        //ApplicationContext applicationContext = new ClassPathXmlApplicationContext("distributed-config.xml");
-
-        // Obtain the gateway from the context to send commands.
-        //CommandGateway commandGateway = applicationContext.getBean("commandGateway", CommandGateway.class);
-
-        // Load the amount of times to send the commands from the command line or use default 1
-        Integer numberOfCommandLoops = determineNumberOfCommandLoops();
-
-        /*for (int i = 0; i < numberOfCommandLoops; i++) {
-            //CommandGenerator.sendCommands(commandGateway);
-        }*/
         //===============================================
     }
 

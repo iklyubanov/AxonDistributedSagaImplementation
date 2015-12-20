@@ -1,16 +1,19 @@
 package ru.iklyubanov.diploma.saga.remote
 
 import groovy.json.JsonOutput
+import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.axonframework.repository.Repository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.MoneySendingCardNetworkAggregate
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentProcessorAggregate
+import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId
 import ru.iklyubanov.diploma.saga.core.spring.Bank
 import ru.iklyubanov.diploma.saga.core.spring.BankCard
 import ru.iklyubanov.diploma.saga.core.spring.Payment
 import ru.iklyubanov.diploma.saga.core.spring.PaymentProcessor
+import ru.iklyubanov.diploma.saga.gcore.axon.command.BankBikFoundedCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.event.AddFoundsToMerchantEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckMerchantBankRequisitesEvent
 import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckNewPaymentByIssuingBankEvent
@@ -40,6 +43,8 @@ class RemoteEventHandler {
     @Autowired
     IssuingBankService issuingBankService
     @Autowired
+    private CommandGateway commandGateway;
+    @Autowired
     Repository<PaymentProcessorAggregate> repository
     @Autowired
     Repository<MoneySendingCardNetworkAggregate> cardNetworkRepository
@@ -57,11 +62,14 @@ class RemoteEventHandler {
         freeProcessor.payments << payment
         ++freeProcessor.currentTransactionsCount //todo check
         paymentProcessorService.save(freeProcessor)
-        PaymentProcessorAggregate paymentProcessorAggregate = repository.load(event.transactionId)
-        paymentProcessorAggregate.saveBik(payment.issuingBankBIK)
+        //PaymentProcessorAggregate paymentProcessorAggregate = repository.load(event.transactionId)
+        //paymentProcessorAggregate.saveBik(payment.issuingBankBIK)
+        commandGateway.send(new BankBikFoundedCommand(transactionId: new TransactionId(event.transactionId), issuingBankBIK: payment.issuingBankBIK))
     }
 
-    /** Здесь обрабатываем запрос клиента на перевод средств банком эмитентом*/
+    /** Здесь обрабатываем запрос клиента на перевод средств банком эмитентом
+     * todo Если не будет работать загрузка агрегата - переделать как в методе обработки ProcessPaymentEvent
+     * */
     @EventHandler
     public void handle(CheckNewPaymentByIssuingBankEvent event) {
         def transactId = event.transactionId

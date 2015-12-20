@@ -17,7 +17,7 @@
 
 <html>
 <head>
-    <title>Welcome to the axon trader</title>
+    <title>Добро пожаловать в эмулятор платежей</title>
 </head>
 <body>
 <content tag="title">Welcome</content>
@@ -76,7 +76,7 @@
 
         <p>Trace all executed trades using the sockjs connection. Beware, vertx needs to be running as well.</p>
 
-        <p><a class="btn primary" href="${ctx}/orderbook/socket">Executed trades &raquo;</a></p>
+        <%--<p><a class="btn primary" href="${ctx}/orderbook/socket">Executed trades &raquo;</a></p>--%>
     </div>
 </div>
 
