@@ -25,7 +25,7 @@
              http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--TODO fix it!!!!-->
-    <context:component-scan base-package="ru.iklyubanov.diploma.saga.webui.security"/>
+    <!--<context:component-scan base-package="ru.iklyubanov.diploma.saga.webui.security"/>
 
     <http pattern="/js/**" security="none"/>
     <http pattern="/favicon.ico" security="none"/>
@@ -43,7 +43,7 @@
     </http>
 
     <authentication-manager>
-        <authentication-provider ref="traderAuthenticationProvider"/>
-    </authentication-manager>
+        <authentication-provider ref="paymentAuthenticationProvider"/>
+    </authentication-manager>-->
 
 </beans:beans>
