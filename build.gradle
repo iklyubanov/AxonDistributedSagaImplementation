@@ -131,6 +131,7 @@ project(':main-server') {
     compile("org.apache.derby:derby:$derbyVersion")
     compile('com.zaxxer:HikariCP:2.4.2')
     compile("org.hibernate:hibernate-validator")
+    compile('org.jboss.narayana.jta:narayana-jta:5.2.9.Final')
 
     compile('javax.el:javax.el-api:3.0.0')
 
@@ -173,6 +174,7 @@ project(':remote-systems') {
     compile("org.apache.derby:derby:$derbyVersion")
     compile('com.zaxxer:HikariCP:2.4.2')
     compile("org.hibernate:hibernate-validator")
+    compile('org.jboss.narayana.jta:narayana-jta:5.2.9.Final')
 
     compile('javax.el:javax.el-api:3.0.0')
 

@@ -6,12 +6,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Scanner;
 
 /**
  * Created by kliubanov on 23.11.2015.
  */
+@EnableTransactionManagement
 @SpringBootApplication
 @PropertySource("classpath:META-INF/spring/configuration.properties")
 @ImportResource("classpath:META-INF/spring/application-context.xml")

@@ -10,9 +10,10 @@ import org.springframework.context.annotation.PropertySource;
 /**
  * Created by kliubanov on 23.11.2015.
  */
+@Deprecated
 @SpringBootApplication
-@PropertySource("classpath:META-INF/spring/configuration.properties")
-@ImportResource("classpath:META-INF/spring/application-context.xml")
+/*@PropertySource("classpath:META-INF/spring/configuration.properties")
+@ImportResource("classpath:META-INF/spring/application-context.xml")*/
 public class CoreConfiguration {
 
     public static void main(String[] args) {

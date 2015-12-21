@@ -14,12 +14,7 @@ import ru.iklyubanov.diploma.saga.core.spring.BankCard
 import ru.iklyubanov.diploma.saga.core.spring.Payment
 import ru.iklyubanov.diploma.saga.core.spring.PaymentProcessor
 import ru.iklyubanov.diploma.saga.gcore.axon.command.BankBikFoundedCommand
-import ru.iklyubanov.diploma.saga.gcore.axon.event.AddFoundsToMerchantEvent
-import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckMerchantBankRequisitesEvent
-import ru.iklyubanov.diploma.saga.gcore.axon.event.CheckNewPaymentByIssuingBankEvent
-import ru.iklyubanov.diploma.saga.gcore.axon.event.ProcessPaymentEvent
-import ru.iklyubanov.diploma.saga.gcore.axon.event.WithdrawClientMoneyEvent
-import ru.iklyubanov.diploma.saga.remote.service.CardNetworkService
+import ru.iklyubanov.diploma.saga.gcore.axon.event.*
 import ru.iklyubanov.diploma.saga.remote.service.IssuingBankService
 import ru.iklyubanov.diploma.saga.remote.service.PaymentProcessorService
 
@@ -78,8 +73,8 @@ class RemoteEventHandler {
         try {
             Bank bank = issuingBankService.findBank(event.getIssuingBankBIK())
             BankCard card = issuingBankService.checkBankCard(bank, event.code, event.firstName, event.lastName,
-                event.amount, event.currencyType, event.expiredDate, event.ccvCode)
-            if(card) {
+                    event.amount, event.currencyType, event.expiredDate, event.ccvCode)
+            if (card) {
                 paymentProcessorAggregate.succeedIssuingBankValidation(transactId, bank.id, card.id)
             }
         } catch (Exception e) {
@@ -87,23 +82,23 @@ class RemoteEventHandler {
         }
     }
 
-  /** Здесь обрабатываем запрос клиента на перевод средств банком получателя*/
-  @EventHandler
-  public void handle(CheckMerchantBankRequisitesEvent event) {
-    //проверяем реквизиты
-      def transactId = event.transactionId
-      PaymentProcessorAggregate paymentProcessorAggregate = repository.load(transactId)
-      try {
-          Bank bank = issuingBankService.findBank(event.getMerchantBankBIK())
-          BankCard card = issuingBankService.checkMerchantBankCard(bank, event.merchantBankAccount, event.merchant,
-                  event.merchantINN)
-          if(card) {
-              paymentProcessorAggregate.succeedMerchantBankValidation(transactId, bank.id, card.id)
-          }
-      } catch (Exception e) {
-          paymentProcessorAggregate.failedMerchantBankValidation(transactId, e.getMessage())
-      }
-  }
+    /** Здесь обрабатываем запрос клиента на перевод средств банком получателя*/
+    @EventHandler
+    public void handle(CheckMerchantBankRequisitesEvent event) {
+        //проверяем реквизиты
+        def transactId = event.transactionId
+        PaymentProcessorAggregate paymentProcessorAggregate = repository.load(transactId)
+        try {
+            Bank bank = issuingBankService.findBank(event.getMerchantBankBIK())
+            BankCard card = issuingBankService.checkMerchantBankCard(bank, event.merchantBankAccount, event.merchant,
+                    event.merchantINN)
+            if (card) {
+                paymentProcessorAggregate.succeedMerchantBankValidation(transactId, bank.id, card.id)
+            }
+        } catch (Exception e) {
+            paymentProcessorAggregate.failedMerchantBankValidation(transactId, e.getMessage())
+        }
+    }
 
     /**Снимаем деньги с клиента*/
     @EventHandler
