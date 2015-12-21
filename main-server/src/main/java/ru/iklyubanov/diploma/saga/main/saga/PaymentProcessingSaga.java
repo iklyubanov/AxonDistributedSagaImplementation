@@ -1,4 +1,4 @@
-package ru.iklyubanov.diploma.saga.core.axon.saga;
+package ru.iklyubanov.diploma.saga.main.saga;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.domain.IdentifierFactory;
@@ -132,6 +132,7 @@ public class PaymentProcessingSaga extends AbstractAnnotatedSaga {
     @SagaEventHandler(associationProperty = "paymentId")
     public void handle(SuccessfulPaymentEvent event) {
         logger.info("Платеж " + event.getPaymentId() + " успешно завершен.");
+        isMoneyTransfered = true;
         end();
     }
 

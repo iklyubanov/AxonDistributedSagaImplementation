@@ -1,8 +1,7 @@
-package ru.iklyubanov.diploma.saga;
+package ru.iklyubanov.diploma.saga.main.saga;
 
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.junit.Before;
-import ru.iklyubanov.diploma.saga.core.axon.saga.PaymentProcessingSaga;
 
 /**
  * Created by kliubanov on 27.11.2015.

@@ -7,7 +7,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 
-import java.net.BindException;
 import java.util.Scanner;
 
 /**
@@ -15,7 +14,7 @@ import java.util.Scanner;
  */
 @SpringBootApplication
 @PropertySource("classpath:META-INF/spring/configuration.properties")
-@ImportResource("classpath:META-INF/spring/main-application-context.xml")
+@ImportResource("classpath:META-INF/spring/application-context.xml")
 public class MainConfiguration {
 
     public static void main(String[] args) throws Exception {

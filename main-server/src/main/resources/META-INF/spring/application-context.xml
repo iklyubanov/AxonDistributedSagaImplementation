@@ -11,6 +11,8 @@
        http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <import resource="database-context.xml" />
+
        <context:annotation-config/>
        <!--This element activates annotation-based configuration of event handling
        and command processing in the Axon framework. All beans with @CommandHandler or
@@ -27,37 +29,15 @@
 
     <!--=============COMMAND SETTINGS============================-->
 
-    <!-- Setup the distributed command bus using the Special JGroupsConnector factory bean -->
-    <!--<bean id="commandBus" class="org.axonframework.commandhandling.distributed.DistributedCommandBus">
-        <constructor-arg ref="jGroupsConnector"/>
-    </bean>-->
     <axon:command-bus id="commandBus">
         <!--<axon:handlerInterceptors> TODO позже можно сделать перехватчик комманд для логгирования
             <ref bean="auditingInterceptor"/>
         </axon:handlerInterceptors>-->
     </axon:command-bus>
 
-    <!--TODO (deprecaed for us) Setup the factory bean for the JGroupsConnector -->
-    <!--<bean id="jGroupsConnector"
-          class="org.axonframework.commandhandling.distributed.jgroups.JGroupsConnectorFactoryBean">
-        <property name="configuration" value="tcp_gossip.xml"/>
-        <property name="clusterName" value="myCluster"/>
-        <property name="loadFactor" value="${loadFactor}"/>
-    </bean>-->
-
     <bean class="org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean">
         <property name="commandBus" ref="commandBus"/>
     </bean>
-
-    <!--TODO (deprecaed for us) we should use distributed Command Bus -->
-    <!--TODO (deprecaed for us) Соединение с удаленным модулем должна быть через DistributedCommandBus -->
-    <!--TODO (deprecaed for us) Нам нужен axon-distributed-commandbus для того чтобы из саги запускать команды распределенные по разным jvm-->
-        <!--<axon:command-bus id="commandBus" transaction-manager="transactionManager">
-            <axon:dispatchInterceptors>
-                &lt;!&ndash;Interceptor that applies JSR303 bean validation on incoming commands. Интерсептор для проверки валидации&ndash;&gt;
-                <bean class="org.axonframework.commandhandling.interceptors.BeanValidationInterceptor"/>
-            </axon:dispatchInterceptors>
-        </axon:command-bus>-->
 
     <!--=================Rabbit AMQP settings=================TODO может вынести в main server config?!-->
     <rabbit:connection-factory

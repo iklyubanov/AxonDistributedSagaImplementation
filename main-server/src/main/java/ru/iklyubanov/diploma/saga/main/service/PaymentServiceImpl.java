@@ -37,7 +37,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override //todo нужно убрать возвращаемый тип или передавать сообщение получаемое из колбэка
     public void createNewPayment(CreatePaymentCommand createPaymentCommand) {
-        //todo здесь наверно нужно вызвать сагу и выполнять процесс создание в ней
+        //вызываем сагу через комманду
         commandGateway.send(createPaymentCommand);
         //commandGateway.send(new ModifyTaskTitleCommand(identifier, request.getTitle()));
         //return paymentRepository.save(payment);
