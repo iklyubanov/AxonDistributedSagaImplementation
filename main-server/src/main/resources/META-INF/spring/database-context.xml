@@ -22,6 +22,9 @@
               <property name="dataSource" ref="dataSource"/>
        </bean>
 
+       <!--todo for jpa repository-->
+       <bean id="entityManagerProvider" class="org.axonframework.common.jpa.ContainerManagedEntityManagerProvider"/>
+
        <tx:annotation-driven transaction-manager="transactionManager"/>
 
        <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
