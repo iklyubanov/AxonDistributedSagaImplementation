@@ -3,8 +3,8 @@ package ru.iklyubanov.diploma.saga.remote.repository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
-import ru.iklyubanov.diploma.saga.core.spring.Bank
-import ru.iklyubanov.diploma.saga.core.spring.BankCard
+import ru.iklyubanov.diploma.saga.core.spring.entity.Bank
+import ru.iklyubanov.diploma.saga.core.spring.entity.BankCard
 
 /**
  * Created by ivan on 12/6/2015.

@@ -3,11 +3,11 @@ package ru.iklyubanov.diploma.saga.remote.service
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ru.iklyubanov.diploma.saga.core.spring.Bank
-import ru.iklyubanov.diploma.saga.core.spring.BankCard
-import ru.iklyubanov.diploma.saga.core.spring.Currency
-import ru.iklyubanov.diploma.saga.core.spring.Merchant
-import ru.iklyubanov.diploma.saga.core.spring.Payment
+import ru.iklyubanov.diploma.saga.core.spring.entity.Bank
+import ru.iklyubanov.diploma.saga.core.spring.entity.BankCard
+import ru.iklyubanov.diploma.saga.core.spring.entity.Currency
+import ru.iklyubanov.diploma.saga.core.spring.entity.Merchant
+import ru.iklyubanov.diploma.saga.core.spring.entity.Payment
 import ru.iklyubanov.diploma.saga.core.spring.util.CardStatus
 import ru.iklyubanov.diploma.saga.core.spring.util.MonetaryValue
 import ru.iklyubanov.diploma.saga.core.spring.util.PaymentState

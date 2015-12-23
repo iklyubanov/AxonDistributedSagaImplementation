@@ -61,6 +61,7 @@
     <bean class="org.axonframework.serializer.xml.XStreamSerializer"/>
 
     <!--TODO Лучше использовать ClusteringEventsBus для распределенности-->
+    <!--TODO We can try SpringIntegrationEventBus if ClusteringEventsBus isn't work-->
     <axon-amqp:terminal id="terminal" exchange-name="${application.configuration.rabbit.exchangeName}">
         <axon-amqp:default-configuration/>
     </axon-amqp:terminal>
@@ -103,13 +104,13 @@
     <!--JPA implementation of the Saga Repository. It uses an EntityManager to persist the actual saga in a backing store.-->
     <!--After each operations that modified the backing store, EntityManager.flush() is invoked to ensure the store
     contains the last modifications. To override this behavior, see-->
-    <!--<bean id="sagaSqlSchema" class="org.axonframework.saga.repository.jpa.JpaSagaRepository">
+    <bean id="sagaSqlSchema" class="org.axonframework.saga.repository.jpa.JpaSagaRepository">
         <constructor-arg name="entityManagerProvider" value="org.axonframework.common.jpa.SimpleEntityManagerProvider"/>
     </bean>
 
     <bean id="simpleEntityManagerProvider" class="org.axonframework.common.jpa.SimpleEntityManagerProvider">
-        <constructor-arg name="entityManager" ref=""/>
-    </bean>-->
+        <constructor-arg name="entityManager" ref="entityManagerFactory"/>
+    </bean>
 
        <!--<bean id="contactNameRepository" class="org.axonframework.sample.app.command.JpaContactNameRepository"/>-->
 

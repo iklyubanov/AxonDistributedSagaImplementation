@@ -1,4 +1,4 @@
-package ru.iklyubanov.diploma.saga.core.spring;
+package ru.iklyubanov.diploma.saga.core.spring.entity;
 
 import ru.iklyubanov.diploma.saga.core.spring.util.ParentEntity;
 

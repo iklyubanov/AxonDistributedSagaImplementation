@@ -6,11 +6,14 @@ import org.springframework.stereotype.Component;
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentAggregate;
 import ru.iklyubanov.diploma.saga.gcore.axon.command.CreatePaymentCommand;
 
+import javax.transaction.Transactional;
+
 /**
  * Класс обрабатывающий команды связанные с платежами
  * Created by ivan on 12/5/2015.
  */
 @Component
+@Transactional
 public class PaymentCommandHandler {
 
     private Repository<PaymentAggregate> repository;

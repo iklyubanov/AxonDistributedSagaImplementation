@@ -11,10 +11,13 @@ import ru.iklyubanov.diploma.saga.gcore.axon.command.MerchantAddFoundsCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.command.PaymentRejectedCommand
 import ru.iklyubanov.diploma.saga.remote.command.WithdrawClientMoneyCommand
 
+import javax.transaction.Transactional
+
 /**
  * Created by kliubanov on 08.12.2015.
  */
 @Component
+@Transactional
 class RemoteCommandHandler {
 
   @Autowired

@@ -11,10 +11,13 @@ import ru.iklyubanov.diploma.saga.gcore.axon.command.CheckNewPaymentByIssuingBan
 import ru.iklyubanov.diploma.saga.gcore.axon.command.ProcessPaymentByProcessorCommand;
 import ru.iklyubanov.diploma.saga.gcore.axon.command.SendMoneyByCardNetworkCommand;
 
+import javax.transaction.Transactional;
+
 /**
  * Created by kliubanov on 27.11.2015.
  */
 @Component
+@Transactional
 public class PaymentProcessorHandler {
 
     @Autowired

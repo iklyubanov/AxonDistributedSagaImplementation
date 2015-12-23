@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iklyubanov.diploma.saga.gcore.axon.command.CreatePaymentCommand;
-import ru.iklyubanov.diploma.saga.core.spring.Payment;
+import ru.iklyubanov.diploma.saga.core.spring.entity.Payment;
 import ru.iklyubanov.diploma.saga.core.spring.repositories.PaymentRepository;
 
 /**

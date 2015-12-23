@@ -4,8 +4,8 @@ import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ru.iklyubanov.diploma.saga.core.spring.Payment
-import ru.iklyubanov.diploma.saga.core.spring.PaymentProcessor
+import ru.iklyubanov.diploma.saga.core.spring.entity.Payment
+import ru.iklyubanov.diploma.saga.core.spring.entity.PaymentProcessor
 import ru.iklyubanov.diploma.saga.core.spring.util.MonetaryValue
 import ru.iklyubanov.diploma.saga.core.spring.util.PaymentRejectionException
 import ru.iklyubanov.diploma.saga.core.spring.util.PaymentState

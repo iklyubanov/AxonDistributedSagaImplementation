@@ -9,14 +9,16 @@ import org.springframework.stereotype.Component
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.MoneySendingCardNetworkAggregate
 import ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentProcessorAggregate
 import ru.iklyubanov.diploma.saga.core.axon.util.TransactionId
-import ru.iklyubanov.diploma.saga.core.spring.Bank
-import ru.iklyubanov.diploma.saga.core.spring.BankCard
-import ru.iklyubanov.diploma.saga.core.spring.Payment
-import ru.iklyubanov.diploma.saga.core.spring.PaymentProcessor
+import ru.iklyubanov.diploma.saga.core.spring.entity.Bank
+import ru.iklyubanov.diploma.saga.core.spring.entity.BankCard
+import ru.iklyubanov.diploma.saga.core.spring.entity.Payment
+import ru.iklyubanov.diploma.saga.core.spring.entity.PaymentProcessor
 import ru.iklyubanov.diploma.saga.gcore.axon.command.BankBikFoundedCommand
 import ru.iklyubanov.diploma.saga.gcore.axon.event.*
 import ru.iklyubanov.diploma.saga.remote.service.IssuingBankService
 import ru.iklyubanov.diploma.saga.remote.service.PaymentProcessorService
+
+import javax.transaction.Transactional
 
 /**Step 2: YapStone to Payment Processor
 
@@ -30,6 +32,7 @@ import ru.iklyubanov.diploma.saga.remote.service.PaymentProcessorService
  * Created by ivan on 12/6/2015.
  */
 @Component
+@Transactional
 class RemoteEventHandler {
 
     //TODO АГРЕГАТЫ в EVENT HANDLERах НЕ ИСПОЛЬЗУЮТСЯ!!!!!

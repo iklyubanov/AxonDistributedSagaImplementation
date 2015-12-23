@@ -1,4 +1,4 @@
-package ru.iklyubanov.diploma.saga.core.spring;
+package ru.iklyubanov.diploma.saga.core.spring.entity;
 
 import ru.iklyubanov.diploma.saga.core.spring.util.CardStatus;
 import ru.iklyubanov.diploma.saga.core.spring.util.CardType;
@@ -6,7 +6,6 @@ import ru.iklyubanov.diploma.saga.core.spring.util.ParentEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
 
 /**
  * Created by kliubanov on 23.11.2015.
