@@ -54,7 +54,7 @@
     <rabbit:fanout-exchange
             name="${application.configuration.rabbit.exchangeName}">
         <rabbit:bindings>
-            <rabbit:binding queue="${application.configuration.rabbit.queueName}"/>
+            <rabbit:binding queue="${application.configuration.rabbit.queueName}"/><!--todo fix-->
         </rabbit:bindings>
     </rabbit:fanout-exchange>
 
@@ -91,8 +91,8 @@
 
     <axon:jpa-event-store id="eventStore" data-source="dataSource"/>
 
-    <axon:jpa-saga-repository id="sagaRepository" resource-injector="resourceInjector"
-                              use-explicit-flush="true" saga-serializer="sagaSerializer">
+    <axon:jpa-saga-repository id="sagaRepository"
+                              use-explicit-flush="true" saga-serializer="sagaSerializer"><!--resource-injector="resourceInjector"-->
         <!--Spring users can use the <axon:cache-config> element to add caching behavior to a <axon:jpa-saga-repository> element.
         It is configured with two cache references (which may refer to the same cache): one which stores the cached Saga instances,
         and one that stores the associations.-->

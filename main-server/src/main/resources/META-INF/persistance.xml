@@ -27,15 +27,13 @@
         <!--<jta-data-source>java:/DefaultDS</jta-data-source>-->
         <jta-data-source>java:jboss/datasources/PostgreDataSource</jta-data-source>
 
-        <!--<class>org.axonframework.sample.app.query.AddressEntry</class>
-        <class>org.axonframework.sample.app.query.ContactEntry</class>
-        <class>org.axonframework.sample.app.command.ClaimedContactName</class>-->
-
+        <!-- JPA Event Store -->
         <class>org.axonframework.eventstore.jpa.DomainEventEntry</class>
         <class>org.axonframework.eventstore.jpa.SnapshotEventEntry</class>
 
         <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
         <properties>
+            <!-- Auto detect entity classes, but don't try to detect hbm files. -->
             <property name="hibernate.archive.autodetection" value="class"/>
             <property name="hibernate.hbm2ddl.auto" value="create-update"/>
             <property name="hibernate.default_schema" value="PUBLIC"/>
