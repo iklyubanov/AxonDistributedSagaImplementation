@@ -35,8 +35,10 @@
         <properties>
             <!-- Auto detect entity classes, but don't try to detect hbm files. -->
             <property name="hibernate.archive.autodetection" value="class"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-update"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/><!--create-update-->
             <property name="hibernate.default_schema" value="PUBLIC"/>
+            <property name="spring.jpa.hibernate.ddl-auto" value="create"/><!--create-update-->
+            <!--<property name="spring.jpa.generate-ddl" value="true"/>-->
         </properties>
     </persistence-unit>
 </persistence>

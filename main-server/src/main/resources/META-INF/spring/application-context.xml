@@ -25,7 +25,12 @@
         <!--<bean class="ru.iklyubanov.diploma.saga.core.axon.event.PaymentEventHandler"/>-->
 
     <!-- Load system properties for the loadFactor -->
-    <context:property-placeholder/>
+    <!--<context:property-placeholder location="classpath:META-INF/spring/configuration.properties"/>--><!-- здесь будут искаться property файлы -->
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="classpath:META-INF/spring/configuration.properties"/>
+    </bean>
+
 
     <!--=============COMMAND SETTINGS============================-->
 
@@ -39,7 +44,7 @@
         <property name="commandBus" ref="commandBus"/>
     </bean>
 
-    <!--=================Rabbit AMQP settings=================TODO может вынести в main server config?!-->
+    <!--=================Rabbit AMQP settings=================-->
     <rabbit:connection-factory
             host="${application.configuration.rabbit.host}"
             port="${application.configuration.rabbit.port}"
@@ -54,7 +59,7 @@
     <rabbit:fanout-exchange
             name="${application.configuration.rabbit.exchangeName}">
         <rabbit:bindings>
-            <rabbit:binding queue="${application.configuration.rabbit.queueName}"/><!--todo fix-->
+            <rabbit:binding queue="${application.configuration.rabbit.queueName}"/>
         </rabbit:bindings>
     </rabbit:fanout-exchange>
 
@@ -92,14 +97,16 @@
     <axon:jpa-event-store id="eventStore" data-source="dataSource"/>
 
     <axon:jpa-saga-repository id="sagaRepository"
-                              use-explicit-flush="true" saga-serializer="sagaSerializer"><!--resource-injector="resourceInjector"-->
+                              use-explicit-flush="true" saga-serializer="serializer"><!--resource-injector="resourceInjector"-->
         <!--Spring users can use the <axon:cache-config> element to add caching behavior to a <axon:jpa-saga-repository> element.
         It is configured with two cache references (which may refer to the same cache): one which stores the cached Saga instances,
         and one that stores the associations.-->
         <axon:cache-config saga-cache="sagaCacheRef" associations-cache="associationCacheRef"/>
     </axon:jpa-saga-repository>
 
-    ======================================-->
+    <bean id="serializer" class="org.axonframework.serializer.xml.XStreamSerializer"/>
+
+    <!--======================================&ndash;&gt;-->
 
     <!--JPA implementation of the Saga Repository. It uses an EntityManager to persist the actual saga in a backing store.-->
     <!--After each operations that modified the backing store, EntityManager.flush() is invoked to ensure the store

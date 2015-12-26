@@ -139,6 +139,7 @@ project(':main-server') {
     compile("org.axonframework:axon-amqp:${axonVersion}")
 
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-amqp")
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("org.axonframework:axon-test:${axonVersion}")
     //testCompile project(':core')
@@ -179,6 +180,8 @@ project(':remote-systems') {
     compile('javax.el:javax.el-api:3.0.0')
 
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-amqp")
+
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("org.axonframework:axon-test:${axonVersion}")
 
