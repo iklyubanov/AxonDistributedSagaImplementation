@@ -28,7 +28,7 @@
     <!--<context:property-placeholder location="classpath:META-INF/spring/configuration.properties"/>--><!-- здесь будут искаться property файлы -->
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations" value="classpath:META-INF/spring/configuration.properties"/>
+        <property name="locations" value="classpath:configuration.properties"/>
     </bean>
 
 
@@ -45,11 +45,20 @@
     </bean>
 
     <!--=================Rabbit AMQP settings=================-->
-    <rabbit:connection-factory
-            host="${application.configuration.rabbit.host}"
+    <!--application.configuration.rabbit.host=localhost
+application.configuration.rabbit.port=5672
+application.configuration.rabbit.username=guest
+application.configuration.rabbit.password=guest
+application.configuration.rabbit.exchangeName=Axon.EventBus
+host="${application.configuration.rabbit.host}"
             port="${application.configuration.rabbit.port}"
             username="${application.configuration.rabbit.username}"
-            password="${application.configuration.rabbit.password}"/>
+            password="${application.configuration.rabbit.password}"-->
+    <rabbit:connection-factory
+            host="localhost"
+            port="5672"
+            username="guest"
+            password="guest"/>
 
     <rabbit:queue
             name="${application.configuration.rabbit.queueName}"
@@ -67,7 +76,7 @@
 
     <!--TODO Лучше использовать ClusteringEventsBus для распределенности-->
     <!--TODO We can try SpringIntegrationEventBus if ClusteringEventsBus isn't work-->
-    <axon-amqp:terminal id="terminal" exchange-name="${application.configuration.rabbit.exchangeName}">
+    <axon-amqp:terminal id="terminal" exchange-name="Axon.EventBus">
         <axon-amqp:default-configuration/>
     </axon-amqp:terminal>
     <!--=============CLUSTER SETTINGS============================-->

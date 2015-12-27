@@ -8,14 +8,12 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.util.Scanner;
-
 /**
  * Created by kliubanov on 23.11.2015.
  */
 @EnableTransactionManagement
 @SpringBootApplication
-@PropertySource("classpath:META-INF/spring/configuration.properties")
+@PropertySource("classpath:configuration.properties")
 @ImportResource("classpath:META-INF/spring/application-context.xml")
 public class MainConfiguration {
 
@@ -23,12 +21,12 @@ public class MainConfiguration {
         ApplicationContext applicationContext = SpringApplication.run(MainConfiguration.class, args);
         CommandGateway commandGateway = applicationContext.getBean(CommandGateway.class);
 
-
         //===============================================
     }
 
-    /*todo классы из теста Distributed CommandBus*/
-    public static Integer determineNumberOfCommandLoops() {
+    /*todo классы из теста Distributed CommandBus
+    * deprecated*/
+    /*public static Integer determineNumberOfCommandLoops() {
         Integer numberOfLoops = readNumberFromCommandlinePlusDefault("Please enter the number of times to send commands", 1);
         System.out.println(String.format("Sending %d times the commands to the cluster.", numberOfLoops));
         return numberOfLoops;
@@ -57,5 +55,5 @@ public class MainConfiguration {
             }
         }
         return numberOfLoops;
-    }
+    }*/
 }
