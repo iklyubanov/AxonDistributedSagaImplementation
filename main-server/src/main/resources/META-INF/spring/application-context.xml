@@ -60,15 +60,17 @@ host="${application.configuration.rabbit.host}"
             username="guest"
             password="guest"/>
 
+    <!--${application.configuration.rabbit.queueName}-->
     <rabbit:queue
-            name="${application.configuration.rabbit.queueName}"
+            name="PayQueue"
             durable="false"
             auto-delete="false"/>
 
+    <!--${application.configuration.rabbit.exchangeName}-->
     <rabbit:fanout-exchange
-            name="${application.configuration.rabbit.exchangeName}">
+            name="PayExchange">
         <rabbit:bindings>
-            <rabbit:binding queue="${application.configuration.rabbit.queueName}"/>
+            <rabbit:binding queue="PayQueue"/>
         </rabbit:bindings>
     </rabbit:fanout-exchange>
 
@@ -83,7 +85,7 @@ host="${application.configuration.rabbit.host}"
     <axon:cluster id="cluster" default="true">
         <axon:meta-data>
             <entry key="AMQP.Config">
-                <axon-amqp:configuration queue-name="${application.configuration.rabbit.queueName}"
+                <axon-amqp:configuration queue-name="PayQueue"
                         transaction-size="100"/>
             </entry>
         </axon:meta-data>
