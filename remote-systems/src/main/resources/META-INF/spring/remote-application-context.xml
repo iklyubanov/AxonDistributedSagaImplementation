@@ -95,9 +95,10 @@ host="${application.configuration.rabbit.host}"
     <axon:event-sourcing-repository id="paymentRepository"
                                     aggregate-type="ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentAggregate"/>
 
-    <axon:aggregate-command-handler id="paymentAggregateHandler"
+
+    <!--<axon:aggregate-command-handler id="paymentAggregateHandler"
                                     aggregate-type="ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentAggregate"
-                                    repository="paymentRepository" command-bus="commandBus"/>
+                                    repository="paymentRepository" command-bus="commandBus"/>-->
 
     <axon:jpa-event-store id="eventStore" data-source="dataSource"/>
 

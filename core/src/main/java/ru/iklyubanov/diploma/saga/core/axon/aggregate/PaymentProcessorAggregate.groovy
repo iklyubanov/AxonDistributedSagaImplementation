@@ -19,6 +19,9 @@ import ru.iklyubanov.diploma.saga.gcore.axon.event.ProcessPaymentEvent
 class PaymentProcessorAggregate extends AbstractAnnotatedAggregateRoot {
   private static final long serialVersionUID = 1298083385130634015L;
 
+  PaymentProcessorAggregate() {
+  }
+
   @AggregateIdentifier
   String transactId
   /**
