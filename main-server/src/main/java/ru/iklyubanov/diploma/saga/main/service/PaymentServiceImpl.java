@@ -14,7 +14,7 @@ import ru.iklyubanov.diploma.saga.core.spring.repositories.PaymentRepository;
 /**
  * Created by kliubanov on 01.12.2015.
  */
-@Repository
+/*@Repository*/
 @Transactional
 @Service("paymentService")
 public class PaymentServiceImpl implements PaymentService {

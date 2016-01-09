@@ -24,11 +24,12 @@ import java.io.Serializable;
 /**
  * @author Jettro Coenradie
  */
-@Entity
+//@Entity
+@Deprecated
 public class User implements UserAccount, Serializable {
 
-    @Id
-    @javax.persistence.Id
+    /*@Id
+    @javax.persistence.Id*/
     private String identifier;
     private String name;
     private String username;

@@ -15,17 +15,15 @@
   ~ limitations under the License.
   -->
 
-<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
-        http://java.sun.com/xml/ns/persistence/persistence_3_0.xsd"
-             version="2.0">
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
     <!--TODO transaction-type may be changed to JTA, if used ApplicationServer. For Tomcat RESOURCE_LOCAL is normal -->
     <persistence-unit name="axon" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <!--TODO need to create dataSource-->
-        <!--<jta-data-source>java:/DefaultDS</jta-data-source>-->
-        <jta-data-source>java:jboss/datasources/PostgreDataSource</jta-data-source>
+        <!--<jta-data-source>java:jboss/datasources/PostgreDataSource</jta-data-source>-->
+        <!--<non-jta-data-source>java:comp/env/ds/jdbc/postgres</non-jta-data-source>-->
 
         <!-- JPA Event Store -->
         <class>org.axonframework.eventstore.jpa.DomainEventEntry</class>
@@ -39,6 +37,7 @@
             <property name="hibernate.default_schema" value="PUBLIC"/>
             <property name="spring.jpa.hibernate.ddl-auto" value="create"/><!--create-update-->
             <!--<property name="spring.jpa.generate-ddl" value="true"/>-->
+            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/payment_system"/>
         </properties>
     </persistence-unit>
 </persistence>

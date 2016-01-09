@@ -21,6 +21,7 @@ package ru.iklyubanov.diploma.saga.core.spring.webentity;
  *
  * @author Jettro Coenradie
  */
+@Deprecated
 public interface UserAccount {
 
     String getUserId();

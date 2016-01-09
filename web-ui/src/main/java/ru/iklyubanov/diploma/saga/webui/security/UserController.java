@@ -28,13 +28,13 @@ import ru.iklyubanov.diploma.saga.core.spring.repositories.UserQueryRepository;
  * Все url с префиксом /user будут направляться в этот контроллер
  */
 @Deprecated
-@Controller
-@RequestMapping("/user")
+/*@Controller
+@RequestMapping("/user")*/
 public class UserController {
 
-    private UserQueryRepository userRepository;
+    /*private UserQueryRepository userRepository;
 
-    @Autowired
+    //@Autowired
     public UserController(UserQueryRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -49,5 +49,5 @@ public class UserController {
     public String detail(@PathVariable("identifier") String userIdentifier, Model model) {
         model.addAttribute("item", userRepository.findByIdentifier(userIdentifier));
         return "user/detail";
-    }
+    }*/
 }
