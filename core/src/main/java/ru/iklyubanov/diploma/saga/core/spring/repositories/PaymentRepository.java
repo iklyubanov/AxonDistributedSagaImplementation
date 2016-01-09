@@ -9,5 +9,5 @@ import ru.iklyubanov.diploma.saga.core.spring.entity.Payment;
  */
 @Repository
 public interface PaymentRepository extends PagingAndSortingRepository<Payment, String> {
-
+    Payment findPay(String id);
 }

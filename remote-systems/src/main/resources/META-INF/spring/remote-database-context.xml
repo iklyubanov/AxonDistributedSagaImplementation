@@ -40,7 +40,7 @@
        </bean>
     <!--earlier org.axonframework.samples.trader.query.*.repositories-->
     <!--указываем дерикторию где будут хрониться репозитории-->
-    <jpa:repositories base-package="ru.iklyubanov.diploma.saga.core.spring.repositories"
+    <jpa:repositories base-package="ru.iklyubanov.diploma.saga.remote.repository"
             entity-manager-factory-ref="entityManagerFactory"
             transaction-manager-ref="transactionManager"/>
 

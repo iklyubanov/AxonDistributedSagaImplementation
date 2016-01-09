@@ -2,6 +2,7 @@ package ru.iklyubanov.diploma.saga.main.service;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,7 @@ public class PaymentServiceImpl implements PaymentService {
     private CommandGateway commandGateway;
 
     @Autowired
-    public PaymentServiceImpl(PaymentRepository paymentRepository) {
+    public PaymentServiceImpl(@Qualifier("paymentRepository") PaymentRepository paymentRepository) {
         this.paymentRepository = paymentRepository;
     }
 

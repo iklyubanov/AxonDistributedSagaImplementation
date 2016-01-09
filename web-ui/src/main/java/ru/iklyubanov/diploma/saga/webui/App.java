@@ -8,6 +8,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -16,7 +17,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @SpringBootApplication
 @PropertySource("classpath:configuration.properties")
-@ImportResource("classpath:META-INF/spring/application-context.xml")
+@ImportResource("classpath:/META-INF/spring/application-context.xml")
+@EnableJpaRepositories("ru.iklyubanov.diploma.saga.core.spring.repositories")
 public class App extends SpringBootServletInitializer
 {
 

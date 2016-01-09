@@ -22,6 +22,7 @@ import ru.iklyubanov.diploma.saga.core.spring.webentity.User;
 /**
  * @author Jettro Coenradie
  */
+@Deprecated
 public interface UserQueryRepository /*extends PagingAndSortingRepository<User, String> */{
 
     User findByUsername(String username);

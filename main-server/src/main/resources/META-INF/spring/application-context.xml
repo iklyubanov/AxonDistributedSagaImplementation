@@ -11,16 +11,16 @@
        http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <context:annotation-config/>
+    <!--This element activates annotation-based configuration of event handling
+    and command processing in the Axon framework. All beans with @CommandHandler or
+    @EventHandler annotations will be configured to receive commands from the command bus
+    and events from the event bus, respectively.-->
+    <axon:annotation-config/>
+
+    <context:component-scan base-package="ru.iklyubanov.diploma.saga" />
+
     <import resource="database-context.xml" />
-
-       <context:annotation-config/>
-       <!--This element activates annotation-based configuration of event handling
-       and command processing in the Axon framework. All beans with @CommandHandler or
-       @EventHandler annotations will be configured to receive commands from the command bus
-       and events from the event bus, respectively.-->
-       <axon:annotation-config/>
-
-        <context:component-scan base-package="ru.iklyubanov.diploma.saga" />
 
         <!--<bean class="ru.iklyubanov.diploma.saga.core.axon.event.PaymentEventHandler"/>-->
 

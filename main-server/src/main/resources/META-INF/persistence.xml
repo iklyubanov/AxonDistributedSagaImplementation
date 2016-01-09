@@ -38,6 +38,9 @@
             <property name="spring.jpa.hibernate.ddl-auto" value="create"/><!--create-update-->
             <!--<property name="spring.jpa.generate-ddl" value="true"/>-->
             <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/payment_system"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
+            <property name="spring.jpa.database-platform" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
+            <property name="spring.jpa.show-sql" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>

@@ -7,7 +7,6 @@ import ru.iklyubanov.diploma.saga.core.spring.entity.PaymentProcessor
 
 
 /**
- * todo add in remote config <repositories base-package="ru.iklyubanov.diploma.saga.remote.repository" />
  * todo и репозитории лучше перенести в core чтоб они были доступны для админки в mvc
  * Created by ivan on 12/6/2015.
  */
