@@ -11,18 +11,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 /**
  * Created by kliubanov on 23.11.2015.
  */
-@EnableTransactionManagement
+/*@EnableTransactionManagement
 @SpringBootApplication
 @PropertySource("classpath:configuration.properties")
-@ImportResource("classpath:META-INF/spring/application-context.xml")
+@ImportResource("classpath:META-INF/spring/application-context.xml")*/
+@Deprecated
 public class MainConfiguration {
 
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         ApplicationContext applicationContext = SpringApplication.run(MainConfiguration.class, args);
         //CommandGateway commandGateway = applicationContext.getBean(CommandGateway.class);
 
         //===============================================
-    }
+    }*/
 
 
 }

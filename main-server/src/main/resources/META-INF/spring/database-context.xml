@@ -25,8 +25,13 @@
            persistence unit name.
        -->
        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-              <property name="persistenceXmlLocation" value="classpath://META-INF/persistence.xml"/>
-              <property name="persistenceUnitName" value="axon"/>
+              <!--<property name="persistenceXmlLocation" value="classpath://META-INF/persistence.xml"/>
+              <property name="persistenceUnitName" value="axon"/>-->
+              <property name="packagesToScan">
+                     <array>
+                            <value>ru.iklyubanov.diploma.saga.core.spring.entity</value>
+                     </array>
+              </property>
               <property name="jpaVendorAdapter">
                      <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                             <property name="database" value="POSTGRESQL"/>
@@ -69,7 +74,7 @@
               <!--<property name="minPoolSize" value="5"/>-->
        </bean>
 
-       <context:component-scan base-package="ru.iklyubanov.diploma.saga" />
+       <!--<context:component-scan base-package="ru.iklyubanov.diploma.saga" />-->
     <!--указываем дерикторию где будут хрониться репозитории-->
     <jpa:repositories base-package="ru.iklyubanov.diploma.saga.core.spring.repositories"
             factory-class="org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean"

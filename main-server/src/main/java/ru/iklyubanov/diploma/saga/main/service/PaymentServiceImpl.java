@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iklyubanov.diploma.saga.gcore.axon.command.CreatePaymentCommand;
@@ -15,7 +14,6 @@ import ru.iklyubanov.diploma.saga.core.spring.repositories.PaymentRepository;
 /**
  * Created by kliubanov on 01.12.2015.
  */
-/*@Repository*/
 @Transactional
 @Service("paymentService")
 public class PaymentServiceImpl implements PaymentService {
@@ -25,7 +23,7 @@ public class PaymentServiceImpl implements PaymentService {
     private CommandGateway commandGateway;
 
     @Autowired
-    public PaymentServiceImpl(@Qualifier("paymentRepository") PaymentRepository paymentRepository) {
+    public PaymentServiceImpl(PaymentRepository paymentRepository) {
         this.paymentRepository = paymentRepository;
     }
 
