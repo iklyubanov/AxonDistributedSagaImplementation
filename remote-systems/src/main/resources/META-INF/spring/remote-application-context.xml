@@ -68,8 +68,6 @@ host="${application.configuration.rabbit.host}"
         </rabbit:bindings>
     </rabbit:fanout-exchange>
 
-    <bean class="org.axonframework.serializer.xml.XStreamSerializer"/>
-
     <!--TODO Лучше использовать ClusteringEventsBus для распределенности-->
     <!--TODO We can try SpringIntegrationEventBus if ClusteringEventsBus isn't work-->
     <axon-amqp:terminal id="terminal" exchange-name="Axon.EventBus">
@@ -90,17 +88,10 @@ host="${application.configuration.rabbit.host}"
 
 
     <!--All event sourcing repositories need an Event Store.-->
-    <axon:jpa-event-store id="jpaEventStore"/>
+    <axon:jpa-event-store id="eventStore" data-source="dataSource"/>
 
     <axon:event-sourcing-repository id="paymentRepository"
                                     aggregate-type="ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentAggregate"/>
-
-
-    <!--<axon:aggregate-command-handler id="paymentAggregateHandler"
-                                    aggregate-type="ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentAggregate"
-                                    repository="paymentRepository" command-bus="commandBus"/>-->
-
-    <axon:jpa-event-store id="eventStore" data-source="dataSource"/>
 
     <axon:jpa-saga-repository id="sagaRepository"
                               use-explicit-flush="true" saga-serializer="serializer"><!--resource-injector="resourceInjector"-->

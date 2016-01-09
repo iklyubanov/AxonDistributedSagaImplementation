@@ -74,8 +74,6 @@ host="${application.configuration.rabbit.host}"
         </rabbit:bindings>
     </rabbit:fanout-exchange>
 
-    <bean class="org.axonframework.serializer.xml.XStreamSerializer"/>
-
     <!--TODO Лучше использовать ClusteringEventsBus для распределенности-->
     <!--TODO We can try SpringIntegrationEventBus if ClusteringEventsBus isn't work-->
     <axon-amqp:terminal id="terminal" exchange-name="Axon.EventBus">
@@ -96,7 +94,7 @@ host="${application.configuration.rabbit.host}"
 
 
     <!--All event sourcing repositories need an Event Store.-->
-    <axon:jpa-event-store id="jpaEventStore"/>
+    <axon:jpa-event-store id="eventStore" data-source="dataSource"/>
 
     <axon:event-sourcing-repository id="paymentRepository"
                                     aggregate-type="ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentAggregate"/>
@@ -105,19 +103,16 @@ host="${application.configuration.rabbit.host}"
     <axon:event-sourcing-repository id="cardNetworkRepository"
                                     aggregate-type="ru.iklyubanov.diploma.saga.core.axon.aggregate.MoneySendingCardNetworkAggregate"/>
 
-    <!--<axon:aggregate-command-handler id="paymentAggregateHandler"
-                                    aggregate-type="ru.iklyubanov.diploma.saga.core.axon.aggregate.PaymentAggregate"
-                                    repository="paymentRepository" command-bus="commandBus"/>-->
-
-    <axon:jpa-event-store id="eventStore" data-source="dataSource"/>
-
     <axon:jpa-saga-repository id="sagaRepository"
-                              use-explicit-flush="true" saga-serializer="serializer"><!--resource-injector="resourceInjector"-->
+                              use-explicit-flush="true" saga-serializer="serializer"
+            entity-manager-provider="myEntityManagerProvider"><!--resource-injector="resourceInjector"-->
         <!--Spring users can use the <axon:cache-config> element to add caching behavior to a <axon:jpa-saga-repository> element.
         It is configured with two cache references (which may refer to the same cache): one which stores the cached Saga instances,
         and one that stores the associations.-->
-        <axon:cache-config saga-cache="sagaCacheRef" associations-cache="associationCacheRef"/>
+        <!--<axon:cache-config saga-cache="sagaCacheRef" associations-cache="associationCacheRef"/>-->
     </axon:jpa-saga-repository>
+
+    <bean id="myEntityManagerProvider" class="org.axonframework.common.jpa.ContainerManagedEntityManagerProvider"/>
 
     <bean id="serializer" class="org.axonframework.serializer.xml.XStreamSerializer"/>
 

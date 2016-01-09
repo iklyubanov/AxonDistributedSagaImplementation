@@ -21,6 +21,10 @@ class MoneySendingCardNetworkAggregate extends AbstractAnnotatedAggregateRoot {
   Long merchantBankId
   Long merchantCardId
 
+  @SuppressWarnings("UnusedDeclaration")
+  MoneySendingCardNetworkAggregate() {
+  }
+
   MoneySendingCardNetworkAggregate(SendMoneyByCardNetworkCommand command) {
     this.paymentId = command.paymentId
     this.transactionId = command.transactionId
