@@ -1,0 +1,4 @@
+
+1) Drop in IDEA (Project Structure/Libs) dom4j lib for fixing exception in wildfly with orj.dom4j.domFactory...
+
+2) drop in gradle libs in path ..\.gradle\caches\modules-2\files-2.1\ tomcat.websocket libs

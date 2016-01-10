@@ -33,7 +33,7 @@
 
     <context-param>
         <param-name>log4jConfigLocation</param-name>
-        <param-value>classpath:/log4j.properties</param-value>
+        <param-value>/WEB-INF/log4j.properties</param-value>
     </context-param>
 
     <context-param>
@@ -59,9 +59,9 @@
     <!--сервлет, загружающий
     дополнительные конфигурационные файлы в контекст приложения
     Spring , созданный контроллером DispatcherServlet.-->
-    <listener>
+    <!--<listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
+    </listener>-->
 
     <!-- ====================================================================== -->
     <!--                             Filters                                    -->
