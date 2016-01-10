@@ -25,13 +25,13 @@
            persistence unit name.
        -->
        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-              <!--<property name="persistenceXmlLocation" value="classpath://META-INF/persistence.xml"/>
-              <property name="persistenceUnitName" value="axon"/>-->
-              <property name="packagesToScan">
+              <property name="persistenceXmlLocation" value="classpath://META-INF/persistence.xml"/>
+              <property name="persistenceUnitName" value="axon"/>
+              <!--<property name="packagesToScan">
                      <array>
                             <value>ru.iklyubanov.diploma.saga.core.spring.entity</value>
                      </array>
-              </property>
+              </property>-->
               <property name="jpaVendorAdapter">
                      <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                             <property name="database" value="POSTGRESQL"/>
@@ -62,10 +62,6 @@
        <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
        <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
-              <!--jdbc.driverclass=org.postgresql.Driver
-              jdbc.url=jdbc:postgresql://localhost/axon
-              jdbc.username=postgres
-              jdbc.password=123-->
               <property name="driverClassName" value="org.postgresql.Driver"/>
               <property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/payment_system"/>
               <property name="username" value="postgres"/>

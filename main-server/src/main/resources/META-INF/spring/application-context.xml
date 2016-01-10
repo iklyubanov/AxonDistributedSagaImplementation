@@ -122,12 +122,13 @@ host="${application.configuration.rabbit.host}"
     <!--After each operations that modified the backing store, EntityManager.flush() is invoked to ensure the store
     contains the last modifications. To override this behavior, see-->
     <bean id="sagaSqlSchema" class="org.axonframework.saga.repository.jpa.JpaSagaRepository">
-        <constructor-arg name="entityManagerProvider" value="org.axonframework.common.jpa.SimpleEntityManagerProvider"/>
+        <constructor-arg name="entityManagerProvider" ref="myEntityManagerProvider" />
     </bean>
 
-    <bean id="simpleEntityManagerProvider" class="org.axonframework.common.jpa.SimpleEntityManagerProvider">
+   <!--TODO for drop?
+   <bean id="simpleEntityManagerProvider" class="org.axonframework.common.jpa.SimpleEntityManagerProvider">
         <constructor-arg name="entityManager" ref="entityManagerFactory"/>
-    </bean>
+    </bean>-->
 
        <!--<bean id="contactNameRepository" class="org.axonframework.sample.app.command.JpaContactNameRepository"/>-->
 

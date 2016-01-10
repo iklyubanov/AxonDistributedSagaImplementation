@@ -25,9 +25,23 @@
         <!--<jta-data-source>java:jboss/datasources/PostgreDataSource</jta-data-source>-->
         <!--<non-jta-data-source>java:comp/env/ds/jdbc/postgres</non-jta-data-source>-->
 
+        <class>ru.iklyubanov.diploma.saga.core.spring.entity.Bank</class>
+        <class>ru.iklyubanov.diploma.saga.core.spring.entity.BankCard</class>
+        <class>ru.iklyubanov.diploma.saga.core.spring.entity.Client</class>
+        <class>ru.iklyubanov.diploma.saga.core.spring.entity.Currency</class>
+        <class>ru.iklyubanov.diploma.saga.core.spring.entity.Merchant</class>
+        <class>ru.iklyubanov.diploma.saga.core.spring.entity.Payment</class>
+        <class>ru.iklyubanov.diploma.saga.core.spring.entity.PaymentHistory</class>
+        <class>ru.iklyubanov.diploma.saga.core.spring.entity.PaymentProcessor</class>
+        <class>ru.iklyubanov.diploma.saga.core.spring.entity.PaymentSystemType</class>
+        <class>ru.iklyubanov.diploma.saga.core.spring.entity.Wallet</class>
+
         <!-- JPA Event Store -->
         <class>org.axonframework.eventstore.jpa.DomainEventEntry</class>
         <class>org.axonframework.eventstore.jpa.SnapshotEventEntry</class>
+        <!--for saga-->
+        <class>org.axonframework.saga.repository.jpa.AssociationValueEntry</class>
+        <class>org.axonframework.saga.repository.jpa.SagaEntry</class>
 
         <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
         <properties>
