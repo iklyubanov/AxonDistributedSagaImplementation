@@ -192,7 +192,7 @@ project(':remote-systems') {
 
 project(':web-ui') {
 
-  /*apply plugin: 'war'*/
+  apply plugin: 'war'
 
   dependencies {
     compile project(':main-server')
