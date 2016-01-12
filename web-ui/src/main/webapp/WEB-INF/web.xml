@@ -25,6 +25,7 @@
     <!--подцепляет конфиги-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
+        <!--/WEB-INF/spring/security-context.xml,-->
         <param-value>
             classpath:META-INF/spring/application-context.xml,
             classpath:META-INF/spring/database-context.xml
@@ -41,13 +42,6 @@
         <param-value>60000</param-value>
     </context-param>
 
-    <!--we don't have profiles-->
-    <!--<context-param>
-        <param-name>spring.profiles.default</param-name>
-        &lt;!&ndash; You can pass the active profile to overrule the default &ndash;&gt;
-        &lt;!&ndash; -Dspring.profiles.active=mongodb &ndash;&gt;
-        <param-value>hsqldb</param-value>
-    </context-param>-->
 
     <!-- ====================================================================== -->
     <!--                             Listeners                                  -->
@@ -58,7 +52,7 @@
 
     <!--сервлет, загружающий
     дополнительные конфигурационные файлы в контекст приложения
-    Spring , созданный контроллером DispatcherServlet.-->
+    Spring , созданный контроллером DispatcherServlet.todo для wildfly не нужен-->
     <!--<listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>-->
@@ -67,10 +61,10 @@
     <!--                             Filters                                    -->
     <!-- ====================================================================== -->
     <!--фильтр для spring Security-->
-    <!--<filter>
+    <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>-->
+    </filter>
 
     <!-- filter for applying Decorators to entire Pages -->
     <filter>
@@ -127,15 +121,10 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!--<filter-mapping>
+    <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>*</url-pattern>
-        &lt;!&ndash;<url-pattern>/company/*</url-pattern>&ndash;&gt;
-        &lt;!&ndash;<url-pattern>/orderbook/*</url-pattern>&ndash;&gt;
-        &lt;!&ndash;<url-pattern>/spring_security_login</url-pattern>&ndash;&gt;
-        &lt;!&ndash;<url-pattern>/j_spring_security_check</url-pattern>&ndash;&gt;
-        &lt;!&ndash;<url-pattern>/j_spring_security_logout</url-pattern>&ndash;&gt;
-    </filter-mapping>-->
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <filter-mapping>
         <filter-name>sitemesh</filter-name>
@@ -145,9 +134,18 @@
     <!-- ====================================================================== -->
     <!--                             Servlets                                   -->
     <!-- ====================================================================== -->
+    <!-- Spring MVC -->
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <!--/WEB-INF/spring/security-context.xml,-->
+            <param-value>
+                classpath:META-INF/spring/application-context.xml,
+                classpath:META-INF/spring/database-context.xml
+            </param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -157,11 +155,10 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>/index</welcome-file>
     </welcome-file-list>
     
     <resource-ref>
-        <description>postgreSQL Datasource example</description>
         <res-ref-name>jdbc/payment_system</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>

@@ -17,19 +17,17 @@
 package ru.iklyubanov.diploma.saga.core.spring.webentity;
 
 import org.springframework.data.annotation.Id;
+import ru.iklyubanov.diploma.saga.core.spring.webentity.UserAccount;
 
 import javax.persistence.Entity;
 import java.io.Serializable;
 
-/**
- * @author Jettro Coenradie
- */
-//@Entity
 @Deprecated
-public class User implements UserAccount, Serializable {
+/*@Entity*/
+public class User /*implements UserAccount, Serializable */{
 
     /*@Id
-    @javax.persistence.Id*/
+    @javax.persistence.Id
     private String identifier;
     private String name;
     private String username;
@@ -76,5 +74,5 @@ public class User implements UserAccount, Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
+    }*/
 }

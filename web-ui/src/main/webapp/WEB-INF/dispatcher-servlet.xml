@@ -37,9 +37,6 @@
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
-        <!-- can be changed to
-        <beans:property narne="prefix" value="/WEB-INF/views/" />
-        <beans:property narne="suffix" value=".jspx" />-->
     </bean>
 
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">

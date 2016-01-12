@@ -19,13 +19,10 @@ package ru.iklyubanov.diploma.saga.core.spring.repositories;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import ru.iklyubanov.diploma.saga.core.spring.webentity.User;
 
-/**
- * @author Jettro Coenradie
- */
 @Deprecated
-public interface UserQueryRepository /*extends PagingAndSortingRepository<User, String> */{
+public interface UserQueryRepository /*extends PagingAndSortingRepository<User, String>*/ {
 
-    User findByUsername(String username);
+    /*User findByUsername(String username);
 
-    User findByIdentifier(String identifier);
+    User findByIdentifier(String identifier);*/
 }

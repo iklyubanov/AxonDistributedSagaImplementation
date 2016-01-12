@@ -19,7 +19,6 @@ package ru.iklyubanov.diploma.saga.core.spring.webentity;
 /**
  * Object used to obtain information about an available UserAccount
  *
- * @author Jettro Coenradie
  */
 @Deprecated
 public interface UserAccount {
